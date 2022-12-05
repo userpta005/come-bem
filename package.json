@@ -2,7 +2,7 @@
   "name": "lanche-bem-app-web",
   "version": "0.0.1",
   "description": "A Quasar Project",
-  "productName": "Lanche Bem App",
+  "productName": "Lanche Bem",
   "author": "Rafael Arend <rafinhaarend123@hotmail.com>",
   "private": true,
   "scripts": {
