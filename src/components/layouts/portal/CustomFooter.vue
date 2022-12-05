@@ -7,8 +7,7 @@
 </template>
 
 <script>
-import { defineComponent, computed } from 'vue'
-import { useQuasar } from 'quasar'
+import { defineComponent } from 'vue'
 import FooterTop from 'src/components/layouts/portal/footers/FooterTop.vue'
 import FooterBottom from 'components/layouts/portal/footers/FooterBottom.vue'
 
@@ -19,14 +18,7 @@ export default defineComponent({
     FooterBottom
   },
   setup () {
-    const $q = useQuasar()
-    const dynamicSpacing = computed(() => ({
-      'q-px-xl': $q.platform.is.desktop,
-      'q-px-md': $q.platform.is.mobile
-    }))
-    return {
-      dynamicSpacing
-    }
+    return {}
   }
 })
 </script>
