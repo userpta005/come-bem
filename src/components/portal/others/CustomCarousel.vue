@@ -1,6 +1,7 @@
 <template>
   <q-carousel animated
     v-model="slide"
+    control-color="black"
     navigation
     infinite
     :autoplay="autoplay"
@@ -10,13 +11,11 @@
     @mouseenter="autoplay = false"
     @mouseleave="autoplay = true">
     <q-carousel-slide :name="1"
-      img-src="https://cdn.quasar.dev/img/mountains.jpg" />
+      img-src="/imgs/banner-1.jpg" />
     <q-carousel-slide :name="2"
-      img-src="https://cdn.quasar.dev/img/parallax1.jpg" />
+      img-src="/imgs/banner-2.jpg" />
     <q-carousel-slide :name="3"
-      img-src="https://cdn.quasar.dev/img/parallax2.jpg" />
-    <q-carousel-slide :name="4"
-      img-src="https://cdn.quasar.dev/img/quasar.jpg" />
+      img-src="/imgs/banner-3.jpg" />
   </q-carousel>
 </template>
 
