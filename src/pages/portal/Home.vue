@@ -1,5 +1,5 @@
 <template>
-  <q-page class="flex flex-center">
+  <q-page class="flex flex-center column">
     <p>Home</p>
   </q-page>
 </template>
@@ -8,6 +8,7 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'HomePage'
+  name: 'HomePage',
+  components: {}
 })
 </script>

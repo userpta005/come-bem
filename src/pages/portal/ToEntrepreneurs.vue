@@ -1,57 +1,6 @@
 <template>
   <q-page class="flex flex-center column">
     <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
-    <p>Para empreendedores</p>
   </q-page>
 </template>
 

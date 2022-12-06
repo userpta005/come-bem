@@ -3,6 +3,8 @@
 
     <custom-header />
 
+    <custom-carousel v-if="['home', 'to-parents', 'to-entrepreneurs'].includes($route.name)" />
+
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -14,15 +16,17 @@
 
 <script>
 import { defineComponent } from 'vue'
-import CustomHeader from 'components/layouts/portal/CustomHeader.vue'
-import CustomFooter from 'components/layouts/portal/CustomFooter.vue'
+import CustomHeader from 'components/portal/layouts/CustomHeader.vue'
+import CustomFooter from 'components/portal/layouts/CustomFooter.vue'
+import CustomCarousel from 'src/components/portal/others/CustomCarousel.vue'
 
 export default defineComponent({
   name: 'MainLayout',
 
   components: {
     CustomHeader,
-    CustomFooter
+    CustomFooter,
+    CustomCarousel
   },
 
   setup () {

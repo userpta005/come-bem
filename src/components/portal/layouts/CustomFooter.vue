@@ -8,8 +8,8 @@
 
 <script>
 import { defineComponent } from 'vue'
-import FooterTop from 'src/components/layouts/portal/footers/FooterTop.vue'
-import FooterBottom from 'components/layouts/portal/footers/FooterBottom.vue'
+import FooterTop from 'components/portal/layouts/FooterTop.vue'
+import FooterBottom from 'components/portal/layouts/FooterBottom.vue'
 
 export default defineComponent({
   name: 'CustomFooter',
