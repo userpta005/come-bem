@@ -4,7 +4,7 @@
     <custom-header />
 
     <q-page-container>
-      <custom-carousel v-if="['home', 'to-parents', 'to-entrepreneurs'].includes($route.name)" />
+      <custom-carousel v-if="['homeDefault', 'home', 'to-parents', 'to-entrepreneurs'].includes($route.name)" />
       <router-view />
     </q-page-container>
 
