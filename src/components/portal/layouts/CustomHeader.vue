@@ -47,12 +47,12 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 
 export default defineComponent({
   name: 'CustomHeader',
   setup () {
-    const linksList = [
+    const linksList = ref([
       {
         flat: true,
         textColor: 'main-tertiary',
@@ -89,7 +89,7 @@ export default defineComponent({
         label: 'Minha Conta/Acessar',
         route: 'accesses'
       }
-    ]
+    ])
     return {
       linksList
     }
