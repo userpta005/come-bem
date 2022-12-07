@@ -7,9 +7,9 @@
       Fique por dentro de nossas novidades!
     </div>
     <div class="col-12">
-      <q-form class="row"
+      <q-form class="row q-col-gutter-md"
         @submit.prevent="handleSubmit">
-        <div class="col-md-6 col-xs-12 pl q-pr-sm">
+        <div class="col-md-6 col-xs-12">
           <q-input label="Nome"
             label-color="white"
             color="white"
@@ -22,7 +22,7 @@
               val => (val.length <= 100) || 'Máximo 100 caracteres !',
             ]" />
         </div>
-        <div class="col-md-6 col-xs-12 pr q-pl-sm">
+        <div class="col-md-6 col-xs-12">
           <q-input type="email"
             label="Email"
             label-color="white"
