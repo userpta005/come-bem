@@ -1,16 +1,65 @@
 <template>
-  <q-page class="p">
-    <div class="flex flex-center column">
-      <p>Para pais</p>
-    </div>
+  <q-page class="pa">
+    <InternalContent :content="content" />
   </q-page>
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
+import InternalContent from 'components/portal/others/InternalContent.vue'
 
 export default defineComponent({
   name: 'ToParentsPage',
-  components: {}
+  components: {
+    InternalContent
+  },
+  setup () {
+    const content = ref({
+      title: {
+        label: 'Vantagens para pais e filhos'
+      },
+      items: [
+        {
+          iconName: 'mdi-timer-sand',
+          iconSize: '4rem',
+          title: 'Alimentação saudável e equilibrada',
+          text: 'Você saberá o que o seu filho está comendo e com direito à relatórios nutricionais da Cantina em tempo real. Isso te deixará mais tranquila e confiante em consumir na Cantina da Escola.'
+        },
+        {
+          iconName: 'mdi-finance',
+          iconSize: '4rem',
+          title: 'Economia',
+          text: 'Controle financeiro através de saldos e parâmetros financeiros. Com isso, além de controlar a alimentação do seu filho você economiza 30% mensalmente quando se comparado a outros métodos.'
+        },
+        {
+          iconName: 'mdi-calculator-variant-outline',
+          iconSize: '4rem',
+          title: 'Evitar prejuízos',
+          text: 'Não precisará mais perder tempo adentrando a escola e pegando filas para compras de fichas.'
+        },
+        {
+          iconName: 'mdi-cash-register',
+          iconSize: '4rem',
+          title: 'Tempo',
+          text: 'Não precisará mais perder tempo adentrando a escola e pegando filas para compras de fichas.'
+        },
+        {
+          iconName: 'mdi-certificate-outline',
+          iconSize: '4rem',
+          title: 'Gerenciamento',
+          text: 'Possibilita parametizar limites de gastos diários na Cantina, bloquear alimentos poucos nutritivos ou com restrição alimentar.'
+        },
+        {
+          iconName: 'mdi-account-multiple-check-outline',
+          iconSize: '4rem',
+          title: 'Educação financeira',
+          text: 'A criança começa a lidar com recursos financeiros desde muito cedo, o que contribui com o desenvolvimento da capacidade de gestão financeira quando adulto.'
+        }
+      ]
+    })
+    return {
+      content
+    }
+  }
 })
 </script>
