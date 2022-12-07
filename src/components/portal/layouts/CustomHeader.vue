@@ -1,56 +1,45 @@
+<!-- eslint-disable vue/no-use-v-if-with-v-for -->
 <template>
   <q-header reveal
-    :reveal-offset="50"
     elevated
-    class="bg-amber-1">
-    <div class="q-py-md"
-      :class="dynamicSpacing">
-      <div class="row items-center justify-center"
-        :class="dynamicSpacing">
-        <div class="col-md-auto col-xs-12 text-center">
+    class="bg-main-senary">
+    <div class="q-py-sm px">
+      <div class="row">
+        <div class="col-md-auto col-xs-12 flex flex-center">
           <img src="/imgs/logo-horizontal.png"
-            style="max-height: 30px; max-width: 250px;" />
+            style="max-height: 30px;" />
         </div>
         <q-space />
-        <div class="col-md-auto col-xs-12">
-          <q-btn flat
-            text-color="brown"
-            class="full-width"
-            label="Home"
-            :class="{ active: $route.name === 'home' }"
-            :to="{ name: 'home' }">
+        <div class="col-md-shrink col-xs-12"
+          v-if="$q.platform.is.desktop"
+          v-for="(link, index) in linksList"
+          :key="index">
+          <q-btn :flat="link.flat"
+            :color="link.color"
+            :text-color="link.textColor"
+            :class="[link.class, { active: $route.name === link.route }]"
+            :label="link.label"
+            :to="{ name: link.route }">
           </q-btn>
         </div>
-        <div class="col-md-auto col-xs-12">
-          <q-btn flat
-            text-color="brown"
+        <div class="col-md-shrink col-xs-12 q-pt-sm"
+          v-if="$q.platform.is.mobile">
+          <q-btn-dropdown color="main-primary"
             class="full-width"
-            label="Para pais"
-            :class="{ active: $route.name === 'to-parents' }"
-            :to="{ name: 'to-parents' }" />
-        </div>
-        <div class="col-md-auto col-xs-12">
-          <q-btn flat
-            text-color="brown"
-            class="full-width"
-            label="Para empreendedores"
-            :class="{ active: $route.name === 'to-entrepreneurs' }"
-            :to="{ name: 'to-entrepreneurs' }" />
-        </div>
-        <div class="col-md-auto col-xs-12">
-          <q-btn flat
-            text-color="brown"
-            class="full-width"
-            label="Contatos"
-            :class="{ active: $route.name === 'contacts' }"
-            :to="{ name: 'contacts' }" />
-        </div>
-        <div class="col-md-auto col-xs-12">
-          <q-btn color="orange-8"
-            class="full-width"
-            label="Minha Conta/Acessar"
-            :class="{ active: $route.name === 'accesses' }"
-            :to="{ name: 'accesses' }" />
+            label="Menu">
+            <q-list>
+              <q-item v-for="(link, index) in linksList"
+                :key="index"
+                clickable
+                v-close-popup
+                exact
+                :to="{ name: link.route }">
+                <q-item-section>
+                  <q-item-label>{{ link.label }}</q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-btn-dropdown>
         </div>
       </div>
     </div>
@@ -58,20 +47,51 @@
 </template>
 
 <script>
-import { defineComponent, computed } from 'vue'
-import { useQuasar } from 'quasar'
+import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'CustomHeader',
-  props: {},
   setup () {
-    const $q = useQuasar()
-    const dynamicSpacing = computed(() => ({
-      'q-px-xl': $q.platform.is.desktop,
-      'q-px-md': $q.platform.is.mobile
-    }))
+    const linksList = [
+      {
+        flat: true,
+        textColor: 'main-tertiary',
+        class: 'full-width',
+        label: 'Home',
+        route: 'home'
+      },
+      {
+        flat: true,
+        textColor: 'main-tertiary',
+        class: 'full-width',
+        label: 'Para pais',
+        route: 'to-parents'
+      },
+      {
+        flat: true,
+        textColor: 'main-tertiary',
+        class: 'full-width',
+        label: 'Para empreendedores',
+        route: 'to-entrepreneurs'
+      },
+      {
+        flat: true,
+        textColor: 'main-tertiary',
+        class: 'full-width',
+        label: 'Contatos',
+        route: 'contacts'
+      },
+      {
+        flat: false,
+        color: 'main-primary',
+        textColor: 'white',
+        class: 'full-width',
+        label: 'Minha Conta/Acessar',
+        route: 'accesses'
+      }
+    ]
     return {
-      dynamicSpacing
+      linksList
     }
   }
 })
