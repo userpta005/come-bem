@@ -1,9 +1,9 @@
 <template>
-  <div class="row bg-main-secondary text-white pa">
-    <div class="col-12 text-h5 text-weight-bold text-center q-pb-md">
+  <div class="row bg-main-secondary text-white px pb q-col-gutter-lg">
+    <div class="col-12 text-h5 text-weight-bold text-center">
       Newsletter
     </div>
-    <div class="col-12 text-subtitle1 text-center q-pb-md">
+    <div class="col-12 text-subtitle1 text-center">
       Fique por dentro de nossas novidades!
     </div>
     <div class="col-12">
@@ -36,7 +36,7 @@
               val => (val.length <= 100) || 'Máximo 100 caracteres !',
             ]" />
         </div>
-        <div class="col-12 text-body2 text-center q-pb-md">
+        <div class="col-12 text-body2 text-center">
           Você receberá todas as promoções, novidades e ofertas direto no seu e-mail.
         </div>
         <div class="col-12 flex flex-center">
