@@ -16,9 +16,6 @@ export default defineComponent({
   components: {
     FooterTop,
     FooterBottom
-  },
-  setup () {
-    return {}
   }
 })
 </script>

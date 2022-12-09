@@ -4,7 +4,8 @@
     <custom-header />
 
     <q-page-container>
-      <custom-carousel v-if="['homeDefault', 'home', 'to-parents', 'to-entrepreneurs'].includes($route.name)" />
+      <custom-carousel :slides="slides"
+        v-if="['homeDefault', 'home', 'to-parents', 'to-entrepreneurs'].includes($route.name)" />
       <router-view />
     </q-page-container>
 
@@ -14,7 +15,7 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 import CustomHeader from 'components/portal/layouts/CustomHeader.vue'
 import CustomFooter from 'components/portal/layouts/CustomFooter.vue'
 import CustomCarousel from 'src/components/portal/others/CustomCarousel.vue'
@@ -29,7 +30,14 @@ export default defineComponent({
   },
 
   setup () {
-    return {}
+    const slides = ref([
+      { img_url: '/imgs/banner-1.jpg' },
+      { img_url: '/imgs/banner-2.jpg' },
+      { img_url: '/imgs/banner-3.jpg' }
+    ])
+    return {
+      slides
+    }
   }
 })
 </script>

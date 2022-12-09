@@ -11,7 +11,7 @@
         </div>
         <q-space />
         <div class="col-md-shrink col-xs-12"
-          v-if="$q.platform.is.desktop"
+          v-if="$q.screen.gt.sm"
           v-for="(link, index) in linksList"
           :key="index">
           <q-btn :flat="link.flat"
@@ -23,7 +23,7 @@
           </q-btn>
         </div>
         <div class="col-md-shrink col-xs-12 q-pt-md"
-          v-if="$q.platform.is.mobile">
+          v-if="$q.screen.lt.md">
           <q-btn-dropdown color="main-primary"
             class="full-width"
             label="Menu">

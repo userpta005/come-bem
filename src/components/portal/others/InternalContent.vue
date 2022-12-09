@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col-12 flex"
-    :class="[content.title.justifyContent ?? 'justify-center']">
+    :class="content.title.justifyContent ?? 'justify-center'">
       <div class="text-h5 text-weight-bold text-main-tertiary text-center pa-responsive-md">
         {{ content.title.label }}
         <q-separator :color="content.title.separatorColor" v-if="content.title.separator" />

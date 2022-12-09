@@ -1,57 +1,60 @@
 <template>
-  <q-page>
+  <q-page :style-fn="myTweak">
     <div class="row">
-      <div class="col-md-6 col-xs-12"
-        :class="[dynamicHeightSpacing, dynamicWidthSpacing]">
-        <div class="q-gutter-y-md"
-          :class="dynamicWidthSpacing">
-          <p class="text-h5 text-weight-bold text-brown-7 text-center">Contato</p>
-          <p class="text-body1 text-center">
-            Informe os dados no formulário para contatarmos e entendermos como ajudar
-            ou somar mais para você e a sua empresa.
-          </p>
-          <q-form class="q-gutter-y-md text-center">
-            <q-input label="Nome"
-              outlined
-              clearable
-              v-model="form.name"
-              :rules="[
-                val => (val && val.length > 0) || 'Nome é obrigatório !',
-                val => (val.length <= 100) || 'Máximo 100 caracteres !',
-              ]" />
+      <div class="col-md-6 col-xs-12 px-responsive-xl q-py-xl">
+        <p class="text-h5 text-weight-bold text-main-tertiary text-center">Contato</p>
+        <p class="text-body1 text-center">
+          Informe os dados no formulário para contatarmos e entendermos como ajudar
+          ou somar mais para você e a sua empresa.
+        </p>
+        <q-form @submit.prevent="handleSubmit">
+          <q-input label="Nome"
+            outlined
+            clearable
+            lazy-rules="ondemand"
+            v-model="form.name"
+            :rules="[
+              val => (val && val.length > 0) || 'Nome é obrigatório !',
+              val => (val.length <= 100) || 'Máximo 100 caracteres !',
+            ]" />
 
-            <q-input label="Email"
-              outlined
-              clearable
-              type="email"
-              v-model="form.email"
-              :rules="[
-                val => (val && val.length > 0) || 'Email é obrigatório',
-                val => (val.length <= 100) || 'Máximo 100 caracteres !',
-              ]" />
+          <q-input label="Email"
+            outlined
+            clearable
+            type="email"
+            lazy-rules="ondemand"
+            v-model="form.email"
+            :rules="[
+              val => (val && val.length > 0) || 'Email é obrigatório',
+              val => (val.length <= 100) || 'Máximo 100 caracteres !',
+            ]" />
 
-            <q-input label="Telefone"
-              outlined
-              clearable
-              v-model="form.phone"
-              mask="(##) ##### - ####"
-              fill-mask
-              :rules="[val => (val && val.length > 0) || 'Telefone é obrigatório']" />
+          <q-input label="Telefone"
+            outlined
+            clearable
+            v-model="form.phone"
+            mask="(##) ##### - ####"
+            fill-mask
+            lazy-rules="ondemand"
+            :rules="[val => (val && val.length > 0) || 'Telefone é obrigatório']" />
 
-            <q-input label="Mensagem"
-              autogrow
-              outlined
-              clearable
-              v-model="form.message" />
+          <q-input label="Mensagem"
+            autogrow
+            outlined
+            clearable
+            lazy-rules="ondemand"
+            v-model="form.message" />
 
-            <q-btn label="Enviar"
-              color="orange-8"
+          <div class="col-12 px-responsive-md q-pt-lg flex flex-center">
+            <q-btn type="submit"
+              label="Enviar"
+              color="main-primary"
               style="width: 150px;" />
-          </q-form>
-        </div>
+          </div>
+        </q-form>
       </div>
       <div class="col-md-6 col-xs-12"
-        v-if="$q.platform.is.desktop">
+        v-if="$q.screen.gt.sm">
         <q-img src="/imgs/front-view-people-having-meeting-office.jpg"
           style="height: 100vh;" />
       </div>
@@ -60,31 +63,29 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed } from 'vue'
-import { useQuasar } from 'quasar'
+import { defineComponent, ref } from 'vue'
+import notify from 'src/composables/notify'
 
 export default defineComponent({
   name: 'ContactsPage',
   setup () {
-    const $q = useQuasar()
-    const dynamicHeightSpacing = computed(() => ({
-      'q-py-xl': $q.platform.is.desktop,
-      'q-py-md': $q.platform.is.mobile
-    }))
-    const dynamicWidthSpacing = computed(() => ({
-      'q-px-xl': $q.platform.is.desktop,
-      'q-px-md': $q.platform.is.mobile
-    }))
+    const myTweak = () => {
+      return { maxHeight: '100vh' }
+    }
+    const { success } = notify()
     const form = ref({
       name: '',
       email: '',
       phone: '',
       message: ''
     })
+    const handleSubmit = async () => {
+      success()
+    }
     return {
+      myTweak,
       form,
-      dynamicHeightSpacing,
-      dynamicWidthSpacing
+      handleSubmit
     }
   }
 })

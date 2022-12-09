@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col-12 flex"
-      :class="[content.title.justifyContent ?? 'justify-center']">
+      :class="content.title.justifyContent ?? 'justify-center'">
       <div class="text-h5 text-weight-bold text-main-tertiary text-center pa-responsive-md">
         {{ content.title.label }}
         <q-separator :color="content.title.separatorColor"
@@ -34,7 +34,7 @@
 
               <div class="column rounded-borders fit"
                 :style="item.border === false ? '' : 'border: 0.15rem solid var(--orange)'">
-                <div :class="[item.title ? 'col-6' : 'col-12']">
+                <div :class="item.title ? 'col-6' : 'col-12'">
                   <q-img :src="item.img_url"
                     class="fit rounded-borders"
                     :ratio="(1 / 2)" />
