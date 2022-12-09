@@ -3,7 +3,7 @@
   <q-header reveal
     elevated
     class="bg-main-senary">
-    <div class="q-py-sm px">
+    <div class="px-responsive-xl q-py-md">
       <div class="row">
         <div class="col-md-auto col-xs-12 flex flex-center">
           <img src="/imgs/logo-horizontal.png"
@@ -22,7 +22,7 @@
             :to="{ name: link.route }">
           </q-btn>
         </div>
-        <div class="col-md-shrink col-xs-12 q-pt-sm"
+        <div class="col-md-shrink col-xs-12 q-pt-md"
           v-if="$q.platform.is.mobile">
           <q-btn-dropdown color="main-primary"
             class="full-width"

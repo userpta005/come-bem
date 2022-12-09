@@ -1,12 +1,16 @@
 <template>
   <div class="row">
-    <div class="col text-h5 text-weight-bold text-brown-7 text-center q-pa-md">
-      {{ content.title.label }}
+    <div class="col-12 flex"
+    :class="[content.title.justifyContent ?? 'justify-center']">
+      <div class="text-h5 text-weight-bold text-main-tertiary text-center pa-responsive-md">
+        {{ content.title.label }}
+        <q-separator :color="content.title.separatorColor" v-if="content.title.separator" />
+      </div>
     </div>
     <div class="col-12"
       v-for="(item, index)  in content.items"
       :key="index">
-      <div class="row q-pa-md">
+      <div class="row pa-responsive-md">
         <div class="col-2 flex flex-center">
           <q-icon :name="item.iconName"
             :size="item.iconSize" />
@@ -16,9 +20,9 @@
           <div class="text-body1">{{ item.text }}</div>
         </div>
       </div>
-      <q-separator v-if="(content.items.length != (index + 1))" />
+      <q-separator v-if="(item.separator && content.items.length != (index + 1))" />
     </div>
-    <div class="col-12 q-pa-md flex flex-center">
+    <div class="col-12 pa-responsive-md flex flex-center">
       <q-btn color="main-primary"
         text-color="white"
         label="Quero saber mais"

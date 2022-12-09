@@ -1,5 +1,5 @@
 <template>
-  <q-page class="pa">
+  <q-page class="px-responsive-xl py-responsive-sm">
     <InternalContent :content="content" />
   </q-page>
 </template>
@@ -23,37 +23,43 @@ export default defineComponent({
           iconName: 'mdi-timer-sand',
           iconSize: '4rem',
           title: 'Alimentação saudável e equilibrada',
-          text: 'Você saberá o que o seu filho está comendo e com direito à relatórios nutricionais da Cantina em tempo real. Isso te deixará mais tranquila e confiante em consumir na Cantina da Escola.'
+          text: 'Você saberá o que o seu filho está comendo e com direito à relatórios nutricionais da Cantina em tempo real. Isso te deixará mais tranquila e confiante em consumir na Cantina da Escola.',
+          separator: true
         },
         {
           iconName: 'mdi-finance',
           iconSize: '4rem',
           title: 'Economia',
-          text: 'Controle financeiro através de saldos e parâmetros financeiros. Com isso, além de controlar a alimentação do seu filho você economiza 30% mensalmente quando se comparado a outros métodos.'
+          text: 'Controle financeiro através de saldos e parâmetros financeiros. Com isso, além de controlar a alimentação do seu filho você economiza 30% mensalmente quando se comparado a outros métodos.',
+          separator: true
         },
         {
           iconName: 'mdi-calculator-variant-outline',
           iconSize: '4rem',
           title: 'Evitar prejuízos',
-          text: 'Não precisará mais perder tempo adentrando a escola e pegando filas para compras de fichas.'
+          text: 'Não precisará mais perder tempo adentrando a escola e pegando filas para compras de fichas.',
+          separator: true
         },
         {
           iconName: 'mdi-cash-register',
           iconSize: '4rem',
           title: 'Tempo',
-          text: 'Não precisará mais perder tempo adentrando a escola e pegando filas para compras de fichas.'
+          text: 'Não precisará mais perder tempo adentrando a escola e pegando filas para compras de fichas.',
+          separator: true
         },
         {
           iconName: 'mdi-certificate-outline',
           iconSize: '4rem',
           title: 'Gerenciamento',
-          text: 'Possibilita parametizar limites de gastos diários na Cantina, bloquear alimentos poucos nutritivos ou com restrição alimentar.'
+          text: 'Possibilita parametizar limites de gastos diários na Cantina, bloquear alimentos poucos nutritivos ou com restrição alimentar.',
+          separator: true
         },
         {
           iconName: 'mdi-account-multiple-check-outline',
           iconSize: '4rem',
           title: 'Educação financeira',
-          text: 'A criança começa a lidar com recursos financeiros desde muito cedo, o que contribui com o desenvolvimento da capacidade de gestão financeira quando adulto.'
+          text: 'A criança começa a lidar com recursos financeiros desde muito cedo, o que contribui com o desenvolvimento da capacidade de gestão financeira quando adulto.',
+          separator: true
         }
       ]
     })

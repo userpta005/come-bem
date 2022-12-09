@@ -1,13 +1,13 @@
 <template>
-  <div class="row bg-main-secondary text-white px pb q-col-gutter-lg">
-    <div class="col-12 text-h5 text-weight-bold text-center">
+  <div class="row bg-main-secondary text-white px-responsive-xl">
+    <div class="col-12 text-h5 text-weight-bold text-center pt-responsive-sm">
       Newsletter
     </div>
-    <div class="col-12 text-subtitle1 text-center">
+    <div class="col-12 text-subtitle1 text-center pt-responsive-sm">
       Fique por dentro de nossas novidades!
     </div>
-    <div class="col-12">
-      <q-form class="row q-col-gutter-md"
+    <div class="col-12 pt-responsive-sm">
+      <q-form class="row q-col-gutter-x-md"
         @submit.prevent="handleSubmit">
         <div class="col-md-6 col-xs-12">
           <q-input label="Nome"
@@ -39,7 +39,7 @@
         <div class="col-12 text-body2 text-center">
           Você receberá todas as promoções, novidades e ofertas direto no seu e-mail.
         </div>
-        <div class="col-12 flex flex-center">
+        <div class="col-12 pa-responsive-md flex flex-center">
           <q-btn type="submit"
             color="main-primary"
             text-color="white"
