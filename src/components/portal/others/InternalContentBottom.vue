@@ -16,7 +16,7 @@
         control-color="black"
         navigation
         infinite
-        :autoplay="false"
+        :autoplay="autoplay"
         arrows
         transition-prev="slide-right"
         transition-next="slide-left"
@@ -28,6 +28,7 @@
 
           <div class="row no-wrap fit">
             <div class="col-xs-12 pa-responsive-xs"
+              style="min-width: 230px;"
               :class="`col-md-${12 / slides.slice(0, 4).length}`"
               v-for="(item, index) in slides.slice(0, 4)"
               :key="index">
@@ -41,9 +42,9 @@
                 </div>
                 <div class="col-6 column"
                   v-if="item.title">
-                  <div class="col-grow text-subtitle2 text-center pa-responsive-xs flex flex-center">{{ item.title }}
+                  <div class="col-grow text-subtitle2 text-center q-pa-xs flex flex-center">{{ item.title }}
                   </div>
-                  <div class="col-shrink text-caption text-center pa-responsive-xs">{{ item.description }}</div>
+                  <div class="col-shrink text-caption text-center q-pa-xs">{{ item.description }}</div>
                 </div>
               </div>
 

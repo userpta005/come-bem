@@ -58,28 +58,28 @@ export default defineComponent({
       },
       items: [
         {
-          iconName: 'mdi-timer-sand',
+          iconName: 'mdi-reload',
           iconSize: '4rem',
           title: 'Recarga',
           text: 'Recaregando pelo site do app é cobrado uma taxa de serviço de 4,99% por recarga, o que é facilmente revertido com as vantagens apresentadas. Recarregando na cantina ou via transferência bancária não será cobrado uma taxa de serviço.',
           separator: false
         },
         {
-          iconName: 'mdi-finance',
+          iconName: 'mdi-credit-card-multiple-outline',
           iconSize: '4rem',
           title: 'Cartão',
           text: 'Todo aluno receberá um Cartão NFC do Lanche Bem personalizado e gratuito. Nessa etapa, cuidaremos para que seu filho receba todas as informações necessárias (cartilha) para que não tenha dificuldades de utilização do Token de Auto Atendimento.',
           separator: false
         },
         {
-          iconName: 'mdi-calculator-variant-outline',
+          iconName: 'mdi-watch',
           iconSize: '4rem',
           title: 'Pulseira',
           text: 'As pulseirinhas com chip serão vendidas nas Cantinas parceiras. A pulseirinha é indicada para crianças menores com possibilidade de perda do cartão NFC.',
           separator: false
         },
         {
-          iconName: 'mdi-cash-register',
+          iconName: 'mdi-map-search-outline',
           iconSize: '4rem',
           title: 'Perde',
           text: 'Em caso de perda, basta comunicar imediatamente o cancelamento à Cantina. Nesse caso, será emitido um novo cartão e cobrado uma taxa de R$ 5,00 reais. O saldo do antigo cartão será transferido para esse novo cartão.',

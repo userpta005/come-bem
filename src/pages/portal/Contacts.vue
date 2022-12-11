@@ -1,7 +1,7 @@
 <template>
-  <q-page :style-fn="myTweak">
+  <q-page style="min-height: auto; height: auto;">
     <div class="row">
-      <div class="col-md-6 col-xs-12 px-responsive-xl q-py-xl">
+      <div class="col-md-6 col-xs-12 px-responsive-xl py-responsive-lg">
         <p class="text-h5 text-weight-bold text-main-tertiary text-center">Contato</p>
         <p class="text-body1 text-center">
           Informe os dados no formulário para contatarmos e entendermos como ajudar
@@ -69,9 +69,6 @@ import notify from 'src/composables/notify'
 export default defineComponent({
   name: 'ContactsPage',
   setup () {
-    const myTweak = () => {
-      return { maxHeight: '100vh' }
-    }
     const { success } = notify()
     const form = ref({
       name: '',
@@ -83,7 +80,6 @@ export default defineComponent({
       success()
     }
     return {
-      myTweak,
       form,
       handleSubmit
     }

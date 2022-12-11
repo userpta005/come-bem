@@ -20,14 +20,14 @@ export default defineComponent({
       },
       items: [
         {
-          iconName: 'mdi-timer-sand',
+          iconName: 'mdi-silverware-variant',
           iconSize: '4rem',
           title: 'Alimentação saudável e equilibrada',
           text: 'Você saberá o que o seu filho está comendo e com direito à relatórios nutricionais da Cantina em tempo real. Isso te deixará mais tranquila e confiante em consumir na Cantina da Escola.',
           separator: true
         },
         {
-          iconName: 'mdi-finance',
+          iconName: 'mdi-safe',
           iconSize: '4rem',
           title: 'Economia',
           text: 'Controle financeiro através de saldos e parâmetros financeiros. Com isso, além de controlar a alimentação do seu filho você economiza 30% mensalmente quando se comparado a outros métodos.',
@@ -41,21 +41,21 @@ export default defineComponent({
           separator: true
         },
         {
-          iconName: 'mdi-cash-register',
+          iconName: 'mdi-clock-outline',
           iconSize: '4rem',
           title: 'Tempo',
           text: 'Não precisará mais perder tempo adentrando a escola e pegando filas para compras de fichas.',
           separator: true
         },
         {
-          iconName: 'mdi-certificate-outline',
+          iconName: 'mdi-format-list-checks',
           iconSize: '4rem',
           title: 'Gerenciamento',
           text: 'Possibilita parametizar limites de gastos diários na Cantina, bloquear alimentos poucos nutritivos ou com restrição alimentar.',
           separator: true
         },
         {
-          iconName: 'mdi-account-multiple-check-outline',
+          iconName: 'mdi-notebook-multiple',
           iconSize: '4rem',
           title: 'Educação financeira',
           text: 'A criança começa a lidar com recursos financeiros desde muito cedo, o que contribui com o desenvolvimento da capacidade de gestão financeira quando adulto.',
