@@ -11,6 +11,7 @@
         @submit.prevent="handleSubmit">
         <div class="col-md-6 col-xs-12">
           <q-input label="Nome"
+            class="q-mb-md"
             label-color="white"
             color="white"
             clearable
@@ -24,6 +25,7 @@
         </div>
         <div class="col-md-6 col-xs-12">
           <q-input type="email"
+            class="q-mb-md"
             label="Email"
             label-color="white"
             color="white"
@@ -57,13 +59,13 @@ import notify from 'src/composables/notify'
 export default defineComponent({
   name: 'NewsLetter',
   setup () {
-    const { success } = notify()
+    const { notifySuccess } = notify()
     const formNewsLetter = ref({
       name: '',
       email: ''
     })
     const handleSubmit = async () => {
-      success()
+      notifySuccess()
     }
     return {
       formNewsLetter,

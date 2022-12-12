@@ -9,6 +9,7 @@
         </p>
         <q-form @submit.prevent="handleSubmit">
           <q-input label="Nome"
+            class="q-mb-md"
             outlined
             clearable
             lazy-rules="ondemand"
@@ -19,6 +20,7 @@
             ]" />
 
           <q-input label="Email"
+            class="q-mb-md"
             outlined
             clearable
             type="email"
@@ -30,6 +32,7 @@
             ]" />
 
           <q-input label="Telefone"
+            class="q-mb-md"
             outlined
             clearable
             v-model="form.phone"
@@ -39,6 +42,7 @@
             :rules="[val => (val && val.length > 0) || 'Telefone é obrigatório']" />
 
           <q-input label="Mensagem"
+            class="q-mb-md"
             autogrow
             outlined
             clearable
@@ -69,7 +73,7 @@ import notify from 'src/composables/notify'
 export default defineComponent({
   name: 'ContactsPage',
   setup () {
-    const { success } = notify()
+    const { notifySuccess } = notify()
     const form = ref({
       name: '',
       email: '',
@@ -77,7 +81,7 @@ export default defineComponent({
       message: ''
     })
     const handleSubmit = async () => {
-      success()
+      notifySuccess()
     }
     return {
       form,

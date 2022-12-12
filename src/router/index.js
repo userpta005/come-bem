@@ -1,6 +1,7 @@
 import { route } from 'quasar/wrappers'
 import { createRouter, createMemoryHistory, createWebHistory, createWebHashHistory } from 'vue-router'
 import routes from './routes'
+import useAuthUser from 'src/composables/UseAuthUser'
 
 /*
  * If not building with SSR mode, you can
@@ -24,6 +25,16 @@ export default route(function (/* { store, ssrContext } */) {
     // quasar.conf.js -> build -> vueRouterMode
     // quasar.conf.js -> build -> publicPath
     history: createHistory(process.env.VUE_ROUTER_BASE)
+  })
+
+  Router.beforeEach((to) => {
+    const { isLogged } = useAuthUser()
+
+    if (!isLogged() && to.meta.requiresAuth) {
+      return { name: 'accesses' }
+    } else if (isLogged() && !to.meta.requiresAuth) {
+      return { name: 'painel' }
+    }
   })
 
   return Router
