@@ -1,7 +1,7 @@
 <template>
   <q-page style="min-height: auto; height: auto;">
     <div class="row">
-      <div class="col-md-6 col-xs-12 px-responsive-xl py-responsive-lg">
+      <div class="col-md-6 col-xs-12 pa-responsive-lg">
         <p class="text-h5 text-weight-bold text-main-tertiary text-center">Contato</p>
         <p class="text-body1 text-center">
           Informe os dados no formulário para contatarmos e entendermos como ajudar

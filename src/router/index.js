@@ -31,7 +31,7 @@ export default route(function (/* { store, ssrContext } */) {
     const { isLogged } = useAuthUser()
 
     if (!isLogged() && to.meta.requiresAuth) {
-      return { name: 'accesses' }
+      return { name: 'login' }
     } else if (isLogged() && !to.meta.requiresAuth) {
       return { name: 'painel' }
     }

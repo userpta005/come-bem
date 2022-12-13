@@ -92,7 +92,7 @@ export default defineComponent({
         persistent: true
       }).onOk(async () => {
         await logout()
-        router.replace({ name: 'accesses' })
+        router.replace({ name: 'login' })
       })
     }
 

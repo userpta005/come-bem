@@ -81,7 +81,7 @@ export default defineComponent({
         {
           iconName: 'mdi-map-search-outline',
           iconSize: '4rem',
-          title: 'Perde',
+          title: 'Perda',
           text: 'Em caso de perda, basta comunicar imediatamente o cancelamento à Cantina. Nesse caso, será emitido um novo cartão e cobrado uma taxa de R$ 5,00 reais. O saldo do antigo cartão será transferido para esse novo cartão.',
           separator: false
         }

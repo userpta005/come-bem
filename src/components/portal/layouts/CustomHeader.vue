@@ -87,7 +87,7 @@ export default defineComponent({
         textColor: 'white',
         class: 'full-width',
         label: 'Minha Conta/Acessar',
-        route: 'accesses'
+        route: 'login'
       }
     ])
     return {

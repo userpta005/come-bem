@@ -1,7 +1,7 @@
 <template>
   <q-page style="min-height: auto; height: auto;">
     <div class="row">
-      <div class="col-md-6 col-xs-12 px-responsive-xl py-responsive-lg">
+      <div class="col-md-6 col-xs-12 pa-responsive-lg">
         <div class="flex flex-center q-mb-md">
           <img src="/imgs/logo-vertical.png"
             style="max-height: 100px" />
@@ -48,14 +48,15 @@
 
             <q-btn label="Criar Cadastro"
               text-color="grey-8"
-              style="width: 150px;" />
+              style="width: 150px;"
+              :to="{ name: 'register' }" />
           </div>
         </q-form>
       </div>
-      <div class="col-md-6 col-xs-12"
+      <div class="col-md-6 col-xs-12 flex flex-center"
         v-if="$q.screen.gt.sm">
         <q-img src="/imgs/28920.jpg"
-          style="height: 100vh;" />
+          style="max-height: 100vh;" />
       </div>
     </div>
   </q-page>
@@ -68,7 +69,7 @@ import UseAuthUser from 'src/composables/UseAuthUser'
 import { useRouter } from 'vue-router'
 
 export default defineComponent({
-  name: 'AccessesPage',
+  name: 'LoginPage',
   setup () {
     const router = useRouter()
     const { login } = UseAuthUser()
@@ -84,7 +85,7 @@ export default defineComponent({
         notifySuccess()
         router.push({ name: 'painel' })
       } catch (error) {
-        notifyError('Email ou senha inválidos')
+        notifyError(error.response.data.message)
       }
     }
     return {
