@@ -8,6 +8,7 @@
     </div>
     <q-btn flat
       class="q-mr-md"
+      :disable="isDependent && !isResponsibleDependent"
       :to="{ name: 'responsible' }">
       <div class="column flex-center">
         <q-icon name="mdi-human-male-boy"
@@ -16,6 +17,7 @@
       </div>
     </q-btn>
     <q-btn flat
+      :disable="isResponsible && !isResponsibleDependent"
       :to="{ name: 'dependent' }">
       <div class="column flex-center">
         <q-icon name="mdi-human-child"
@@ -27,9 +29,21 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+import { SessionStorage } from 'quasar'
+import { defineComponent, ref } from 'vue'
 
 export default defineComponent({
-  name: 'PainelPage'
+  name: 'PainelPage',
+  setup () {
+    const user = SessionStorage.getItem('user')
+    const isResponsible = ref(!!user.people.client && !user.people.dependent)
+    const isDependent = ref(!user.people.client && !!user.people.dependent)
+    const isResponsibleDependent = ref(isResponsible.value && isDependent.value)
+    return {
+      isResponsible,
+      isDependent,
+      isResponsibleDependent
+    }
+  }
 })
 </script>
