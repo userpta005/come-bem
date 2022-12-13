@@ -19,7 +19,8 @@ const routes = [
     children: [
       { path: '/painel', name: 'painel', component: () => import('src/pages/app/Painel.vue') },
       { path: '/dependent', name: 'dependent', component: () => import('src/pages/app/Dependent.vue') },
-      { path: '/responsible', name: 'responsible', component: () => import('src/pages/app/Responsible.vue') }
+      { path: '/responsible', name: 'responsible', component: () => import('src/pages/app/Responsible.vue') },
+      { path: '/new-dependent', name: 'new-dependent', component: () => import('src/pages/app/NewDependent.vue') }
     ],
     meta: {
       requiresAuth: true

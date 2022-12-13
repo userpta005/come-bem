@@ -53,11 +53,12 @@
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, onMounted } from 'vue'
 import EssentialLink from 'src/components/app/EssentialLink.vue'
 import useAuthUser from 'src/composables/UseAuthUser'
 import { useRouter } from 'vue-router'
-import { useQuasar } from 'quasar'
+import { SessionStorage, useQuasar } from 'quasar'
+import { api } from 'src/boot/axios'
 
 const linksList = [
   {
@@ -77,12 +78,16 @@ export default defineComponent({
 
   setup () {
     const leftDrawerOpen = ref(false)
-
     const $q = useQuasar()
-
     const { logout } = useAuthUser()
-
     const router = useRouter()
+
+    onMounted(() => {
+      api.get('/api/v1/auth/users')
+        .then((response) => {
+          SessionStorage.set('user', response.data.data)
+        })
+    })
 
     const handleLogout = async () => {
       $q.dialog({

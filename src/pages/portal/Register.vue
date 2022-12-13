@@ -13,7 +13,7 @@
           :class="$q.screen.lt.md ? 'text-center' : ''">
           Para que a ativação seja feita, preencha os campos abaixo.
         </p>
-        <q-form @submit.prevent=""
+        <q-form @submit.prevent="handleSubmit"
           class="row">
           <q-input label="Nome completo"
             class="col-12 q-mb-md"
@@ -129,7 +129,6 @@
               :to="{ name: 'login' }" />
 
             <q-btn type="submit"
-              @click="handleSubmit"
               label="Confirmar"
               color="main-primary"
               style="width: 150px;" />
@@ -158,7 +157,6 @@ export default defineComponent({
     const $q = useQuasar()
     const router = useRouter()
     const { notifyError } = notify()
-    const rememberMe = ref(false)
     const form = ref({
       name: '',
       email: '',
@@ -192,7 +190,7 @@ export default defineComponent({
       }
     }
     const handleSubmit = async () => {
-      await api.post('/api/v1/auth/users', form.value)
+      api.post('/api/v1/auth/users', form.value)
         .then((response) => {
           $q.dialog({
             title: 'Parabéns, cadastro concluído!',
@@ -209,7 +207,6 @@ export default defineComponent({
     return {
       form,
       handleSubmit,
-      rememberMe,
       filterCity,
       optionsCities,
       filterStore,
