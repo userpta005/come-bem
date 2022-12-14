@@ -20,15 +20,14 @@
         </div>
         <div class="text-caption text-weight-medium q-mb-xs"
           v-if="dependent.accounts.length">
-          Saldo: R${{ formatCurrency(dependent.accounts[dependent.accountIndex ?? 0].balance)
-          }}
+          Saldo: {{ floatToMoney(dependent.accounts[dependent.accountIndex ?? 0].balance) }}
         </div>
         <div class="text-caption text-weight-regular text-main-secondary q-mb-xs">
           Consumidor: {{ dependent.attr_status }}
           <q-separator />
         </div>
         <div class="text-caption text-weight-light self-start">
-          Nascimento: {{ dependent.birthdate }}
+          Nascimento: {{ brDate(dependent.birthdate) }}
         </div>
         <div class="text-caption text-weight-light self-start q-mb-xs">
           Sexo: {{ dependent.gender == 'M' ? 'Masculino' : 'Feminino' }}
@@ -44,7 +43,7 @@
 
 <script>
 import { defineComponent, ref, onMounted } from 'vue'
-import { formatCurrency } from 'src/utils/format'
+import { floatToMoney, brDate } from 'src/utils/helpers'
 import SelectAccount from 'components/app/SelectAccount.vue'
 import useApi from 'src/composables/UseApi'
 import notify from 'src/composables/notify'
@@ -74,8 +73,9 @@ export default defineComponent({
       handleGetUser()
     })
     return {
+      floatToMoney,
+      brDate,
       dependents,
-      formatCurrency,
       changeAccount
     }
   }
