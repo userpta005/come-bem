@@ -1,6 +1,6 @@
 <template>
-  <div class="row"
-    :class="$q.screen.lt.md ? 'flex-center' : ''">
+  <div class="row q-pa-sm"
+    :class="{ 'flex-center': $q.screen.lt.md }">
     <div class="q-pa-xs"
       v-show="dependent.accounts.length"
       v-for="(dependent, index) in dependents"
@@ -35,7 +35,8 @@
         <q-btn color="main-primary"
           text-color="white"
           size="sm"
-          label="Quero saber mais" />
+          label="Quero saber mais"
+          :to="{ name: 'dependent', query: { account: dependent.accounts[dependent.accountIndex ?? 0].id } }" />
       </div>
     </div>
   </div>

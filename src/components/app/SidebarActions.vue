@@ -13,11 +13,55 @@
           size="sm"
           class="bg-main-quaternary q-mb-sm"
           text-color="white"
-          :to="{ name: 'new-dependent' }" />
+          :to="{ name: 'new-dependent' }"
+          v-if="$route.name === 'responsible'" />
+
+        <q-btn label="Recarregar créditos"
+          size="sm"
+          class="bg-main-quaternary q-mb-sm"
+          text-color="white"
+          v-if="$route.name === 'dependent'" />
+
+        <q-btn label="Cardápio"
+          size="sm"
+          class="bg-main-quaternary q-mb-sm"
+          text-color="white"
+          v-if="$route.name === 'dependent'" />
+
+        <q-btn label="Bloquear dispositivos"
+          size="sm"
+          class="bg-main-quaternary q-mb-sm"
+          text-color="white"
+          v-if="$route.query.account" />
+
+        <q-btn label="Habilitar celular"
+          size="sm"
+          class="bg-main-quaternary q-mb-sm"
+          text-color="white"
+          v-if="$route.query.account" />
+
+        <q-btn label="Limite diário"
+          size="sm"
+          class="bg-main-quaternary q-mb-sm"
+          text-color="white"
+          v-if="$route.query.account" />
+
+        <q-btn label="Histórico de consumo"
+          size="sm"
+          class="bg-main-quaternary q-mb-sm"
+          text-color="white"
+          v-if="$route.name === 'dependent'" />
+
+        <q-btn label="Histórico financeiro"
+          size="sm"
+          class="bg-main-quaternary q-mb-sm"
+          text-color="white"
+          v-if="$route.name === 'dependent'" />
+
         <q-btn label="Voltar"
           size="sm"
           outline
-          :to="{ name: 'painel' }" />
+          :to="{ name: $route.query.account ? 'responsible' : 'painel' }" />
       </div>
     </div>
   </div>
@@ -27,6 +71,9 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'SidebarActions'
+  name: 'SidebarActions',
+  setup () {
+    return {}
+  }
 })
 </script>

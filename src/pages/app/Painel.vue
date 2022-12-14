@@ -1,13 +1,13 @@
 <template>
   <q-page class="pa-responsive-md">
-    <div class="flex q-pb-xl">
+    <div class="flex q-pa-sm">
       <div class="text-h5">
         Escolha seu perfil
         <q-separator color="main-primary" />
       </div>
     </div>
     <q-btn flat
-      class="q-mr-md"
+      class="q-pa-sm"
       :disable="isDependent && !isResponsibleDependent"
       :to="{ name: 'responsible' }">
       <div class="column flex-center">
@@ -17,6 +17,7 @@
       </div>
     </q-btn>
     <q-btn flat
+      class="q-pa-sm"
       :disable="isResponsible && !isResponsibleDependent"
       :to="{ name: 'dependent' }">
       <div class="column flex-center">
