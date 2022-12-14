@@ -1,8 +1,9 @@
 <template>
   <div class="row"
-    :class="$q.screen.lt.md ? 'flex-center' : '' ">
+    :class="$q.screen.lt.md ? 'flex-center' : ''">
     <div class="q-pa-xs"
-      v-for="(dependent, index) in dependentes"
+      v-show="dependent.accounts.length"
+      v-for="(dependent, index) in dependents"
       :key="index">
       <div style="border: 0.15rem solid var(--orange); width: 200px;"
         class="column flex-center rounded-borders q-pa-sm">
@@ -12,10 +13,15 @@
           {{ dependent.name }}
         </div>
         <div class="text-subtitle2 text-weight-light q-mb-xs">
-          {{ dependent.accounts[0].store.people.name }}
+          <SelectAccount @change-account="changeAccount"
+            v-if="dependent.accounts.length"
+            :accounts="dependent.accounts"
+            :dependentIndex="index" />
         </div>
-        <div class="text-caption text-weight-medium q-mb-xs">
-          Saldo: R${{ formatCurrency(dependent.accounts[0].balance) }}
+        <div class="text-caption text-weight-medium q-mb-xs"
+          v-if="dependent.accounts.length">
+          Saldo: R${{ formatCurrency(dependent.accounts[dependent.accountIndex ?? 0].balance)
+          }}
         </div>
         <div class="text-caption text-weight-regular text-main-secondary q-mb-xs">
           Consumidor: {{ dependent.attr_status }}
@@ -37,18 +43,40 @@
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue'
-import { SessionStorage } from 'quasar'
+import { defineComponent, ref, onMounted } from 'vue'
 import { formatCurrency } from 'src/utils/format'
+import SelectAccount from 'components/app/SelectAccount.vue'
+import useApi from 'src/composables/UseApi'
+import notify from 'src/composables/notify'
 
 export default defineComponent({
   name: 'SectionDependents',
+  components: {
+    SelectAccount
+  },
   setup () {
-    const user = SessionStorage.getItem('user')
-    const dependentes = ref(user.people.client.dependents)
+    const { notifyError } = notify()
+    const { getUser } = useApi()
+    const user = ref(null)
+    const dependents = ref(null)
+    const changeAccount = (dependentIndex, accountIndex) => {
+      dependents.value[dependentIndex].accountIndex = accountIndex
+    }
+    const handleGetUser = async () => {
+      try {
+        user.value = await getUser()
+        dependents.value = user.value.people.client.dependents
+      } catch (error) {
+        notifyError(error.message)
+      }
+    }
+    onMounted(() => {
+      handleGetUser()
+    })
     return {
-      dependentes,
-      formatCurrency
+      dependents,
+      formatCurrency,
+      changeAccount
     }
   }
 })

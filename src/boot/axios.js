@@ -8,7 +8,7 @@ import { SessionStorage } from 'quasar'
 // good idea to move this instance creation inside of the
 // "export default () => {}" function below (which runs individually
 // for each client)
-const api = axios.create({ baseURL: 'http://localhost:8000' })
+const api = axios.create({ baseURL: 'https://local360.com.br/lanche-bem/public' })
 api.defaults.headers.common.Authorization = SessionStorage.has('token') ? 'Bearer ' + SessionStorage.getItem('token') : null
 
 export default boot(({ app }) => {
