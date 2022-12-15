@@ -3,17 +3,22 @@ import { SessionStorage } from 'quasar'
 
 export default function useAuthUser () {
   const login = async (form) => {
-    const { data } = await api.post('/api/v1/auth/login', form)
-    SessionStorage.set('user', data.data.user)
-    SessionStorage.set('token', data.data.token)
-    api.defaults.headers.common.Authorization = 'Bearer ' + data.data.token
+    try {
+      const { data } = await api.post('/api/v1/auth/login', form)
+      SessionStorage.set('user', data.data.user)
+      SessionStorage.set('token', data.data.token)
+      api.defaults.headers.common.Authorization = 'Bearer ' + data.data.token
+      return data
+    } catch ({ response }) {
+      throw response.data.message
+    }
   }
 
   const logout = async () => {
-    await api.delete('/api/v1/auth/logout')
-    SessionStorage.remove('user')
-    SessionStorage.remove('token')
+    const { data } = await api.delete('/api/v1/auth/logout')
+    SessionStorage.clear()
     api.defaults.headers.common.Authorization = null
+    return data
   }
 
   const isLogged = () => {

@@ -13,67 +13,74 @@
           size="sm"
           class="bg-main-quaternary q-mb-sm"
           text-color="white"
-          :to="{ name: 'new-dependent' }"
-          v-if="$route.name === 'responsible'" />
+          :to="{ name: 'responsible-dependent-create' }"
+          v-if="['responsible'].includes($route.name)" />
 
         <q-btn label="Recarregar créditos"
           size="sm"
           class="bg-main-quaternary q-mb-sm"
           text-color="white"
-          v-if="$route.name === 'dependent'" />
+          v-if="['responsible-dependent', 'dependent'].includes($route.name)" />
 
         <q-btn label="Cardápio"
           size="sm"
           class="bg-main-quaternary q-mb-sm"
           text-color="white"
-          v-if="$route.name === 'dependent'" />
+          v-if="['responsible-dependent', 'dependent'].includes($route.name)" />
 
         <q-btn label="Bloquear dispositivos"
           size="sm"
           class="bg-main-quaternary q-mb-sm"
           text-color="white"
-          v-if="$route.query.account" />
+          v-if="['responsible-dependent'].includes($route.name)" />
 
         <q-btn label="Habilitar celular"
           size="sm"
           class="bg-main-quaternary q-mb-sm"
           text-color="white"
-          v-if="$route.query.account" />
+          v-if="['responsible-dependent'].includes($route.name)" />
 
         <q-btn label="Limite diário"
           size="sm"
           class="bg-main-quaternary q-mb-sm"
           text-color="white"
-          v-if="$route.query.account" />
+          v-if="['responsible-dependent'].includes($route.name)" />
 
         <q-btn label="Histórico de consumo"
           size="sm"
           class="bg-main-quaternary q-mb-sm"
           text-color="white"
-          v-if="$route.name === 'dependent'" />
+          v-if="['responsible-dependent', 'dependent'].includes($route.name)" />
 
         <q-btn label="Histórico financeiro"
           size="sm"
           class="bg-main-quaternary q-mb-sm"
           text-color="white"
-          v-if="$route.name === 'dependent'" />
+          v-if="['responsible-dependent', 'dependent'].includes($route.name)" />
 
         <q-btn label="Voltar"
           size="sm"
           outline
-          :to="{ name: $route.query.account ? 'responsible' : 'painel' }" />
+          :to="{ name: backTo }" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent, computed } from 'vue'
+import { useRoute } from 'vue-router'
 
 export default defineComponent({
   name: 'SidebarActions',
   setup () {
-    return {}
+    const route = useRoute()
+    const backTo = computed(() => {
+      return route.name === 'responsible-dependent' ? 'responsible' : 'dashboard'
+    })
+    return {
+      backTo
+    }
   }
 })
 </script>

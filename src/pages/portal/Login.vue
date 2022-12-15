@@ -81,11 +81,11 @@ export default defineComponent({
     const rememberMe = ref(false)
     const handleSubmit = async () => {
       try {
-        await login(form.value)
-        notifySuccess()
-        router.push({ name: 'painel' })
+        const { message } = await login(form.value)
+        notifySuccess(message)
+        router.push({ name: 'dashboard' })
       } catch (error) {
-        notifyError(error.response.data.message)
+        notifyError(error)
       }
     }
     return {

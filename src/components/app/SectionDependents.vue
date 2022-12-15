@@ -36,7 +36,13 @@
           text-color="white"
           size="sm"
           label="Quero saber mais"
-          :to="{ name: 'dependent', query: { account: dependent.accounts[dependent.accountIndex ?? 0].id } }" />
+          :to="{
+            name: 'responsible-dependent',
+            params: {
+              dependent: dependent.id,
+              account: dependent.accounts[dependent.accountIndex ?? 0].id
+            }
+          }" />
       </div>
     </div>
   </div>

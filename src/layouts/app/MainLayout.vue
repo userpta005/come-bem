@@ -58,13 +58,14 @@ import EssentialLink from 'src/components/app/EssentialLink.vue'
 import useAuthUser from 'src/composables/UseAuthUser'
 import { useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
+import notify from 'src/composables/notify'
 
 const linksList = [
   {
     title: 'Painel',
     caption: '',
     icon: 'mdi-home',
-    routeName: 'painel'
+    routeName: 'dashboard'
   }
 ]
 
@@ -80,6 +81,7 @@ export default defineComponent({
     const $q = useQuasar()
     const { logout } = useAuthUser()
     const router = useRouter()
+    const { notifySuccess } = notify()
 
     const handleLogout = async () => {
       $q.dialog({
@@ -88,7 +90,8 @@ export default defineComponent({
         cancel: true,
         persistent: true
       }).onOk(async () => {
-        await logout()
+        const { message } = await logout()
+        notifySuccess(message)
         router.replace({ name: 'login' })
       })
     }

@@ -50,7 +50,7 @@
         option-value="id"
         option-label="info"
         use-input
-        input-debounce="500"
+        input-debounce="200"
         :options="optionsCities"
         @filter="filterCity"
         map-options
@@ -73,7 +73,7 @@
         option-value="id"
         option-label="name"
         use-input
-        input-debounce="500"
+        input-debounce="200"
         :options="optionsStores"
         @filter="filterStore"
         map-options
@@ -143,15 +143,17 @@
 <script>
 import { defineComponent, ref } from 'vue'
 import notify from 'src/composables/notify'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { api } from 'src/boot/axios'
 import { SessionStorage } from 'quasar'
 
 export default defineComponent({
-  name: 'NewDependentPage',
+  name: 'DependentCreatePage',
   setup () {
+    const route = useRoute()
     const router = useRouter()
     const { notifySuccess, notifyError } = notify()
+    const clientId = ref(route.params.responsible)
     const form = ref({
       name: '',
       gender: null,
@@ -195,8 +197,7 @@ export default defineComponent({
       }
     }
     const handleSubmit = () => {
-      const clientId = SessionStorage.getItem('user').people.client.id
-      api.post(`/api/v1/clients/${clientId}/dependents`, form.value)
+      api.post(`/api/v1/clients/${clientId.value}/dependents`, form.value)
         .then((response) => {
           SessionStorage.set('user', response.data.data)
           notifySuccess(response.data.message)

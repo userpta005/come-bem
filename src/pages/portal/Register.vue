@@ -68,7 +68,7 @@
             option-value="id"
             option-label="info"
             use-input
-            input-debounce="500"
+            input-debounce="200"
             :options="optionsCities"
             @filter="filterCity"
             map-options
@@ -100,7 +100,7 @@
             option-value="id"
             option-label="name"
             use-input
-            input-debounce="500"
+            input-debounce="200"
             :options="optionsStores"
             @filter="filterStore"
             map-options
@@ -199,9 +199,9 @@ export default defineComponent({
             router.push({ name: 'login' })
           })
         })
-        .catch((error) => {
-          const msg = error.response.status === 422 ? 'Email já foi usado' : 'Erro !'
-          notifyError(msg)
+        .catch(({ response }) => {
+          const data = response.data.data
+          notifyError(data[Object.keys(data)[0]][0])
         })
     }
     return {

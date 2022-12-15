@@ -4,23 +4,32 @@ const routes = [
     path: '/',
     component: () => import('src/layouts/portal/MainLayout.vue'),
     children: [
-      { path: '/', name: 'homeDefault', component: () => import('pages/portal/Home.vue') },
-      { path: '/home', name: 'home', component: () => import('pages/portal/Home.vue') },
-      { path: '/to-parents', name: 'to-parents', component: () => import('pages/portal/ToParents.vue') },
-      { path: '/to-entrepreneurs', name: 'to-entrepreneurs', component: () => import('pages/portal/ToEntrepreneurs.vue') },
-      { path: '/contacts', name: 'contacts', component: () => import('pages/portal/Contacts.vue') },
-      { path: '/login', name: 'login', component: () => import('src/pages/portal/Login.vue') },
-      { path: '/register', name: 'register', component: () => import('src/pages/portal/Register.vue') }
+      { path: '', name: 'homeDefault', component: () => import('pages/portal/Home.vue') },
+      { path: 'home', name: 'home', component: () => import('pages/portal/Home.vue') },
+      { path: 'to-parents', name: 'to-parents', component: () => import('pages/portal/ToParents.vue') },
+      { path: 'to-entrepreneurs', name: 'to-entrepreneurs', component: () => import('pages/portal/ToEntrepreneurs.vue') },
+      { path: 'contacts', name: 'contacts', component: () => import('pages/portal/Contacts.vue') },
+      { path: 'login', name: 'login', component: () => import('src/pages/portal/Login.vue') },
+      { path: 'register', name: 'register', component: () => import('src/pages/portal/Register.vue') }
     ]
   },
   {
-    path: '/',
+    path: '/app',
     component: () => import('src/layouts/app/MainLayout.vue'),
     children: [
-      { path: '/painel', name: 'painel', component: () => import('src/pages/app/Painel.vue') },
-      { path: '/dependent', name: 'dependent', component: () => import('src/pages/app/Dependent.vue') },
-      { path: '/responsible', name: 'responsible', component: () => import('src/pages/app/Responsible.vue') },
-      { path: '/new-dependent', name: 'new-dependent', component: () => import('src/pages/app/NewDependent.vue') }
+      { path: '', name: 'dashboard', component: () => import('src/pages/app/Dashboard.vue') },
+      { path: 'responsible/:responsible', name: 'responsible', component: () => import('src/pages/app/responsibles/View.vue') },
+      {
+        path: 'responsible/:responsible/dependent/:dependent/account/:account',
+        name: 'responsible-dependent',
+        component: () => import('src/pages/app/dependents/View.vue')
+      },
+      {
+        path: 'responsible/:responsible/dependent/create',
+        name: 'responsible-dependent-create',
+        component: () => import('src/pages/app/dependents/Create.vue')
+      },
+      { path: 'dependent/:dependent', name: 'dependent', component: () => import('src/pages/app/dependents/View.vue') }
     ],
     meta: {
       requiresAuth: true

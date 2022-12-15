@@ -21,7 +21,7 @@ import SectionDependents from 'src/components/app/SectionDependents.vue'
 import SidebarActions from 'src/components/app/SidebarActions.vue'
 
 export default defineComponent({
-  name: 'ResponsiblePage',
+  name: 'ResponsibleViewPage',
   components: {
     SectionDependents,
     SidebarActions

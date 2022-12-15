@@ -20,7 +20,7 @@ import { defineComponent } from 'vue'
 import SidebarActions from 'src/components/app/SidebarActions.vue'
 
 export default defineComponent({
-  name: 'DependentPage',
+  name: 'DependentViewPage',
   components: {
     SidebarActions
   }
