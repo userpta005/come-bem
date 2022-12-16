@@ -6,20 +6,18 @@
       v-for="(dependent, index) in dependents"
       :key="index">
       <div style="border: 0.15rem solid var(--orange); width: 200px;"
-        class="column flex-center rounded-borders q-pa-sm">
+        class="column flex-center rounded-borders q-pa-sm"
+        v-if="dependent.accounts.length">
         <q-icon name="mdi-baby-face-outline"
           size="4rem" />
         <div class="text-subtitle1 text-weight-medium">
           {{ dependent.name }}
         </div>
         <div class="text-subtitle2 text-weight-light q-mb-xs">
-          <SelectAccount @change-account="changeAccount"
-            v-if="dependent.accounts.length"
-            :accounts="dependent.accounts"
-            :dependentIndex="index" />
+          <SelectAccount @select-account="(account, accountIndex) => selectAccount(index, accountIndex)"
+            :accounts="dependent.accounts" />
         </div>
-        <div class="text-caption text-weight-medium q-mb-xs"
-          v-if="dependent.accounts.length">
+        <div class="text-caption text-weight-medium q-mb-xs">
           Saldo: {{ floatToMoney(dependent.accounts[dependent.accountIndex ?? 0].balance) }}
         </div>
         <div class="text-caption text-weight-regular text-main-secondary q-mb-xs">
@@ -49,11 +47,12 @@
 </template>
 
 <script>
-import { defineComponent, ref, onMounted } from 'vue'
+import { defineComponent, ref } from 'vue'
 import { floatToMoney, brDate } from 'src/utils/helpers'
 import SelectAccount from 'components/app/SelectAccount.vue'
 import useApi from 'src/composables/UseApi'
 import notify from 'src/composables/notify'
+import { SessionStorage } from 'quasar'
 
 export default defineComponent({
   name: 'SectionDependents',
@@ -63,9 +62,9 @@ export default defineComponent({
   setup () {
     const { notifyError } = notify()
     const { getUser } = useApi()
-    const user = ref(null)
-    const dependents = ref(null)
-    const changeAccount = (dependentIndex, accountIndex) => {
+    const user = ref(SessionStorage.getItem('user'))
+    const dependents = ref(user.value.people.client.dependents)
+    const selectAccount = (dependentIndex, accountIndex) => {
       dependents.value[dependentIndex].accountIndex = accountIndex
     }
     const handleGetUser = async () => {
@@ -76,14 +75,12 @@ export default defineComponent({
         notifyError(error.message)
       }
     }
-    onMounted(() => {
-      handleGetUser()
-    })
+    handleGetUser()
     return {
       floatToMoney,
       brDate,
       dependents,
-      changeAccount
+      selectAccount
     }
   }
 })

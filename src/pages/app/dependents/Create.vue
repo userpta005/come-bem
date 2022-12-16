@@ -3,7 +3,7 @@
     <div class="flex q-pa-sm">
       <div class="text-h5">
         Cadastro de consumidor
-        <q-separator color="main-primary" />
+        <q-separator color="main-primary" style="height: 0.12rem;" />
       </div>
     </div>
     <q-form @submit.prevent="handleSubmit"

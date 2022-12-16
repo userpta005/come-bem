@@ -2,10 +2,11 @@
   <q-btn-dropdown :label="label"
     flat
     dense
-    size="sm"
+    size="0.8rem"
     no-caps
-    split
-    text-color="grey-8">
+    align="left"
+    text-color="grey-8"
+    class="no-padding">
     <q-list dense>
       <q-item clickable
         v-close-popup
@@ -23,28 +24,34 @@
 
 <script>
 import { defineComponent, ref } from 'vue'
+import { useRoute } from 'vue-router'
 
 export default defineComponent({
   name: 'SelectAccount',
   props: {
     accounts: {
-      type: Array
-    },
-    dependentIndex: {
-      type: Number
+      type: Array,
+      required: true
     }
   },
-  emits: ['changeAccount'],
+  emits: ['selectAccount'],
   setup (props, { emit }) {
-    const label = ref(props.accounts[0].store.people.name)
-    const selected = ref(props.accounts[0].id)
+    const route = useRoute()
+    const accounts = ref(props.accounts)
+    const accountId = ref(route.params.account ?? accounts.value[0].id)
+    const filterAccounts = (accounts, accountId) => {
+      return accounts.filter(account => parseInt(account.id) === parseInt(accountId))[0]
+    }
+    const account = ref(filterAccounts(accounts.value, accountId.value))
+    const label = ref(account.value.store.people.name)
+    const selected = ref(account.value.id)
     return {
       label,
       selected,
       onItemClick (item, index) {
         label.value = item.store.people.name
         selected.value = item.id
-        emit('changeAccount', props.dependentIndex, index)
+        emit('selectAccount', item, index)
       }
     }
   }

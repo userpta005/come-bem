@@ -4,7 +4,7 @@
       :class="{ 'flex-center': $q.screen.lt.md }">
       <div class="text-h5">
         Seja Bem-vindo
-        <q-separator color="main-primary" />
+        <q-separator color="main-primary" style="height: 0.12rem;" />
       </div>
     </div>
     <div class="row">

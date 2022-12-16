@@ -29,7 +29,7 @@ const routes = [
         name: 'responsible-dependent-create',
         component: () => import('src/pages/app/dependents/Create.vue')
       },
-      { path: 'dependent/:dependent', name: 'dependent', component: () => import('src/pages/app/dependents/View.vue') }
+      { path: 'dependent/:dependent/account/:account', name: 'dependent', component: () => import('src/pages/app/dependents/View.vue') }
     ],
     meta: {
       requiresAuth: true

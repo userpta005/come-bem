@@ -33,7 +33,7 @@ export default route(function (/* { store, ssrContext } */) {
     if (!isLogged() && to.meta.requiresAuth) {
       return { name: 'login' }
     } else if (isLogged() && !to.meta.requiresAuth) {
-      return { name: 'painel' }
+      return { name: 'dashboard' }
     }
   })
 
