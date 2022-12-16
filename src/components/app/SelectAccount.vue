@@ -39,10 +39,10 @@ export default defineComponent({
     const route = useRoute()
     const accounts = ref(props.accounts)
     const accountId = ref(route.params.account ?? accounts.value[0].id)
-    const filterAccounts = (accounts, accountId) => {
+    const getAccount = (accounts, accountId) => {
       return accounts.filter(account => parseInt(account.id) === parseInt(accountId))[0]
     }
-    const account = ref(filterAccounts(accounts.value, accountId.value))
+    const account = ref(getAccount(accounts.value, accountId.value))
     const label = ref(account.value.store.people.name)
     const selected = ref(account.value.id)
     return {

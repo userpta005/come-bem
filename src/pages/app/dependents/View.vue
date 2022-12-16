@@ -41,7 +41,7 @@
               :color="account.status === 1 ? 'green' : 'red'"
               keep-color
               left-label
-              @update:model-value="handleUpdate"
+              @update:model-value="handleBlockAccount"
               v-if="['responsible-dependent'].includes($route.name)" />
           </div>
           <q-separator class="col-12 full-width"
@@ -77,37 +77,26 @@ export default defineComponent({
     const { getUser } = useApi()
     const route = useRoute()
     const router = useRouter()
-    const dependentId = ref(route.params.dependent)
-    const accountId = ref(route.params.account)
-    const user = ref(SessionStorage.getItem('user'))
-    const dependents = ref(user.value.people.client.dependents)
+    const user = ref(null)
+    const dependentId = ref(null)
+    const accountId = ref(null)
+    const dependents = ref(null)
+    const dependent = ref(null)
+    const account = ref(null)
 
-    const filterDependents = (dependents, dependentId) => {
+    const getDependent = (dependents, dependentId) => {
       return dependents.filter(dependent => parseInt(dependent.id) === parseInt(dependentId))[0]
     }
 
-    const filterAccounts = (accounts, accountId) => {
+    const getAccount = (accounts, accountId) => {
       return accounts.filter(account => parseInt(account.id) === parseInt(accountId))[0]
     }
 
-    const dependent = ref(filterDependents(dependents.value, dependentId.value))
-    const account = ref(filterAccounts(dependent.value.accounts, accountId.value))
-    api.defaults.headers.common.app = account.value.store.app_token
-
-    onBeforeRouteUpdate(async (to, from) => {
-      accountId.value = to.params.account
-      account.value = filterAccounts(dependent.value.accounts, accountId.value)
-      api.defaults.headers.common.app = account.value.store.app_token
-    })
-
     const selectAccount = (item) => {
-      router.replace({
-        name: route.name,
-        params: { account: item.id }
-      })
+      router.replace({ name: route.name, params: { account: item.id } })
     }
 
-    const handleUpdate = async (value) => {
+    const handleBlockAccount = async (value) => {
       try {
         const { data } = await api({
           method: 'delete',
@@ -117,22 +106,32 @@ export default defineComponent({
           }
         })
         SessionStorage.set('user', data.data)
+        handleGetUser(false)
         notifySuccess(data.message)
       } catch ({ response }) {
         notifyError(response.data.message)
       }
     }
 
-    const handleGetUser = async () => {
+    onBeforeRouteUpdate(async (to, from) => {
+      handleGetUser(true, to.params.account)
+    })
+
+    const handleGetUser = async (request = true, paramAccountId = route.params.account) => {
       try {
-        user.value = await getUser()
-        dependent.value = filterDependents(user.value.people.client.dependents, dependentId.value)
-        account.value = filterAccounts(dependent.value.accounts, accountId.value)
+        user.value = request ? await getUser() : SessionStorage.getItem('user')
+        dependentId.value = route.params.dependent
+        accountId.value = paramAccountId
+        dependents.value = user.value.people.client.dependents
+        dependent.value = getDependent(dependents.value, dependentId.value)
+        account.value = getAccount(dependent.value.accounts, accountId.value)
+        api.defaults.headers.common.app = account.value.store.app_token
       } catch (error) {
         notifyError(error.message)
       }
     }
 
+    handleGetUser(false)
     handleGetUser()
 
     return {
@@ -142,7 +141,7 @@ export default defineComponent({
       account,
       accountId,
       selectAccount,
-      handleUpdate
+      handleBlockAccount
     }
   }
 })

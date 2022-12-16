@@ -62,19 +62,20 @@ export default defineComponent({
   setup () {
     const { notifyError } = notify()
     const { getUser } = useApi()
-    const user = ref(SessionStorage.getItem('user'))
-    const dependents = ref(user.value.people.client.dependents)
+    const user = ref(null)
+    const dependents = ref(null)
     const selectAccount = (dependentIndex, accountIndex) => {
       dependents.value[dependentIndex].accountIndex = accountIndex
     }
-    const handleGetUser = async () => {
+    const handleGetUser = async (request = true) => {
       try {
-        user.value = await getUser()
+        user.value = request ? await getUser() : SessionStorage.getItem('user')
         dependents.value = user.value.people.client.dependents
       } catch (error) {
         notifyError(error.message)
       }
     }
+    handleGetUser(false)
     handleGetUser()
     return {
       floatToMoney,
