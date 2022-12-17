@@ -10,15 +10,15 @@
         <div class="col-9 row q-pa-sm">
           <div class="col-md-6 col-xs-12 column q-pa-sm">
             <div class="text-subtitle1 text-weight-medium">
-              {{ dependent.name }}
+              {{ dependent.people.name }}
             </div>
             <SelectAccount @select-account="selectAccount"
               :accounts="dependent.accounts" />
             <div class="text-caption text-weight-regular q-mb-xs">
-              Nascimento: {{ brDate(dependent.birthdate) }}
+              Nascimento: {{ brDate(dependent.people.birthdate) }}
             </div>
             <div class="text-caption text-weight-regular">
-              Sexo: {{ dependent.gender == 'M' ? 'Masculino' : 'Feminino' }}
+              Sexo: {{ dependent.people.gender == 'M' ? 'Masculino' : 'Feminino' }}
             </div>
           </div>
           <div class="col-md-6 col-xs-12 column q-pa-sm">
@@ -49,7 +49,8 @@
             color="main-primary" />
         </div>
       </div>
-      <SidebarActions class="col-md-3 col-xs-12 self-center"
+      <SidebarActions @get-user="handleGetUser(false)"
+        class="col-md-3 col-xs-12 self-center"
         :class="{ 'order-first': $q.screen.lt.md }" />
     </div>
   </q-page>
@@ -75,6 +76,7 @@ export default defineComponent({
   setup () {
     const { notifySuccess, notifyError } = notify()
     const { getUser } = useApi()
+    const { isResponsible, isResponsibleDependent, isDependent } = useApi()
     const route = useRoute()
     const router = useRouter()
     const user = ref(null)
@@ -122,8 +124,8 @@ export default defineComponent({
         user.value = request ? await getUser() : SessionStorage.getItem('user')
         dependentId.value = route.params.dependent
         accountId.value = paramAccountId
-        dependents.value = user.value.people.client.dependents
-        dependent.value = getDependent(dependents.value, dependentId.value)
+        dependents.value = isResponsible() || isResponsibleDependent() ? user.value.people.client.dependents : null
+        dependent.value = isDependent() ? user.value.people.dependent : getDependent(dependents.value, dependentId.value)
         account.value = getAccount(dependent.value.accounts, accountId.value)
         api.defaults.headers.common.app = account.value.store.app_token
       } catch (error) {
@@ -141,7 +143,8 @@ export default defineComponent({
       account,
       accountId,
       selectAccount,
-      handleBlockAccount
+      handleBlockAccount,
+      handleGetUser
     }
   }
 })

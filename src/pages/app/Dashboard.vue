@@ -9,8 +9,8 @@
     </div>
     <q-btn flat
       class="q-pa-sm"
-      :disable="isDependent && !isResponsibleDependent"
-      :to="{ name: 'responsible', params: { responsible: client.id } }">
+      :disable="isDependent() && !isResponsibleDependent()"
+      :to="responsibleRoute">
       <div class="column flex-center">
         <q-icon name="mdi-human-male-boy"
           size="6rem" />
@@ -19,7 +19,7 @@
     </q-btn>
     <q-btn flat
       class="q-pa-sm"
-      :disable="isResponsible && !isResponsibleDependent"
+      :disable="isResponsible() && !isResponsibleDependent()"
       :to="dependentRoute">
       <div class="column flex-center">
         <q-icon name="mdi-human-child"
@@ -32,22 +32,31 @@
 
 <script>
 import { SessionStorage } from 'quasar'
-import { defineComponent, ref, computed } from 'vue'
+import useApi from 'src/composables/UseApi'
+import { defineComponent, computed, ref } from 'vue'
 
 export default defineComponent({
   name: 'DashboardPage',
   setup () {
+    const { isResponsible, isResponsibleDependent, isDependent } = useApi()
     const user = ref(SessionStorage.getItem('user'))
     const client = ref(user.value.people.client)
     const dependent = ref(user.value.people.dependent)
-    const isResponsible = ref(!!client.value && !dependent.value)
-    const isDependent = ref(!client.value && !!dependent.value)
-    const isResponsibleDependent = ref(!!client.value && !!dependent.value)
+
     const dependentRoute = computed(() => {
-      if (isDependent.value || isResponsibleDependent.value) {
+      if (isDependent() || isResponsibleDependent()) {
         return {
           name: 'dependent',
           params: { dependent: dependent.value.id, account: dependent.value.accounts[0].id }
+        }
+      }
+      return { name: 'dashboard' }
+    })
+    const responsibleRoute = computed(() => {
+      if (isResponsible() || isResponsibleDependent()) {
+        return {
+          name: 'responsible',
+          params: { responsible: client.value.id }
         }
       }
       return { name: 'dashboard' }
@@ -58,7 +67,8 @@ export default defineComponent({
       isResponsible,
       isDependent,
       isResponsibleDependent,
-      dependentRoute
+      dependentRoute,
+      responsibleRoute
     }
   }
 })

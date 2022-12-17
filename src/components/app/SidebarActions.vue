@@ -34,17 +34,9 @@
           text-color="white"
           v-if="['responsible-dependent'].includes($route.name)" />
 
-        <q-btn label="Habilitar celular"
-          size="sm"
-          class="bg-main-quaternary q-mb-sm"
-          text-color="white"
+        <BtnEnablePhone @get-user="$emit('GetUser')"
           v-if="['responsible-dependent'].includes($route.name)" />
-
-        <q-btn label="Limite diário"
-          size="sm"
-          class="bg-main-quaternary q-mb-sm"
-          text-color="white"
-          v-if="['responsible-dependent'].includes($route.name)" />
+        <BtnDailyLimit v-if="['responsible-dependent'].includes($route.name)" />
 
         <q-btn label="Histórico de consumo"
           size="sm"
@@ -70,9 +62,15 @@
 <script>
 import { defineComponent, computed } from 'vue'
 import { useRoute } from 'vue-router'
+import BtnEnablePhone from 'src/components/app/buttons-actions/BtnEnablePhone.vue'
+import BtnDailyLimit from 'src/components/app/buttons-actions/BtnDailyLimit.vue'
 
 export default defineComponent({
   name: 'SidebarActions',
+  components: {
+    BtnEnablePhone,
+    BtnDailyLimit
+  },
   setup () {
     const route = useRoute()
     const backTo = computed(() => {
