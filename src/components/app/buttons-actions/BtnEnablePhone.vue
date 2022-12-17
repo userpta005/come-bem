@@ -84,15 +84,15 @@ import useApi from 'src/composables/UseApi'
 
 export default defineComponent({
   name: 'BtnEnablePhone',
-  emits: [
-    'GetUser'
-  ],
   props: {
     disableButtons: {
       type: Boolean,
       required: false
     }
   },
+  emits: [
+    'refreshLocalData'
+  ],
   setup (props, { emit }) {
     const { notifySuccess, notifyError } = notify()
     const {
@@ -118,7 +118,7 @@ export default defineComponent({
         SessionStorage.set('user', data.data)
         prompt.value = false
         hasUser.value = true
-        emit('GetUser')
+        emit('refreshLocalData')
         notifySuccess(data.message)
       } catch ({ response }) {
         const data = response.data.data

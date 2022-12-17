@@ -37,11 +37,12 @@
           :disable="disableButtons"
           v-if="['responsible-dependent'].includes($route.name)" />
 
-        <BtnEnablePhone @get-user="$emit('GetUser')"
+        <BtnEnablePhone @refresh-local-data="$emit('refreshLocalData')"
           :disableButtons="disableButtons"
           v-if="['responsible-dependent'].includes($route.name)" />
 
-        <BtnDailyLimit :disableButtons="disableButtons"
+        <BtnDailyLimit @refresh-local-data="$emit('refreshLocalData')"
+          :disableButtons="disableButtons"
           v-if="['responsible-dependent'].includes($route.name)" />
 
         <q-btn label="Histórico de consumo"

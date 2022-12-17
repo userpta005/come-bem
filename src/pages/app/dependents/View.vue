@@ -49,7 +49,7 @@
             color="main-primary" />
         </div>
       </div>
-      <SidebarActions @get-user="refreshLocalData(false)"
+      <SidebarActions @refresh-local-data="refreshLocalData(false)"
         class="col-md-3 col-xs-12 self-center"
         :disableButtons="disableButtons"
         :class="{ 'order-first': $q.screen.lt.md }" />
