@@ -30,11 +30,8 @@
           :disable="disableButtons"
           v-if="['responsible-dependent', 'dependent'].includes($route.name)" />
 
-        <q-btn label="Bloquear dispositivos"
-          size="sm"
-          class="bg-main-quaternary q-mb-sm"
-          text-color="white"
-          :disable="disableButtons"
+        <BtnDisableDevice @refresh-local-data="$emit('refreshLocalData')"
+          :disableButtons="disableButtons"
           v-if="['responsible-dependent'].includes($route.name)" />
 
         <BtnEnablePhone @refresh-local-data="$emit('refreshLocalData')"
@@ -71,12 +68,14 @@
 <script>
 import { defineComponent, computed } from 'vue'
 import { useRoute } from 'vue-router'
+import BtnDisableDevice from 'src/components/app/buttons-actions/BtnDisableDevice.vue'
 import BtnEnablePhone from 'src/components/app/buttons-actions/BtnEnablePhone.vue'
 import BtnDailyLimit from 'src/components/app/buttons-actions/BtnDailyLimit.vue'
 
 export default defineComponent({
   name: 'SidebarActions',
   components: {
+    BtnDisableDevice,
     BtnEnablePhone,
     BtnDailyLimit
   },

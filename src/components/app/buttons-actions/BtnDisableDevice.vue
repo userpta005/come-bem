@@ -1,40 +1,37 @@
 <template>
-  <q-btn label="Limite diário"
+  <q-btn label="Bloquear dispositivos"
     size="sm"
     class="bg-main-quaternary q-mb-sm"
     text-color="white"
     :disable="disableButtons"
     @click="prompt = true" />
 
-  <q-dialog @hide="clearInputs"
-    v-model="prompt"
+  <q-dialog v-model="prompt"
     persistent>
     <q-card class="q-pa-md"
       style="min-width: 300px; max-width: 500px">
       <q-card-section>
-        <div class="text-h6 text-center">Limite diário</div>
+        <div class="text-h6 text-center">Bloquear dispositivos</div>
       </q-card-section>
 
       <q-card-section class="q-pt-none">
-        Adicione o limite diário para este consumidor:
+        Meus dispositivos
       </q-card-section>
 
       <q-form @submit.prevent="handleSubmit">
 
-        <q-card-section class="q-pt-none q-gutter-xs">
-          <q-input label="Limite diário"
-            outlined
-            clearable
-            prefix="R$"
-            mask="#,##"
-            fill-mask="0"
-            reverse-fill-mask
-            lazy-rules="ondemand"
-            v-model="form.daily_limit"
-            :rules="[
-              val => (val && val.length > 0) || 'Limite diário é obrigatório'
-            ]" />
-
+        <q-card-section class="column q-pt-none q-gutter-sm">
+          <q-toggle v-for="(card, index) in form.cards"
+            :key="index"
+            v-model="card.status"
+            :true-value="1"
+            :false-value="2"
+            style="border: 1px solid grey"
+            class="self-start q-pa-xs rounded-borders"
+            :label="card.uuid"
+            :color="card.status === 1 ? 'green' : 'red'"
+            keep-color
+            left-label />
         </q-card-section>
 
         <q-card-actions align="right"
@@ -61,7 +58,7 @@ import notify from 'src/composables/notify'
 import useApi from 'src/composables/UseApi'
 
 export default defineComponent({
-  name: 'BtnDailyLimit',
+  name: 'BtnDisableDevice',
   props: {
     disableButtons: {
       type: Boolean,
@@ -74,29 +71,26 @@ export default defineComponent({
   setup (props, { emit }) {
     const { notifySuccess, notifyError } = notify()
     const {
-      getAccountId
+      getCards
     } = useApi()
-    const accountId = ref(getAccountId())
+    const form = ref({ cards: getCards() })
     const prompt = ref(false)
-    const form = ref({ daily_limit: null })
-    const clearInputs = () => { form.value.daily_limit = null }
     const handleSubmit = async () => {
       try {
-        const { data } = await api.put(`/api/v1/accounts/${accountId.value}`, form.value)
+        const { data } = await api.put('/api/v1/cards/block', form.value)
         SessionStorage.set('user', data.data)
         prompt.value = false
         emit('refreshLocalData')
         notifySuccess(data.message)
       } catch ({ response }) {
-        const data = response.data.data
-        notifyError(data[Object.keys(data)[0]][0])
+        const msg = response.data.data ? response.data.data[Object.keys(response.data.data)[0]][0] : response.data.message
+        notifyError(msg)
       }
     }
     return {
       prompt,
       form,
-      handleSubmit,
-      clearInputs
+      handleSubmit
     }
   }
 })

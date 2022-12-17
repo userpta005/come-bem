@@ -16,6 +16,7 @@ export default function useApi () {
   const accounts = ref(null)
   const account = ref(null)
   const accountId = ref(null)
+  const cards = ref(null)
 
   const getUserClient = () => userClient.value
   const getUserClientId = () => userClientId.value
@@ -27,6 +28,7 @@ export default function useApi () {
   const getAccounts = () => accounts.value
   const getAccount = () => account.value
   const getAccountId = () => accountId.value
+  const getCards = () => account.value.cards
 
   const isResponsible = () => !!userClient.value && !userDependent.value
   const isResponsibleDependent = () => !!userClient.value && !!userDependent.value
@@ -57,6 +59,7 @@ export default function useApi () {
         accounts.value = dependent.value.accounts
         accountId.value = route.params.account
         account.value = filterAccounts(accounts.value, accountId.value)
+        cards.value = account.value.cards
       }
     }
 
@@ -68,6 +71,7 @@ export default function useApi () {
       accounts.value = dependent.value.accounts
       accountId.value = route.params.account ?? accounts.value[0].id
       account.value = ref(filterAccounts(accounts.value, accountId.value))
+      cards.value = account.value.cards
     }
 
     if (isResponsibleDependent()) {
@@ -76,6 +80,8 @@ export default function useApi () {
       userDependent.value = user.value.people.dependent
       userDependentId.value = userDependent.value.id
       dependents.value = userClient.value.dependents
+      accounts.value = userDependent.value.accounts
+      accountId.value = accounts.value[0].id
 
       if (['responsible-dependent'].includes(route.name)) {
         dependentId.value = route.params.dependent
@@ -83,14 +89,16 @@ export default function useApi () {
         accounts.value = dependent.value.accounts
         accountId.value = route.params.account
         account.value = filterAccounts(accounts.value, accountId.value)
+        cards.value = account.value.cards
       }
 
       if (['dependent'].includes(route.name)) {
         dependent.value = userDependent.value
         dependentId.value = dependent.value.id
         accounts.value = dependent.value.accounts
-        accountId.value = route.params.account ?? accounts.value[0].id
+        accountId.value = route.params.account
         account.value = filterAccounts(accounts.value, accountId.value)
+        cards.value = account.value.cards
       }
     }
   }
@@ -116,6 +124,7 @@ export default function useApi () {
     getAccounts,
     getAccount,
     getAccountId,
+    getCards,
     isDependent,
     isResponsibleDependent,
     isResponsible,

@@ -99,7 +99,7 @@ export default defineComponent({
       getDependentId,
       dependentHasUser
     } = useApi()
-    const dependentId = getDependentId()
+    const dependentId = ref(getDependentId())
     const hasUser = ref(dependentHasUser())
     const prompt = ref(false)
     const form = ref({
@@ -114,7 +114,7 @@ export default defineComponent({
     }
     const handleSubmit = async () => {
       try {
-        const { data } = await api.post(`/api/v1/dependents/${dependentId}/create-user`, form.value)
+        const { data } = await api.post(`/api/v1/dependents/${dependentId.value}/create-user`, form.value)
         SessionStorage.set('user', data.data)
         prompt.value = false
         hasUser.value = true
