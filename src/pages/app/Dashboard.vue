@@ -31,39 +31,42 @@
 </template>
 
 <script>
-import { SessionStorage } from 'quasar'
 import useApi from 'src/composables/UseApi'
-import { defineComponent, computed, ref } from 'vue'
+import { defineComponent, computed } from 'vue'
 
 export default defineComponent({
   name: 'DashboardPage',
   setup () {
-    const { isResponsible, isResponsibleDependent, isDependent } = useApi()
-    const user = ref(SessionStorage.getItem('user'))
-    const client = ref(user.value.people.client)
-    const dependent = ref(user.value.people.dependent)
+    const {
+      getUserClientId,
+      getUserDependentId,
+      getAccountId,
+      isResponsible,
+      isResponsibleDependent,
+      isDependent
+    } = useApi()
 
     const dependentRoute = computed(() => {
       if (isDependent() || isResponsibleDependent()) {
         return {
           name: 'dependent',
-          params: { dependent: dependent.value.id, account: dependent.value.accounts[0].id }
+          params: { dependent: getUserDependentId(), account: getAccountId() }
         }
       }
       return { name: 'dashboard' }
     })
+
     const responsibleRoute = computed(() => {
       if (isResponsible() || isResponsibleDependent()) {
         return {
           name: 'responsible',
-          params: { responsible: client.value.id }
+          params: { responsible: getUserClientId() }
         }
       }
       return { name: 'dashboard' }
     })
+
     return {
-      client,
-      dependent,
       isResponsible,
       isDependent,
       isResponsibleDependent,

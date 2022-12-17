@@ -20,34 +20,42 @@
           size="sm"
           class="bg-main-quaternary q-mb-sm"
           text-color="white"
+          :disable="disableButtons"
           v-if="['responsible-dependent', 'dependent'].includes($route.name)" />
 
         <q-btn label="Cardápio"
           size="sm"
           class="bg-main-quaternary q-mb-sm"
           text-color="white"
+          :disable="disableButtons"
           v-if="['responsible-dependent', 'dependent'].includes($route.name)" />
 
         <q-btn label="Bloquear dispositivos"
           size="sm"
           class="bg-main-quaternary q-mb-sm"
           text-color="white"
+          :disable="disableButtons"
           v-if="['responsible-dependent'].includes($route.name)" />
 
         <BtnEnablePhone @get-user="$emit('GetUser')"
+          :disableButtons="disableButtons"
           v-if="['responsible-dependent'].includes($route.name)" />
-        <BtnDailyLimit v-if="['responsible-dependent'].includes($route.name)" />
+
+        <BtnDailyLimit :disableButtons="disableButtons"
+          v-if="['responsible-dependent'].includes($route.name)" />
 
         <q-btn label="Histórico de consumo"
           size="sm"
           class="bg-main-quaternary q-mb-sm"
           text-color="white"
+          :disable="disableButtons"
           v-if="['responsible-dependent', 'dependent'].includes($route.name)" />
 
         <q-btn label="Histórico financeiro"
           size="sm"
           class="bg-main-quaternary q-mb-sm"
           text-color="white"
+          :disable="disableButtons"
           v-if="['responsible-dependent', 'dependent'].includes($route.name)" />
 
         <q-btn label="Voltar"
@@ -71,7 +79,13 @@ export default defineComponent({
     BtnEnablePhone,
     BtnDailyLimit
   },
-  setup () {
+  props: {
+    disableButtons: {
+      type: Boolean,
+      required: false
+    }
+  },
+  setup (props) {
     const route = useRoute()
     const backTo = computed(() => {
       return route.name === 'responsible-dependent' ? 'responsible' : 'dashboard'

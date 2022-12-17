@@ -11,7 +11,7 @@
         <q-icon name="mdi-baby-face-outline"
           size="4rem" />
         <div class="text-subtitle1 text-weight-medium">
-          {{ dependent.name }}
+          {{ dependent.people.name }}
         </div>
         <div class="text-subtitle2 text-weight-light q-mb-xs">
           <SelectAccount @select-account="(account, accountIndex) => selectAccount(index, accountIndex)"
@@ -21,7 +21,7 @@
           Saldo: {{ floatToMoney(dependent.accounts[dependent.accountIndex ?? 0].balance) }}
         </div>
         <div class="text-caption text-weight-regular text-main-secondary q-mb-xs">
-          Consumidor: {{ dependent.attr_status }}
+          Consumidor: {{ dependent.accounts[dependent.accountIndex ?? 0].status === 1 ? 'Ativo' : 'Inativo' }}
           <q-separator />
         </div>
         <div class="text-caption text-weight-light self-start">
@@ -52,7 +52,6 @@ import { floatToMoney, brDate } from 'src/utils/helpers'
 import SelectAccount from 'components/app/SelectAccount.vue'
 import useApi from 'src/composables/UseApi'
 import notify from 'src/composables/notify'
-import { SessionStorage } from 'quasar'
 
 export default defineComponent({
   name: 'SectionDependents',
@@ -60,23 +59,25 @@ export default defineComponent({
     SelectAccount
   },
   setup () {
+    const { requestUser, getDependents } = useApi()
     const { notifyError } = notify()
-    const { getUser } = useApi()
-    const user = ref(null)
-    const dependents = ref(null)
+    const dependents = ref(getDependents())
+
     const selectAccount = (dependentIndex, accountIndex) => {
       dependents.value[dependentIndex].accountIndex = accountIndex
     }
-    const handleGetUser = async (request = true) => {
+
+    const refreshLocalData = async () => {
       try {
-        user.value = request ? await getUser() : SessionStorage.getItem('user')
-        dependents.value = user.value.people.client.dependents
+        await requestUser()
+        dependents.value = getDependents()
       } catch (error) {
         notifyError(error.message)
       }
     }
-    handleGetUser(false)
-    handleGetUser()
+
+    refreshLocalData()
+
     return {
       floatToMoney,
       brDate,

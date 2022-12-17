@@ -3,6 +3,7 @@
     size="sm"
     class="bg-main-quaternary q-mb-sm"
     text-color="white"
+    :disable="disableButtons || hasUser"
     @click="prompt = true" />
 
   <q-dialog @hide="clearInputs"
@@ -78,18 +79,28 @@
 import { SessionStorage } from 'quasar'
 import { api } from 'src/boot/axios'
 import { defineComponent, ref } from 'vue'
-import { useRoute } from 'vue-router'
 import notify from 'src/composables/notify'
+import useApi from 'src/composables/UseApi'
 
 export default defineComponent({
   name: 'BtnEnablePhone',
   emits: [
     'GetUser'
   ],
+  props: {
+    disableButtons: {
+      type: Boolean,
+      required: false
+    }
+  },
   setup (props, { emit }) {
     const { notifySuccess, notifyError } = notify()
-    const route = useRoute()
-    const dependentId = route.params.dependent
+    const {
+      getDependentId,
+      dependentHasUser
+    } = useApi()
+    const dependentId = getDependentId()
+    const hasUser = ref(dependentHasUser())
     const prompt = ref(false)
     const form = ref({
       email: '',
@@ -106,10 +117,10 @@ export default defineComponent({
         const { data } = await api.post(`/api/v1/dependents/${dependentId}/create-user`, form.value)
         SessionStorage.set('user', data.data)
         prompt.value = false
+        hasUser.value = true
         emit('GetUser')
         notifySuccess(data.message)
       } catch ({ response }) {
-        console.log(response)
         const data = response.data.data
         notifyError(data[Object.keys(data)[0]][0])
       }
@@ -118,7 +129,8 @@ export default defineComponent({
       prompt,
       form,
       handleSubmit,
-      clearInputs
+      clearInputs,
+      hasUser
     }
   }
 })

@@ -49,8 +49,9 @@
             color="main-primary" />
         </div>
       </div>
-      <SidebarActions @get-user="handleGetUser(false)"
+      <SidebarActions @get-user="refreshLocalData(false)"
         class="col-md-3 col-xs-12 self-center"
+        :disableButtons="disableButtons"
         :class="{ 'order-first': $q.screen.lt.md }" />
     </div>
   </q-page>
@@ -75,24 +76,20 @@ export default defineComponent({
   },
   setup () {
     const { notifySuccess, notifyError } = notify()
-    const { getUser } = useApi()
-    const { isResponsible, isResponsibleDependent, isDependent } = useApi()
+    const {
+      refreshData,
+      requestUser,
+      getDependent,
+      getAccount,
+      getAccountId,
+      dependentBlocked
+    } = useApi()
     const route = useRoute()
     const router = useRouter()
-    const user = ref(null)
-    const dependentId = ref(null)
-    const accountId = ref(null)
-    const dependents = ref(null)
-    const dependent = ref(null)
-    const account = ref(null)
-
-    const getDependent = (dependents, dependentId) => {
-      return dependents.filter(dependent => parseInt(dependent.id) === parseInt(dependentId))[0]
-    }
-
-    const getAccount = (accounts, accountId) => {
-      return accounts.filter(account => parseInt(account.id) === parseInt(accountId))[0]
-    }
+    const dependent = ref(getDependent())
+    const account = ref(getAccount())
+    const accountId = ref(getAccountId())
+    const disableButtons = ref(dependentBlocked())
 
     const selectAccount = (item) => {
       router.replace({ name: route.name, params: { account: item.id } })
@@ -108,33 +105,31 @@ export default defineComponent({
           }
         })
         SessionStorage.set('user', data.data)
-        handleGetUser(false)
+        refreshLocalData(false)
         notifySuccess(data.message)
       } catch ({ response }) {
         notifyError(response.data.message)
       }
     }
 
-    onBeforeRouteUpdate(async (to, from) => {
-      handleGetUser(true, to.params.account)
+    onBeforeRouteUpdate(async () => {
+      refreshLocalData()
     })
 
-    const handleGetUser = async (request = true, paramAccountId = route.params.account) => {
+    const refreshLocalData = async (request = true) => {
       try {
-        user.value = request ? await getUser() : SessionStorage.getItem('user')
-        dependentId.value = route.params.dependent
-        accountId.value = paramAccountId
-        dependents.value = isResponsible() || isResponsibleDependent() ? user.value.people.client.dependents : null
-        dependent.value = isDependent() ? user.value.people.dependent : getDependent(dependents.value, dependentId.value)
-        account.value = getAccount(dependent.value.accounts, accountId.value)
+        request ? await requestUser() : refreshData()
+        dependent.value = getDependent()
+        account.value = getAccount()
+        accountId.value = getAccountId()
+        disableButtons.value = dependentBlocked()
         api.defaults.headers.common.app = account.value.store.app_token
       } catch (error) {
         notifyError(error.message)
       }
     }
 
-    handleGetUser(false)
-    handleGetUser()
+    refreshLocalData()
 
     return {
       floatToMoney,
@@ -144,7 +139,8 @@ export default defineComponent({
       accountId,
       selectAccount,
       handleBlockAccount,
-      handleGetUser
+      refreshLocalData,
+      disableButtons
     }
   }
 })

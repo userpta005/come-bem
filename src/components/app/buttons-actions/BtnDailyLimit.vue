@@ -3,6 +3,7 @@
     size="sm"
     class="bg-main-quaternary q-mb-sm"
     text-color="white"
+    :disable="disableButtons"
     @click="prompt" />
 </template>
 
@@ -12,6 +13,12 @@ import { useQuasar } from 'quasar'
 
 export default defineComponent({
   name: 'BtnDailyLimit',
+  props: {
+    disableButtons: {
+      type: Boolean,
+      required: false
+    }
+  },
   setup () {
     const $q = useQuasar()
 

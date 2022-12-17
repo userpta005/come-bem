@@ -25,6 +25,7 @@
 <script>
 import { defineComponent, ref } from 'vue'
 import { useRoute } from 'vue-router'
+import useApi from 'src/composables/UseApi'
 
 export default defineComponent({
   name: 'SelectAccount',
@@ -36,13 +37,11 @@ export default defineComponent({
   },
   emits: ['selectAccount'],
   setup (props, { emit }) {
+    const { filterAccounts } = useApi()
     const route = useRoute()
     const accounts = ref(props.accounts)
     const accountId = ref(route.params.account ?? accounts.value[0].id)
-    const getAccount = (accounts, accountId) => {
-      return accounts.filter(account => parseInt(account.id) === parseInt(accountId))[0]
-    }
-    const account = ref(getAccount(accounts.value, accountId.value))
+    const account = ref(filterAccounts(accounts.value, accountId.value))
     const label = ref(account.value.store.people.name)
     const selected = ref(account.value.id)
     return {
