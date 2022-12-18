@@ -1,9 +1,10 @@
 import { SessionStorage } from 'quasar'
-import { api } from 'src/boot/axios'
+import UseAxios from 'src/composables/UseAxios'
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 
 export default function useApi () {
+  const { axios } = UseAxios()
   const route = useRoute()
   const user = ref(SessionStorage.getItem('user'))
   const userClient = ref(user.value.people.client)
@@ -104,8 +105,8 @@ export default function useApi () {
   }
 
   const requestUser = async () => {
-    const { data } = await api.get('/api/v1/auth/users')
-    SessionStorage.set('user', data.data)
+    const { data } = await axios({ method: 'get', url: '/api/v1/auth/users' })
+    SessionStorage.set('user', data)
     refreshData()
   }
 

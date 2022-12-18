@@ -77,7 +77,7 @@
 
 <script>
 import { SessionStorage } from 'quasar'
-import { api } from 'src/boot/axios'
+import UseAxios from 'src/composables/UseAxios'
 import { defineComponent, ref } from 'vue'
 import notify from 'src/composables/notify'
 import useApi from 'src/composables/UseApi'
@@ -95,6 +95,7 @@ export default defineComponent({
   ],
   setup (props, { emit }) {
     const { notifySuccess, notifyError } = notify()
+    const { axios } = UseAxios()
     const {
       getDependentId,
       dependentHasUser
@@ -114,15 +115,14 @@ export default defineComponent({
     }
     const handleSubmit = async () => {
       try {
-        const { data } = await api.post(`/api/v1/dependents/${dependentId.value}/create-user`, form.value)
+        const data = await axios({ method: 'post', url: `/api/v1/dependents/${dependentId.value}/create-user`, data: form.value })
         SessionStorage.set('user', data.data)
         prompt.value = false
         hasUser.value = true
-        emit('refreshLocalData')
         notifySuccess(data.message)
-      } catch ({ response }) {
-        const data = response.data.data
-        notifyError(data[Object.keys(data)[0]][0])
+        emit('refreshLocalData')
+      } catch (error) {
+        notifyError(error)
       }
     }
     return {

@@ -72,7 +72,7 @@ export default defineComponent({
         await requestUser()
         dependents.value = getDependents()
       } catch (error) {
-        notifyError(error.message)
+        notifyError(error)
       }
     }
 

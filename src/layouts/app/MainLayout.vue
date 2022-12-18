@@ -55,7 +55,7 @@
 <script>
 import { defineComponent, ref } from 'vue'
 import EssentialLink from 'src/components/app/EssentialLink.vue'
-import useAuthUser from 'src/composables/UseAuthUser'
+import UseAuthUser from 'src/composables/UseAuthApi'
 import { useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
 import notify from 'src/composables/notify'
@@ -79,9 +79,9 @@ export default defineComponent({
   setup () {
     const leftDrawerOpen = ref(false)
     const $q = useQuasar()
-    const { logout } = useAuthUser()
+    const { logout } = UseAuthUser()
     const router = useRouter()
-    const { notifySuccess } = notify()
+    const { notifyError, notifySuccess } = notify()
 
     const handleLogout = async () => {
       $q.dialog({
@@ -90,9 +90,13 @@ export default defineComponent({
         cancel: true,
         persistent: true
       }).onOk(async () => {
-        const { message } = await logout()
-        notifySuccess(message)
-        router.replace({ name: 'login' })
+        try {
+          const { message } = await logout()
+          notifySuccess(message)
+          router.push({ name: 'login' })
+        } catch (error) {
+          notifyError(error)
+        }
       })
     }
 

@@ -3,7 +3,8 @@
     <div class="flex q-pa-sm">
       <div class="text-h5">
         Cadastro de consumidor
-        <q-separator color="main-primary" style="height: 0.12rem;" />
+        <q-separator color="main-primary"
+          style="height: 0.12rem;" />
       </div>
     </div>
     <q-form @submit.prevent="handleSubmit"
@@ -43,51 +44,11 @@
         lazy-rules="ondemand"
         :rules="[val => (val && val.length > 0) || 'Dt. de nascimento é obrigatória']" />
 
-      <q-select v-model="form.city_id"
-        outlined
-        class="col-md-6 col-xs-12"
-        label="Cidade"
-        option-value="id"
-        option-label="info"
-        use-input
-        input-debounce="200"
-        :options="optionsCities"
-        @filter="filterCity"
-        map-options
-        emit-value
-        lazy-rules="ondemand"
-        :rules="[val => (val && !!val) || 'Cidade é obrigatória']">
-        <template v-slot:no-option>
-          <q-item>
-            <q-item-section class="text-grey">
-              Nenhum resultado
-            </q-item-section>
-          </q-item>
-        </template>
-      </q-select>
+      <SelectCity class="col-md-6 col-xs-12"
+        v-model="form.city_id" />
 
-      <q-select v-model="form.store_id"
-        outlined
-        class="col-md-6 col-xs-12"
-        label="Qual escola/entidade"
-        option-value="id"
-        option-label="name"
-        use-input
-        input-debounce="200"
-        :options="optionsStores"
-        @filter="filterStore"
-        map-options
-        emit-value
-        lazy-rules="ondemand"
-        :rules="[val => (val && !!val) || 'Escola é obrigatória']">
-        <template v-slot:no-option>
-          <q-item>
-            <q-item-section class="text-grey">
-              Nenhum resultado
-            </q-item-section>
-          </q-item>
-        </template>
-      </q-select>
+      <SelectStore class="col-md-6 col-xs-12"
+        v-model="form.store_id" />
 
       <q-input label="Série"
         class="col-md-3 col-sm-6 col-xs-12 "
@@ -126,7 +87,7 @@
       <div class="col-12 flex-center q-gutter-sm"
         :class="$q.screen.lt.md ? 'column' : 'row'">
         <q-btn label="Voltar"
-          :class="$q.screen.lt.md ? 'order-last' : ''"
+          :class="{ 'order-last': $q.screen.lt.md }"
           text-color="grey-8"
           style="width: 150px;"
           :to="{ name: 'responsible' }" />
@@ -144,15 +105,21 @@
 import { defineComponent, ref } from 'vue'
 import notify from 'src/composables/notify'
 import { useRoute, useRouter } from 'vue-router'
-import { api } from 'src/boot/axios'
-import { SessionStorage } from 'quasar'
+import SelectCity from 'src/components/common/SelectCity.vue'
+import SelectStore from 'src/components/common/SelectStore.vue'
+import UseAxios from 'src/composables/UseAxios'
 
 export default defineComponent({
   name: 'DependentCreatePage',
+  components: {
+    SelectCity,
+    SelectStore
+  },
   setup () {
+    const { notifySuccess, notifyError } = notify()
+    const { axios } = UseAxios()
     const route = useRoute()
     const router = useRouter()
-    const { notifySuccess, notifyError } = notify()
     const clientId = ref(route.params.responsible)
     const form = ref({
       name: '',
@@ -174,47 +141,19 @@ export default defineComponent({
       { label: 'Vespertino', id: 2 },
       { label: 'Noturno', id: 3 }
     ])
-    const optionsCities = ref([])
-    const filterCity = (val, update) => {
-      if (val.length > 2) {
-        update(() => {
-          api.get(`/api/v1/cities?search=${val}`)
-            .then((response) => {
-              optionsCities.value = response.data.data
-            })
-        })
+    const handleSubmit = async () => {
+      try {
+        const { message } = await axios({ method: 'post', url: `/api/v1/clients/${clientId.value}/dependents`, data: form.value })
+        notifySuccess(message)
+        router.push({ name: 'responsible' })
+      } catch (error) {
+        notifyError(error)
       }
-    }
-    const optionsStores = ref([])
-    const filterStore = (val, update) => {
-      if (val.length > 2) {
-        update(() => {
-          api.get(`/api/v1/stores?search=${val}`)
-            .then((response) => {
-              optionsStores.value = response.data.data
-            })
-        })
-      }
-    }
-    const handleSubmit = () => {
-      api.post(`/api/v1/clients/${clientId.value}/dependents`, form.value)
-        .then((response) => {
-          SessionStorage.set('user', response.data.data)
-          notifySuccess(response.data.message)
-          router.push({ name: 'responsible' })
-        })
-        .catch((error) => {
-          notifyError(error.response.data.message)
-        })
     }
     return {
       form,
       optionsGender,
       optionsTurn,
-      filterCity,
-      optionsCities,
-      filterStore,
-      optionsStores,
       handleSubmit
     }
   }

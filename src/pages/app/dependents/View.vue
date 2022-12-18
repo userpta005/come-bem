@@ -67,6 +67,7 @@ import notify from 'src/composables/notify'
 import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router'
 import { SessionStorage } from 'quasar'
 import { api } from 'src/boot/axios'
+import UseAxios from 'src/composables/UseAxios'
 
 export default defineComponent({
   name: 'DependentViewPage',
@@ -84,6 +85,7 @@ export default defineComponent({
       getAccountId,
       dependentBlocked
     } = useApi()
+    const { axios } = UseAxios()
     const route = useRoute()
     const router = useRouter()
     const dependent = ref(getDependent())
@@ -97,18 +99,16 @@ export default defineComponent({
 
     const handleBlockAccount = async (value) => {
       try {
-        const { data } = await api({
-          method: 'delete',
+        const data = await axios({
+          method: 'put',
           url: `api/v1/accounts/${accountId.value}/block`,
-          data: {
-            activate: value === 1
-          }
+          data: { activate: value === 1 }
         })
         SessionStorage.set('user', data.data)
         refreshLocalData(false)
         notifySuccess(data.message)
-      } catch ({ response }) {
-        notifyError(response.data.message)
+      } catch (error) {
+        notifyError(error)
       }
     }
 
@@ -125,7 +125,7 @@ export default defineComponent({
         disableButtons.value = dependentBlocked()
         api.defaults.headers.common.app = account.value.store.app_token
       } catch (error) {
-        notifyError(error.message)
+        notifyError(error)
       }
     }
 

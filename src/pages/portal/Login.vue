@@ -9,10 +9,9 @@
         <p class="text-body1 text-center">
           Informe seus dados abaixo.
         </p>
-        <q-form @submit.prevent="handleSubmit">
+        <q-form @submit.prevent="handleSubmit" class="q-col-gutter-sm">
 
           <q-input label="Email"
-            class="q-mb-md"
             outlined
             clearable
             type="email"
@@ -24,7 +23,6 @@
             ]" />
 
           <q-input label="Password"
-            class="q-mb-md"
             outlined
             clearable
             type="password"
@@ -36,12 +34,10 @@
             ]" />
 
           <q-checkbox v-model="rememberMe"
-            label="Lembrar-me"
-            class="q-mb-md" />
+            label="Lembrar-me" />
 
-          <div class="col-12 column items-center">
+          <div class="col-12 column items-center q-gutter-sm">
             <q-btn type="submit"
-              class="q-mb-md"
               label="Entrar"
               color="main-primary"
               style="width: 150px;" />
@@ -65,14 +61,14 @@
 <script>
 import { defineComponent, ref } from 'vue'
 import notify from 'src/composables/notify'
-import UseAuthUser from 'src/composables/UseAuthUser'
+import UseAuthApi from 'src/composables/UseAuthApi'
 import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'LoginPage',
   setup () {
     const router = useRouter()
-    const { login } = UseAuthUser()
+    const { login } = UseAuthApi()
     const { notifySuccess, notifyError } = notify()
     const form = ref({
       email: '',
