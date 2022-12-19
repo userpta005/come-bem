@@ -10,7 +10,7 @@
           :class="$q.screen.lt.md ? '' : 'q-mr-sm'">Desenvolvido por</div>
       </div>
       <div class="col-md-auto col-xs-12 row items-center justify-center">
-        <img src="/imgs/dix-digital-logo-horizontal-branca.png"
+        <img src="/lanche-bem-portal/imgs/dix-digital-logo-horizontal-branca.png"
           style="max-height: 22px" />
       </div>
     </div>
