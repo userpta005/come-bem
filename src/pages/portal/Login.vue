@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-md-6 col-xs-12 pa-responsive-lg">
         <div class="flex flex-center q-mb-md">
-          <img src="/imgs/logo-vertical.png"
+          <img src="/lanche-bem-portal/imgs/logo-vertical.png"
             style="max-height: 100px" />
         </div>
         <p class="text-body1 text-center">
@@ -52,7 +52,7 @@
       </div>
       <div class="col-md-6 col-xs-12 flex flex-center"
         v-if="$q.screen.gt.sm">
-        <q-img src="/imgs/28920.jpg"
+        <q-img src="/lanche-bem-portal/imgs/28920.jpg"
           style="max-height: 100vh;" />
       </div>
     </div>

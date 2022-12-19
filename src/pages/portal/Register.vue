@@ -97,7 +97,7 @@
       </div>
       <div class="col-md-6 col-xs-12 flex flex-center"
         v-if="$q.screen.gt.sm">
-        <q-img src="/imgs/31094449_bp6l_agt0_220810.jpg"
+        <q-img src="/lanche-bem-portal/imgs/31094449_bp6l_agt0_220810.jpg"
           style="max-height: 100vh;" />
       </div>
     </div>
