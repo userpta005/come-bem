@@ -107,7 +107,7 @@ import notify from 'src/composables/notify'
 import { useRoute, useRouter } from 'vue-router'
 import SelectCity from 'src/components/common/SelectCity.vue'
 import SelectStore from 'src/components/common/SelectStore.vue'
-import UseAxios from 'src/composables/UseAxios'
+import UseAxios from 'src/composables/axios'
 
 export default defineComponent({
   name: 'DependentCreatePage',

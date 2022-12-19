@@ -1,5 +1,5 @@
 <template>
-  <q-btn-dropdown :label="label"
+  <q-btn-dropdown :label="account.store.people.name"
     flat
     dense
     size="0.8rem"
@@ -10,12 +10,12 @@
     <q-list dense>
       <q-item clickable
         v-close-popup
-        :active="selected === item.id"
-        @click="onItemClick(item, index)"
-        v-for="(item, index) in accounts"
-        :key="index">
+        v-for="(account, index) in dependent.accounts"
+        :key="index"
+        :active="selected === account.id"
+        @click="onItemClick(account)">
         <q-item-section>
-          <q-item-label>{{ item.store.people.name }}</q-item-label>
+          <q-item-label>{{ account.store.people.name }}</q-item-label>
         </q-item-section>
       </q-item>
     </q-list>
@@ -23,34 +23,29 @@
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue'
-import { useRoute } from 'vue-router'
-import useApi from 'src/composables/UseApi'
+import { defineComponent, ref, toRef } from 'vue'
 
 export default defineComponent({
   name: 'SelectAccount',
   props: {
-    accounts: {
-      type: Array,
+    dependent: {
+      type: Object,
+      required: true
+    },
+    account: {
+      type: Object,
       required: true
     }
   },
-  emits: ['selectAccount'],
-  setup (props, { emit }) {
-    const { filterAccounts } = useApi()
-    const route = useRoute()
-    const accounts = ref(props.accounts)
-    const accountId = ref(route.params.account ?? accounts.value[0].id)
-    const account = ref(filterAccounts(accounts.value, accountId.value))
-    const label = ref(account.value.store.people.name)
+  setup (props) {
+    const dependent = toRef(props, 'dependent')
+    const account = toRef(props, 'account')
     const selected = ref(account.value.id)
     return {
-      label,
       selected,
-      onItemClick (item, index) {
-        label.value = item.store.people.name
-        selected.value = item.id
-        emit('selectAccount', item, index)
+      onItemClick (account) {
+        selected.value = account.id
+        dependent.value.account = account
       }
     }
   }

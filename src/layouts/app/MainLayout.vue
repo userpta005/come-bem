@@ -54,11 +54,11 @@
 
 <script>
 import { defineComponent, ref } from 'vue'
-import EssentialLink from 'src/components/app/EssentialLink.vue'
-import UseAuthUser from 'src/composables/UseAuthApi'
 import { useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
 import notify from 'src/composables/notify'
+import EssentialLink from 'src/components/app/EssentialLink.vue'
+import useStorageStore from 'src/stores/storage'
 
 const linksList = [
   {
@@ -77,11 +77,11 @@ export default defineComponent({
   },
 
   setup () {
-    const leftDrawerOpen = ref(false)
     const $q = useQuasar()
-    const { logout } = UseAuthUser()
-    const router = useRouter()
     const { notifyError, notifySuccess } = notify()
+    const store = useStorageStore()
+    const router = useRouter()
+    const leftDrawerOpen = ref(false)
 
     const handleLogout = async () => {
       $q.dialog({
@@ -91,7 +91,7 @@ export default defineComponent({
         persistent: true
       }).onOk(async () => {
         try {
-          const { message } = await logout()
+          const message = await store.logout()
           notifySuccess(message)
           router.push({ name: 'login' })
         } catch (error) {

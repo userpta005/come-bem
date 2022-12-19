@@ -9,8 +9,8 @@
     </div>
     <div class="row">
       <SectionDependents class="col-md-9 col-xs-12" />
-      <SidebarActions class="col-md-3 col-xs-12"
-        :class="{ 'order-first': $q.screen.lt.md }" />
+      <!-- <SidebarActions class="col-md-3 col-xs-12"
+        :class="{ 'order-first': $q.screen.lt.md }" /> -->
     </div>
   </q-page>
 </template>
@@ -18,13 +18,13 @@
 <script>
 import { defineComponent } from 'vue'
 import SectionDependents from 'src/components/app/SectionDependents.vue'
-import SidebarActions from 'src/components/app/SidebarActions.vue'
+// import SidebarActions from 'src/components/app/SidebarActions.vue'
 
 export default defineComponent({
   name: 'ResponsibleViewPage',
   components: {
-    SectionDependents,
-    SidebarActions
+    SectionDependents
+    // SidebarActions
   }
 })
 </script>

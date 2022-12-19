@@ -11,7 +11,7 @@
     map-options
     emit-value
     lazy-rules="ondemand"
-    :rules="[val => (val && !!val) || 'Escola é obrigatória']">
+    :rules="[val => !!val || 'Escola é obrigatória']">
     <template v-slot:no-option>
       <q-item>
         <q-item-section class="text-grey">
@@ -24,15 +24,17 @@
 
 <script>
 import { defineComponent, ref, computed } from 'vue'
-import UseAxios from 'src/composables/UseAxios'
 import notify from 'src/composables/notify'
+import useStorageStore from 'src/stores/storage'
 
 export default defineComponent({
   name: 'SelectStore',
   props: ['modelValue', 'update:modelValue'],
   setup (props, { emit }) {
-    const { axios } = UseAxios()
     const { notifyError } = notify()
+    const store = useStorageStore()
+    const stores = ref()
+    const options = ref()
     const storeId = computed({
       get () {
         return props.modelValue
@@ -41,8 +43,6 @@ export default defineComponent({
         emit('update:modelValue', value)
       }
     })
-    const stores = ref(null)
-    const options = ref([])
     const filterStore = async (val, update, abort) => {
       if (val.length < 3) {
         abort()
@@ -50,7 +50,7 @@ export default defineComponent({
       }
 
       try {
-        const { data } = await axios({ method: 'get', url: '/api/v1/stores', params: { search: val } })
+        const { data } = await store.axios({ method: 'get', url: '/api/v1/stores', params: { search: val } })
         stores.value = data
       } catch (error) {
         notifyError(error)

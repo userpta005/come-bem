@@ -9,7 +9,7 @@
     </div>
     <q-btn flat
       class="q-pa-sm"
-      :disable="isDependent() && !isResponsibleDependent()"
+      :disable="store.isDependent && !store.isResponsibleDependent"
       :to="responsibleRoute">
       <div class="column flex-center">
         <q-icon name="mdi-human-male-boy"
@@ -19,7 +19,7 @@
     </q-btn>
     <q-btn flat
       class="q-pa-sm"
-      :disable="isResponsible() && !isResponsibleDependent()"
+      :disable="store.isResponsible && !store.isResponsibleDependent"
       :to="dependentRoute">
       <div class="column flex-center">
         <q-icon name="mdi-human-child"
@@ -31,45 +31,36 @@
 </template>
 
 <script>
-import useApi from 'src/composables/UseApi'
 import { defineComponent, computed } from 'vue'
+import useStorageStore from 'src/stores/storage'
 
 export default defineComponent({
   name: 'DashboardPage',
   setup () {
-    const {
-      getUserClientId,
-      getUserDependentId,
-      getAccountId,
-      isResponsible,
-      isResponsibleDependent,
-      isDependent
-    } = useApi()
+    const store = useStorageStore()
 
-    const dependentRoute = computed(() => {
-      if (isDependent() || isResponsibleDependent()) {
+    const responsibleRoute = computed(() => {
+      if (store.isResponsible || store.isResponsibleDependent) {
         return {
-          name: 'dependent',
-          params: { dependent: getUserDependentId(), account: getAccountId() }
+          name: 'responsible',
+          params: { responsible: store.userClient.id }
         }
       }
       return { name: 'dashboard' }
     })
 
-    const responsibleRoute = computed(() => {
-      if (isResponsible() || isResponsibleDependent()) {
+    const dependentRoute = computed(() => {
+      if (store.isDependent || store.isResponsibleDependent) {
         return {
-          name: 'responsible',
-          params: { responsible: getUserClientId() }
+          name: 'dependent',
+          params: { dependent: store.userDependent.id, account: store.account.id }
         }
       }
       return { name: 'dashboard' }
     })
 
     return {
-      isResponsible,
-      isDependent,
-      isResponsibleDependent,
+      store,
       dependentRoute,
       responsibleRoute
     }

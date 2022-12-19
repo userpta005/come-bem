@@ -52,10 +52,11 @@
 
 <script>
 import { SessionStorage } from 'quasar'
-import UseAxios from 'src/composables/UseAxios'
+import UseAxios from 'src/composables/axios'
 import { defineComponent, ref } from 'vue'
 import notify from 'src/composables/notify'
 import useApi from 'src/composables/UseApi'
+import { onBeforeRouteUpdate } from 'vue-router'
 
 export default defineComponent({
   name: 'BtnDisableDevice',
@@ -72,7 +73,8 @@ export default defineComponent({
     const { notifySuccess, notifyError } = notify()
     const { axios } = UseAxios()
     const {
-      getCards
+      getCards,
+      requestUser
     } = useApi()
     const form = ref({ cards: getCards() })
     const prompt = ref(false)
@@ -80,6 +82,7 @@ export default defineComponent({
       try {
         const data = await axios({ method: 'put', url: '/api/v1/cards/block', data: form.value })
         SessionStorage.set('user', data.data)
+        form.value = { cards: getCards() }
         prompt.value = false
         notifySuccess(data.message)
         emit('refreshLocalData')
@@ -87,6 +90,10 @@ export default defineComponent({
         notifyError(error)
       }
     }
+    onBeforeRouteUpdate(async () => {
+      await requestUser()
+      form.value = { cards: getCards() }
+    })
     return {
       prompt,
       form,

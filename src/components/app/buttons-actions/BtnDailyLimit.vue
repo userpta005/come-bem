@@ -55,7 +55,7 @@
 
 <script>
 import { SessionStorage } from 'quasar'
-import UseAxios from 'src/composables/UseAxios'
+import UseAxios from 'src/composables/axios'
 import { defineComponent, ref } from 'vue'
 import notify from 'src/composables/notify'
 import useApi from 'src/composables/UseApi'
