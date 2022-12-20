@@ -3,27 +3,31 @@ import { api } from 'src/boot/axios'
 
 const useStorageStore = defineStore('storage', {
   state: () => ({
-    user: null,
     userClient: null,
-    dependents: null,
     userDependent: null,
-    userAccounts: null,
+    dependent: null,
+    dependentId: null,
+    accounts: null,
     account: null,
-    token: null,
-    app_token: null
+    accountId: null,
+    hasUser: false,
+    dependentIndexes: {},
+    disableButtons: false,
+    app_token: null,
+    token: null
   }),
   getters: {
     isLogged: (state) => {
       return !!state.token
     },
     isResponsible: (state) => {
-      return !!state.userClient.id && !state.userDependent.id
+      return !!state.userClient && !state.userDependent
     },
     isDependent: (state) => {
-      return !!state.userDependent.id && !state.userClient.id
+      return !!state.userDependent && !state.userClient
     },
     isResponsibleDependent: (state) => {
-      return !!state.userDependent.id && !!state.userClient.id
+      return !!state.userDependent && !!state.userClient
     }
   },
   actions: {
@@ -47,14 +51,24 @@ const useStorageStore = defineStore('storage', {
       }
     },
 
+    getDependentById (dependentId) {
+      return this.userClient.dependents.find((value) => parseInt(value.id) === parseInt(dependentId))
+    },
+
+    getDependenIndexById (dependentId) {
+      return this.userClient.dependents.findIndex((value) => parseInt(value.id) === parseInt(dependentId))
+    },
+
     setUser (user) {
-      this.user = user
-      this.userClient = this.user.people.client
-      this.dependents = this.userClient.dependents
-      this.userDependent = this.user.people.dependent
-      this.userAccounts = this.userDependent.accounts
-      this.account = this.userAccounts[0]
-      this.app_token = this.account.store.app_token
+      this.userClient = user.people.client
+      this.userDependent = user.people.dependent
+      if (this.isResponsible || this.isResponsibleDependent) {
+        this.userClient.dependents.forEach((dependent, index) => {
+          if (!(`index${index}` in this.dependentIndexes)) {
+            this.dependentIndexes[`index${index}`] = { accountIndex: 0 }
+          }
+        })
+      }
     },
 
     async requestUser () {
@@ -76,12 +90,16 @@ const useStorageStore = defineStore('storage', {
 
     async logout () {
       const data = await this.axios({ method: 'delete', url: '/api/v1/auth/logout' })
-      this.user = null
       this.userClient = null
-      this.dependents = null
       this.userDependent = null
-      this.userAccounts = null
+      this.dependent = null
+      this.dependentId = null
+      this.accounts = null
       this.account = null
+      this.accountId = null
+      this.hasUser = false
+      this.dependentIndexes = {}
+      this.disableButtons = false
       this.app_token = null
       this.token = null
       return data.message

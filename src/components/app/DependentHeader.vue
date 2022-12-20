@@ -8,35 +8,34 @@
     <div class="col-9 row q-pa-sm">
       <div class="col-md-6 col-xs-12 column q-pa-sm">
         <div class="text-subtitle1 text-weight-medium">
-          {{ propDependent.people.name }}
+          {{ store.dependent.people.name }}
         </div>
-        <SelectAccount @select-account="selectAccount"
-          :accounts="propDependent.accounts" />
+        <SelectAccount />
         <div class="text-caption text-weight-regular q-mb-xs">
-          Nascimento: {{ brDate(propDependent.people.birthdate) }}
+          Nascimento: {{ brDate(store.dependent.people.birthdate) }}
         </div>
         <div class="text-caption text-weight-regular">
-          Sexo: {{ propDependent.people.gender == 'M' ? 'Masculino' : 'Feminino' }}
+          Sexo: {{ gender(store.dependent.people.gender) }}
         </div>
       </div>
       <div class="col-md-6 col-xs-12 column q-pa-sm">
         <div class="text-caption text-weight-medium q-mb-xs">
-          Saldo: {{ floatToMoney(account.balance) }}
+          Saldo: {{ floatToMoney(store.account.balance) }}
         </div>
         <div class="text-caption text-weight-regular q-mb-xs">
-          Limite diário: {{ floatToMoney(account.daily_limit) }}
+          Limite diário: {{ floatToMoney(store.account.daily_limit) }}
         </div>
         <div class="text-caption text-weight-regular q-mb-xs">
           Saldo do dia: {{ floatToMoney(0) }}
         </div>
-        <q-toggle v-model="account.status"
+        <q-toggle v-model="store.account.status"
           :true-value="1"
           :false-value="2"
           style="border: 1px solid grey"
           class="self-start q-pa-xs rounded-borders"
           dense
           label="Desativar consumidor"
-          :color="account.status === 1 ? 'green' : 'red'"
+          :color="parseInt(store.account.status) === 1 ? 'green' : 'red'"
           keep-color
           left-label
           @update:model-value="handleBlockAccount"
@@ -50,66 +49,46 @@
 </template>
 
 <script>
-import { defineComponent, computed } from 'vue'
+import { defineComponent } from 'vue'
 import { floatToMoney, brDate } from 'src/utils/helpers'
 import SelectAccount from 'components/app/SelectAccount.vue'
 import notify from 'src/composables/notify'
-import { useRoute, useRouter } from 'vue-router'
-import { SessionStorage } from 'quasar'
-import UseAxios from 'src/composables/axios'
+import useStorageStore from 'src/stores/storage'
 
 export default defineComponent({
   name: 'DependentViewPage',
   components: {
     SelectAccount
   },
-  props: [
-    'propDependent',
-    'propAccount'
-  ],
-  emits: [
-    'update:modelValue',
-    'refreshLocalData'
-  ],
-  setup (props, { emit }) {
+  setup () {
     const { notifySuccess, notifyError } = notify()
-    const { axios } = UseAxios()
-    const route = useRoute()
-    const router = useRouter()
-    const account = computed({
-      get () {
-        return props.propAccount
-      },
-      set (value) {
-        emit('update:modelValue', value)
-      }
-    })
+    const store = useStorageStore()
 
-    const selectAccount = (item) => {
-      router.replace({ name: route.name, params: { account: item.id } })
+    const gender = (gender) => {
+      return gender === 'M' ? 'Masculino' : 'Feminino'
     }
 
     const handleBlockAccount = async (value) => {
       try {
-        const data = await axios({
+        const data = await store.axios({
           method: 'put',
-          url: `api/v1/accounts/${account.value.id}/block`,
-          data: { activate: value === 1 }
+          url: `api/v1/accounts/${store.accountId}/block`,
+          data: { activate: parseInt(value) === 1 }
         })
-        SessionStorage.set('user', data.data)
+        store.setUser(data.data)
+        store.disableButtons = parseInt(value) === 2
         notifySuccess(data.message)
-        emit('refreshLocalData', false)
       } catch (error) {
         notifyError(error)
       }
     }
 
     return {
+      store,
       floatToMoney,
       brDate,
-      selectAccount,
       handleBlockAccount,
-      account
+      gender
     }
   }
 })

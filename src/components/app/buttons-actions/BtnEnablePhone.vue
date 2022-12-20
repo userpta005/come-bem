@@ -3,7 +3,7 @@
     size="sm"
     class="bg-main-quaternary q-mb-sm"
     text-color="white"
-    :disable="disableButtons || hasUser"
+    :disable="store.disableButtons || store.hasUser"
     @click="prompt = true" />
 
   <q-dialog @hide="clearInputs"
@@ -76,61 +76,50 @@
 </template>
 
 <script>
-import { SessionStorage } from 'quasar'
-import UseAxios from 'src/composables/axios'
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, reactive } from 'vue'
 import notify from 'src/composables/notify'
-import useApi from 'src/composables/UseApi'
+import useStorageStore from 'src/stores/storage'
 
 export default defineComponent({
   name: 'BtnEnablePhone',
-  props: {
-    disableButtons: {
-      type: Boolean,
-      required: false
-    }
-  },
-  emits: [
-    'refreshLocalData'
-  ],
-  setup (props, { emit }) {
+  setup () {
     const { notifySuccess, notifyError } = notify()
-    const { axios } = UseAxios()
-    const {
-      getDependentId,
-      dependentHasUser
-    } = useApi()
-    const dependentId = ref(getDependentId())
-    const hasUser = ref(dependentHasUser())
+    const store = useStorageStore()
     const prompt = ref(false)
-    const form = ref({
-      email: '',
-      password: '',
-      password_confirmation: ''
+
+    const form = reactive({
+      email: null,
+      password: null,
+      password_confirmation: null
     })
+
     const clearInputs = () => {
-      form.value.email = ''
-      form.value.password = ''
-      form.value.password_confirmation = ''
+      form.email = null
+      form.password = null
+      form.password_confirmation = null
     }
+
     const handleSubmit = async () => {
       try {
-        const data = await axios({ method: 'post', url: `/api/v1/dependents/${dependentId.value}/create-user`, data: form.value })
-        SessionStorage.set('user', data.data)
+        const data = await store.axios({
+          method: 'post',
+          url: `/api/v1/dependents/${store.dependentId}/create-user`,
+          data: form
+        })
+        store.hasUser = true
         prompt.value = false
-        hasUser.value = true
         notifySuccess(data.message)
-        emit('refreshLocalData')
       } catch (error) {
         notifyError(error)
       }
     }
+
     return {
+      store,
       prompt,
       form,
       handleSubmit,
-      clearInputs,
-      hasUser
+      clearInputs
     }
   }
 })

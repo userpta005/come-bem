@@ -3,7 +3,7 @@
     size="sm"
     class="bg-main-quaternary q-mb-sm"
     text-color="white"
-    :disable="disableButtons"
+    :disable="store.disableButtons"
     @click="prompt = true" />
 
   <q-dialog @hide="clearInputs"
@@ -32,7 +32,7 @@
             lazy-rules="ondemand"
             v-model="form.daily_limit"
             :rules="[
-              val => (val && val.length > 0) || 'Limite diário é obrigatório'
+              val => (!!val && val.length > 0) || 'Limite diário é obrigatório'
             ]" />
 
         </q-card-section>
@@ -54,45 +54,37 @@
 </template>
 
 <script>
-import { SessionStorage } from 'quasar'
-import UseAxios from 'src/composables/axios'
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, reactive } from 'vue'
 import notify from 'src/composables/notify'
-import useApi from 'src/composables/UseApi'
+import useStorageStore from 'src/stores/storage'
 
 export default defineComponent({
   name: 'BtnDailyLimit',
-  props: {
-    disableButtons: {
-      type: Boolean,
-      required: false
-    }
-  },
-  emits: [
-    'refreshLocalData'
-  ],
-  setup (props, { emit }) {
+  setup () {
     const { notifySuccess, notifyError } = notify()
-    const { axios } = UseAxios()
-    const {
-      getAccountId
-    } = useApi()
-    const accountId = ref(getAccountId())
+    const store = useStorageStore()
     const prompt = ref(false)
-    const form = ref({ daily_limit: null })
-    const clearInputs = () => { form.value.daily_limit = null }
+    const form = reactive({ daily_limit: 0 })
+
+    const clearInputs = () => { form.daily_limit = 0 }
+
     const handleSubmit = async () => {
       try {
-        const data = await axios({ method: 'put', url: `/api/v1/accounts/${accountId.value}`, data: form.value })
-        SessionStorage.set('user', data.data)
+        const data = await store.axios({
+          method: 'put',
+          url: `/api/v1/accounts/${store.accountId}`,
+          data: form
+        })
+        store.account.daily_limit = form.daily_limit
         prompt.value = false
         notifySuccess(data.message)
-        emit('refreshLocalData')
       } catch (error) {
         notifyError(error)
       }
     }
+
     return {
+      store,
       prompt,
       form,
       handleSubmit,

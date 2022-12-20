@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { defineComponent, computed } from 'vue'
+import { defineComponent, ref } from 'vue'
 import useStorageStore from 'src/stores/storage'
 
 export default defineComponent({
@@ -39,25 +39,23 @@ export default defineComponent({
   setup () {
     const store = useStorageStore()
 
-    const responsibleRoute = computed(() => {
-      if (store.isResponsible || store.isResponsibleDependent) {
-        return {
-          name: 'responsible',
-          params: { responsible: store.userClient.id }
-        }
+    const responsibleRoute = ref({ name: 'dashboard' })
+    if (store.isResponsible || store.isResponsibleDependent) {
+      responsibleRoute.value = {
+        name: 'responsible',
+        params: { responsible: store.userClient.id }
       }
-      return { name: 'dashboard' }
-    })
+    }
 
-    const dependentRoute = computed(() => {
-      if (store.isDependent || store.isResponsibleDependent) {
-        return {
-          name: 'dependent',
-          params: { dependent: store.userDependent.id, account: store.account.id }
-        }
+    const dependentRoute = ref({ name: 'dashboard' })
+    if (store.isDependent || store.isResponsibleDependent) {
+      store.dependent = store.userDependent
+      store.account = store.dependent.accounts[0]
+      dependentRoute.value = {
+        name: 'dependent',
+        params: { dependent: store.dependent.id, account: store.account.id }
       }
-      return { name: 'dashboard' }
-    })
+    }
 
     return {
       store,
