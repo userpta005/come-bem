@@ -44,7 +44,6 @@ export default defineComponent({
   },
   setup (props) {
     const store = useStorageStore()
-
     const dependentIndex = toRef(props, 'dependentIndex')
 
     const onItemClick = (item, index) => {

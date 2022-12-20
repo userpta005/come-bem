@@ -16,12 +16,7 @@
           :to="{ name: 'responsible-dependent-create' }"
           v-if="['responsible'].includes($route.name)" />
 
-        <q-btn label="Recarregar créditos"
-          size="sm"
-          class="bg-main-quaternary q-mb-sm"
-          text-color="white"
-          :disable="store.disableButtons"
-          v-if="['responsible-dependent', 'dependent'].includes($route.name)" />
+          <BtnReloadCredits v-if="['responsible-dependent', 'dependent'].includes($route.name)" />
 
         <q-btn label="Cardápio"
           size="sm"
@@ -66,13 +61,15 @@ import { useRoute } from 'vue-router'
 import BtnDisableDevice from 'src/components/app/buttons-actions/BtnDisableDevice.vue'
 import BtnEnablePhone from 'src/components/app/buttons-actions/BtnEnablePhone.vue'
 import BtnDailyLimit from 'src/components/app/buttons-actions/BtnDailyLimit.vue'
+import BtnReloadCredits from 'src/components/app/buttons-actions/BtnReloadCredits.vue'
 
 export default defineComponent({
   name: 'SidebarActions',
   components: {
     BtnDisableDevice,
     BtnEnablePhone,
-    BtnDailyLimit
+    BtnDailyLimit,
+    BtnReloadCredits
   },
   setup () {
     const route = useRoute()
