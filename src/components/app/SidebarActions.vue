@@ -20,40 +20,34 @@
           size="sm"
           class="bg-main-quaternary q-mb-sm"
           text-color="white"
-          :disable="disableButtons"
+          :disable="store.disableButtons"
           v-if="['responsible-dependent', 'dependent'].includes($route.name)" />
 
         <q-btn label="Cardápio"
           size="sm"
           class="bg-main-quaternary q-mb-sm"
           text-color="white"
-          :disable="disableButtons"
+          :disable="store.disableButtons"
           v-if="['responsible-dependent', 'dependent'].includes($route.name)" />
 
-        <BtnDisableDevice @refresh-local-data="$emit('refreshLocalData')"
-          :disableButtons="disableButtons"
-          v-if="['responsible-dependent'].includes($route.name)" />
+        <BtnDisableDevice v-if="['responsible-dependent'].includes($route.name)" />
 
-        <BtnEnablePhone @refresh-local-data="$emit('refreshLocalData')"
-          :disableButtons="disableButtons"
-          v-if="['responsible-dependent'].includes($route.name)" />
+        <BtnEnablePhone v-if="['responsible-dependent'].includes($route.name)" />
 
-        <BtnDailyLimit @refresh-local-data="$emit('refreshLocalData')"
-          :disableButtons="disableButtons"
-          v-if="['responsible-dependent'].includes($route.name)" />
+        <BtnDailyLimit v-if="['responsible-dependent'].includes($route.name)" />
 
         <q-btn label="Histórico de consumo"
           size="sm"
           class="bg-main-quaternary q-mb-sm"
           text-color="white"
-          :disable="disableButtons"
+          :disable="store.disableButtons"
           v-if="['responsible-dependent', 'dependent'].includes($route.name)" />
 
         <q-btn label="Histórico financeiro"
           size="sm"
           class="bg-main-quaternary q-mb-sm"
           text-color="white"
-          :disable="disableButtons"
+          :disable="store.disableButtons"
           v-if="['responsible-dependent', 'dependent'].includes($route.name)" />
 
         <q-btn label="Voltar"
@@ -66,6 +60,7 @@
 </template>
 
 <script>
+import useStorageStore from 'src/stores/storage'
 import { defineComponent, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import BtnDisableDevice from 'src/components/app/buttons-actions/BtnDisableDevice.vue'
@@ -79,18 +74,16 @@ export default defineComponent({
     BtnEnablePhone,
     BtnDailyLimit
   },
-  props: {
-    disableButtons: {
-      type: Boolean,
-      required: false
-    }
-  },
-  setup (props) {
+  setup () {
     const route = useRoute()
+    const store = useStorageStore()
+
     const backTo = computed(() => {
       return route.name === 'responsible-dependent' ? 'responsible' : 'dashboard'
     })
+
     return {
+      store,
       backTo
     }
   }

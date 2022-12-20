@@ -18,7 +18,7 @@
         lazy-rules="ondemand"
         v-model="form.name"
         :rules="[
-          val => (val && val.length > 0) || 'Nome completo é obrigatório',
+          val => (!!val && val.length > 0) || 'Nome completo é obrigatório',
           val => (val.length <= 100) || 'Máximo 100 caracteres !',
         ]" />
 
@@ -32,7 +32,7 @@
         map-options
         emit-value
         lazy-rules="ondemand"
-        :rules="[val => (val && !!val) || 'Sexo é obrigatória']" />
+        :rules="[val => (!!val) || 'Sexo é obrigatória']" />
 
       <q-input label="Dt. de nascimento"
         stack-label
@@ -42,7 +42,7 @@
         outlined
         clearable
         lazy-rules="ondemand"
-        :rules="[val => (val && val.length > 0) || 'Dt. de nascimento é obrigatória']" />
+        :rules="[val => (!!val && val.length > 0) || 'Dt. de nascimento é obrigatória']" />
 
       <SelectCity class="col-md-6 col-xs-12"
         v-model="form.city_id" />
@@ -57,7 +57,7 @@
         lazy-rules="ondemand"
         v-model="form.school_year"
         :rules="[
-          val => (val && val.length > 0) || 'Série é obrigatório',
+          val => (!!val && val.length > 0) || 'Série é obrigatório',
           val => (val.length <= 10) || 'Máximo 10 caracteres !',
         ]" />
 
@@ -68,7 +68,7 @@
         lazy-rules="ondemand"
         v-model="form.class"
         :rules="[
-          val => (val && val.length > 0) || 'Turma é obrigatório',
+          val => (!!val && val.length > 0) || 'Turma é obrigatório',
           val => (val.length <= 10) || 'Máximo 10 caracteres !',
         ]" />
 
@@ -82,7 +82,7 @@
         map-options
         emit-value
         lazy-rules="ondemand"
-        :rules="[val => (val && !!val) || 'Turno é obrigatória']" />
+        :rules="[val => (!!val) || 'Turno é obrigatória']" />
 
       <div class="col-12 flex-center q-gutter-sm"
         :class="$q.screen.lt.md ? 'column' : 'row'">
@@ -102,12 +102,12 @@
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue'
+import { defineComponent, reactive } from 'vue'
 import notify from 'src/composables/notify'
-import { useRoute, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import SelectCity from 'src/components/common/SelectCity.vue'
 import SelectStore from 'src/components/common/SelectStore.vue'
-import UseAxios from 'src/composables/UseAxios'
+import useStorageStore from 'src/stores/storage'
 
 export default defineComponent({
   name: 'DependentCreatePage',
@@ -117,34 +117,37 @@ export default defineComponent({
   },
   setup () {
     const { notifySuccess, notifyError } = notify()
-    const { axios } = UseAxios()
-    const route = useRoute()
+    const store = useStorageStore()
     const router = useRouter()
-    const clientId = ref(route.params.responsible)
-    const form = ref({
-      name: '',
+    const form = reactive({
+      name: null,
       gender: null,
-      birthdate: '',
+      birthdate: null,
       city_id: null,
       store_id: null,
       type: 1,
-      school_year: '',
-      class: '',
+      school_year: null,
+      class: null,
       turn: null
     })
-    const optionsGender = ref([
+    const optionsGender = reactive([
       { label: 'Masculino', id: 'M' },
       { label: 'Feminino', id: 'F' }
     ])
-    const optionsTurn = ref([
+    const optionsTurn = reactive([
       { label: 'Matutino', id: 1 },
       { label: 'Vespertino', id: 2 },
       { label: 'Noturno', id: 3 }
     ])
     const handleSubmit = async () => {
       try {
-        const { message } = await axios({ method: 'post', url: `/api/v1/clients/${clientId.value}/dependents`, data: form.value })
-        notifySuccess(message)
+        const data = await store.axios({
+          method: 'post',
+          url: `/api/v1/clients/${store.userClient.id}/dependents`,
+          data: form
+        })
+        store.setUser(data.data)
+        notifySuccess(data.message)
         router.push({ name: 'responsible' })
       } catch (error) {
         notifyError(error)

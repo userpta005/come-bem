@@ -1,6 +1,6 @@
 import { boot } from 'quasar/wrappers'
 import axios from 'axios'
-import { SessionStorage } from 'quasar'
+// import { SessionStorage } from 'quasar'
 
 // Be careful when using SSR for cross-request state pollution
 // due to creating a Singleton instance here;
@@ -9,10 +9,10 @@ import { SessionStorage } from 'quasar'
 // "export default () => {}" function below (which runs individually
 // for each client)
 
-// const api = axios.create({ baseURL: 'http://localhost:8000' })
-const api = axios.create({ baseURL: 'https://local360.com.br/lanche-bem/public' })
+const api = axios.create({ baseURL: 'http://localhost:8000' })
+// const api = axios.create({ baseURL: 'https://local360.com.br/lanche-bem/public' })
 
-api.defaults.headers.common.Authorization = SessionStorage.has('token') ? 'Bearer ' + SessionStorage.getItem('token') : null
+// api.defaults.headers.common.Authorization = SessionStorage.has('token') ? 'Bearer ' + SessionStorage.getItem('token') : null
 
 export default boot(({ app }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api

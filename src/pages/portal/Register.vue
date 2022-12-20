@@ -20,7 +20,7 @@
             lazy-rules="ondemand"
             v-model="form.name"
             :rules="[
-              val => (val && val.length > 0) || 'Nome completo é obrigatório',
+              val => (!!val && val.length > 0) || 'Nome completo é obrigatório',
               val => (val.length <= 100) || 'Máximo 100 caracteres !',
             ]" />
 
@@ -32,7 +32,7 @@
             lazy-rules="ondemand"
             v-model="form.email"
             :rules="[
-              val => (val && val.length > 0) || 'Email é obrigatório',
+              val => (!!val && val.length > 0) || 'Email é obrigatório',
               val => (val.length <= 100) || 'Máximo 100 caracteres !',
             ]" />
 
@@ -44,7 +44,7 @@
             mask="(##) ##### - ####"
             fill-mask
             lazy-rules="ondemand"
-            :rules="[val => (val && val.length > 0) || 'Telefone é obrigatório']" />
+            :rules="[val => (!!val && val.length > 0) || 'Telefone é obrigatório']" />
 
           <q-input label="Dt. de nascimento"
             stack-label
@@ -54,7 +54,7 @@
             outlined
             clearable
             lazy-rules="ondemand"
-            :rules="[val => (val && val.length > 0) || 'Dt. de nascimento é obrigatória']" />
+            :rules="[val => (!!val && val.length > 0) || 'Dt. de nascimento é obrigatória']" />
 
           <SelectCity class="col-md-6 col-xs-12"
             v-model="form.city_id" />
@@ -105,11 +105,11 @@
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue'
-import notify from 'src/composables/notify'
+import { defineComponent, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
-import UseAuthApi from 'src/composables/UseAuthApi'
+import notify from 'src/composables/notify'
+import useStorageStore from 'src/stores/storage'
 import SelectCity from 'src/components/common/SelectCity.vue'
 import SelectStore from 'src/components/common/SelectStore.vue'
 
@@ -122,14 +122,14 @@ export default defineComponent({
   setup () {
     const $q = useQuasar()
     const router = useRouter()
+    const store = useStorageStore()
     const { notifyError } = notify()
-    const { register } = UseAuthApi()
 
-    const form = ref({
-      name: '',
-      email: '',
-      phone: '',
-      birthdate: '',
+    const form = reactive({
+      name: null,
+      email: null,
+      phone: null,
+      birthdate: null,
       city_id: null,
       type: 1,
       store_id: null,
@@ -138,7 +138,7 @@ export default defineComponent({
 
     const handleSubmit = async () => {
       try {
-        await register(form.value)
+        await store.register(form)
         $q.dialog({
           title: 'Parabéns, cadastro concluído!',
           message: 'Agora, basta escolher o modelo de cartão na cantina e estará habilitado para o uso.'

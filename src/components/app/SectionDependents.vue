@@ -2,9 +2,9 @@
   <div class="row q-pa-sm"
     :class="{ 'flex-center': $q.screen.lt.md }">
     <div class="q-pa-xs"
-      v-show="dependent.accounts.length"
-      v-for="(dependent, index) in dependents"
-      :key="index">
+      v-for="(dependent, index) in store.userClient.dependents"
+      :key="index"
+      v-show="dependent.accounts.length">
       <div style="border: 0.15rem solid var(--orange); width: 200px;"
         class="column flex-center rounded-borders q-pa-sm"
         v-if="dependent.accounts.length">
@@ -14,44 +14,39 @@
           {{ dependent.people.name }}
         </div>
         <div class="text-subtitle2 text-weight-light q-mb-xs">
-          <SelectAccount @select-account="(account, accountIndex) => selectAccount(index, accountIndex)"
-            :accounts="dependent.accounts" />
+          <SelectAccount :dependent="dependent"
+            :account="dependent.accounts[store.dependentIndexes[`index${index}`].accountIndex]"
+            :dependentIndex="index" />
         </div>
         <div class="text-caption text-weight-medium q-mb-xs">
-          Saldo: {{ floatToMoney(dependent.accounts[dependent.accountIndex ?? 0].balance) }}
+          Saldo: {{ floatToMoney(dependent.accounts[store.dependentIndexes[`index${index}`].accountIndex].balance) }}
         </div>
         <div class="text-caption text-weight-regular text-main-secondary q-mb-xs">
-          Consumidor: {{ dependent.accounts[dependent.accountIndex ?? 0].status === 1 ? 'Ativo' : 'Inativo' }}
+          Consumidor: {{ status(dependent.accounts[store.dependentIndexes[`index${index}`].accountIndex].status) }}
           <q-separator />
         </div>
         <div class="text-caption text-weight-light self-start">
           Nascimento: {{ brDate(dependent.birthdate) }}
         </div>
         <div class="text-caption text-weight-light self-start q-mb-xs">
-          Sexo: {{ dependent.gender == 'M' ? 'Masculino' : 'Feminino' }}
+          Sexo: {{ gender(dependent.gender) }}
         </div>
         <q-btn color="main-primary"
           text-color="white"
           size="sm"
           label="Quero saber mais"
-          :to="{
-            name: 'responsible-dependent',
-            params: {
-              dependent: dependent.id,
-              account: dependent.accounts[dependent.accountIndex ?? 0].id
-            }
-          }" />
+          @click="toGoDependent(dependent, index)" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue'
+import { defineComponent } from 'vue'
 import { floatToMoney, brDate } from 'src/utils/helpers'
-import SelectAccount from 'components/app/SelectAccount.vue'
-import useApi from 'src/composables/UseApi'
-import notify from 'src/composables/notify'
+import useStorageStore from 'src/stores/storage'
+import SelectAccount from 'components/app/responsibles/SelectAccount.vue'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'SectionDependents',
@@ -59,30 +54,42 @@ export default defineComponent({
     SelectAccount
   },
   setup () {
-    const { requestUser, getDependents } = useApi()
-    const { notifyError } = notify()
-    const dependents = ref(getDependents())
+    const store = useStorageStore()
+    const router = useRouter()
+    store.requestUser()
 
-    const selectAccount = (dependentIndex, accountIndex) => {
-      dependents.value[dependentIndex].accountIndex = accountIndex
+    const status = (status) => {
+      return parseInt(status) === 1 ? 'Ativo' : 'Inativo'
+    }
+    const gender = (gender) => {
+      return gender === 'M' ? 'Masculino' : 'Feminino'
     }
 
-    const refreshLocalData = async () => {
-      try {
-        await requestUser()
-        dependents.value = getDependents()
-      } catch (error) {
-        notifyError(error)
-      }
+    const toGoDependent = (dependent, index) => {
+      store.dependent = dependent
+      store.dependentId = store.dependent.id
+      store.accounts = store.dependent.accounts
+      store.account = store.dependent.accounts[store.dependentIndexes[`index${index}`].accountIndex]
+      store.accountId = store.account.id
+      store.hasUser = !!store.dependent.people.user
+      store.disableButtons = parseInt(store.account.status) === 2
+      store.app_token = store.account.store.app_token
+      router.push({
+        name: 'responsible-dependent',
+        params: {
+          dependent: store.dependent.id,
+          account: store.account.id
+        }
+      })
     }
-
-    refreshLocalData()
 
     return {
       floatToMoney,
       brDate,
-      dependents,
-      selectAccount
+      store,
+      status,
+      gender,
+      toGoDependent
     }
   }
 })

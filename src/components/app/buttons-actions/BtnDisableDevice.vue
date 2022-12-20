@@ -3,7 +3,7 @@
     size="sm"
     class="bg-main-quaternary q-mb-sm"
     text-color="white"
-    :disable="disableButtons"
+    :disable="store.disableButtons"
     @click="prompt = true" />
 
   <q-dialog v-model="prompt"
@@ -21,7 +21,7 @@
       <q-form @submit.prevent="handleSubmit">
 
         <q-card-section class="column q-pt-none q-gutter-sm">
-          <q-toggle v-for="(card, index) in form.cards"
+          <q-toggle v-for="(card, index) in store.account.cards"
             :key="index"
             v-model="card.status"
             :true-value="1"
@@ -29,7 +29,7 @@
             style="border: 1px solid grey"
             class="self-start q-pa-xs rounded-borders fit"
             :label="card.uuid"
-            :color="card.status === 1 ? 'green' : 'red'"
+            :color="parseInt(card.status) === 1 ? 'green' : 'red'"
             keep-color
             left-label />
         </q-card-section>
@@ -51,45 +51,30 @@
 </template>
 
 <script>
-import { SessionStorage } from 'quasar'
-import UseAxios from 'src/composables/UseAxios'
 import { defineComponent, ref } from 'vue'
+import useStorageStore from 'src/stores/storage'
 import notify from 'src/composables/notify'
-import useApi from 'src/composables/UseApi'
 
 export default defineComponent({
   name: 'BtnDisableDevice',
-  props: {
-    disableButtons: {
-      type: Boolean,
-      required: false
-    }
-  },
-  emits: [
-    'refreshLocalData'
-  ],
-  setup (props, { emit }) {
+  setup () {
     const { notifySuccess, notifyError } = notify()
-    const { axios } = UseAxios()
-    const {
-      getCards
-    } = useApi()
-    const form = ref({ cards: getCards() })
+    const store = useStorageStore()
     const prompt = ref(false)
+
     const handleSubmit = async () => {
       try {
-        const data = await axios({ method: 'put', url: '/api/v1/cards/block', data: form.value })
-        SessionStorage.set('user', data.data)
+        const data = await store.axios({ method: 'put', url: '/api/v1/cards/block', data: { cards: store.account.cards } })
         prompt.value = false
         notifySuccess(data.message)
-        emit('refreshLocalData')
       } catch (error) {
         notifyError(error)
       }
     }
+
     return {
+      store,
       prompt,
-      form,
       handleSubmit
     }
   }

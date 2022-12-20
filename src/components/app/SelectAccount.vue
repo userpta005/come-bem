@@ -1,5 +1,5 @@
 <template>
-  <q-btn-dropdown :label="label"
+  <q-btn-dropdown :label="store.account.store.people.name"
     flat
     dense
     size="0.8rem"
@@ -10,10 +10,10 @@
     <q-list dense>
       <q-item clickable
         v-close-popup
-        :active="selected === item.id"
-        @click="onItemClick(item, index)"
-        v-for="(item, index) in accounts"
-        :key="index">
+        v-for="(item, index) in store.accounts"
+        :key="index"
+        :active="parseInt(store.accountId) === parseInt(item.id)"
+        @click="onItemClick(item, index)">
         <q-item-section>
           <q-item-label>{{ item.store.people.name }}</q-item-label>
         </q-item-section>
@@ -23,35 +23,29 @@
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue'
-import { useRoute } from 'vue-router'
-import useApi from 'src/composables/UseApi'
+import { defineComponent } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import useStorageStore from 'src/stores/storage'
 
 export default defineComponent({
   name: 'SelectAccount',
-  props: {
-    accounts: {
-      type: Array,
-      required: true
-    }
-  },
-  emits: ['selectAccount'],
-  setup (props, { emit }) {
-    const { filterAccounts } = useApi()
+  setup () {
+    const router = useRouter()
     const route = useRoute()
-    const accounts = ref(props.accounts)
-    const accountId = ref(route.params.account ?? accounts.value[0].id)
-    const account = ref(filterAccounts(accounts.value, accountId.value))
-    const label = ref(account.value.store.people.name)
-    const selected = ref(account.value.id)
+    const store = useStorageStore()
+
+    const onItemClick = (item, index) => {
+      store.account = item
+      store.accountId = store.account.id
+      store.dependentIndexes[`index${store.getDependenIndexById(store.dependentId)}`].accountIndex = index
+      store.disableButtons = parseInt(store.account.status) === 2
+      store.app_token = store.account.store.app_token
+      router.replace({ name: route.name, params: { account: item.id } })
+    }
+
     return {
-      label,
-      selected,
-      onItemClick (item, index) {
-        label.value = item.store.people.name
-        selected.value = item.id
-        emit('selectAccount', item, index)
-      }
+      store,
+      onItemClick
     }
   }
 })

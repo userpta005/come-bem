@@ -1,7 +1,7 @@
 import { route } from 'quasar/wrappers'
 import { createRouter, createMemoryHistory, createWebHistory, createWebHashHistory } from 'vue-router'
 import routes from './routes'
-import useAuthUser from 'src/composables/UseAuthApi'
+import useStorageStore from 'src/stores/storage'
 
 /*
  * If not building with SSR mode, you can
@@ -27,12 +27,12 @@ export default route(function (/* { store, ssrContext } */) {
     history: createHistory(process.env.VUE_ROUTER_BASE)
   })
 
-  Router.beforeEach((to) => {
-    const { isLogged } = useAuthUser()
+  const store = useStorageStore()
 
-    if (!isLogged() && to.meta.requiresAuth) {
+  Router.beforeEach((to) => {
+    if (!store.isLogged && to.meta.requiresAuth) {
       return { name: 'login' }
-    } else if (isLogged() && !to.meta.requiresAuth) {
+    } else if (store.isLogged && !to.meta.requiresAuth) {
       return { name: 'dashboard' }
     }
   })

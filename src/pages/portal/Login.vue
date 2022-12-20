@@ -9,7 +9,8 @@
         <p class="text-body1 text-center">
           Informe seus dados abaixo.
         </p>
-        <q-form @submit.prevent="handleSubmit" class="q-col-gutter-sm">
+        <q-form @submit.prevent="handleSubmit"
+          class="q-col-gutter-sm">
 
           <q-input label="Email"
             outlined
@@ -33,7 +34,7 @@
               val => (val.length <= 100) || 'Máximo 100 caracteres !',
             ]" />
 
-          <q-checkbox v-model="rememberMe"
+          <q-checkbox v-model="form.remember_me"
             label="Lembrar-me" />
 
           <div class="col-12 column items-center q-gutter-sm">
@@ -59,25 +60,25 @@
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue'
-import notify from 'src/composables/notify'
-import UseAuthApi from 'src/composables/UseAuthApi'
+import { defineComponent, reactive } from 'vue'
 import { useRouter } from 'vue-router'
+import notify from 'src/composables/notify'
+import useStorageStore from 'src/stores/storage'
 
 export default defineComponent({
   name: 'LoginPage',
   setup () {
-    const router = useRouter()
-    const { login } = UseAuthApi()
     const { notifySuccess, notifyError } = notify()
-    const form = ref({
+    const router = useRouter()
+    const store = useStorageStore()
+    const form = reactive({
       email: '',
-      password: ''
+      password: '',
+      remember_me: false
     })
-    const rememberMe = ref(false)
     const handleSubmit = async () => {
       try {
-        const { message } = await login(form.value)
+        const message = await store.login(form)
         notifySuccess(message)
         router.push({ name: 'dashboard' })
       } catch (error) {
@@ -86,8 +87,7 @@ export default defineComponent({
     }
     return {
       form,
-      handleSubmit,
-      rememberMe
+      handleSubmit
     }
   }
 })
