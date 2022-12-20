@@ -6,7 +6,7 @@
     <div class="px-responsive-xl q-py-md">
       <div class="row">
         <div class="col-md-auto col-xs-12 flex flex-center">
-          <img src="/lanche-bem-portal/imgs/logo-horizontal.png"
+          <img src="imgs/logo-horizontal.png"
             style="max-height: 30px;" />
         </div>
         <q-space />

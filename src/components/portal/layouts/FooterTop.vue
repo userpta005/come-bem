@@ -1,7 +1,7 @@
 <template>
   <div class="bg-blue-grey-8 text-white px-responsive-xl q-py-lg row">
     <div class="col-md-3 col-xs-12 column flex-center">
-      <img src="/lanche-bem-portal/imgs/logo-vertical.png"
+      <img src="imgs/logo-vertical.png"
         style="max-height: 150px" />
       <div class="text-body2 text-center pa-responsive-sm">
         O Lanche Bem foi criado par ajudar você no controle da alimentação do seu filho,

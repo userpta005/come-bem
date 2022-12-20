@@ -59,7 +59,7 @@
       </div>
       <div class="col-md-6 col-xs-12"
         v-if="$q.screen.gt.sm">
-        <q-img src="/lanche-bem-portal/imgs/front-view-people-having-meeting-office.jpg"
+        <q-img src="imgs/front-view-people-having-meeting-office.jpg"
           style="height: 100vh;" />
       </div>
     </div>

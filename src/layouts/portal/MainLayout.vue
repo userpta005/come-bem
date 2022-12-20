@@ -31,9 +31,9 @@ export default defineComponent({
 
   setup () {
     const slides = ref([
-      { img_url: '/lanche-bem-portal/imgs/banner-1.jpg' },
-      { img_url: '/lanche-bem-portal/imgs/banner-2.jpg' },
-      { img_url: '/lanche-bem-portal/imgs/banner-3.jpg' }
+      { img_url: 'imgs/banner-1.jpg' },
+      { img_url: 'imgs/banner-2.jpg' },
+      { img_url: 'imgs/banner-3.jpg' }
     ])
     return {
       slides
