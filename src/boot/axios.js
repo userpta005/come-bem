@@ -9,8 +9,7 @@ import axios from 'axios'
 // "export default () => {}" function below (which runs individually
 // for each client)
 
-const api = axios.create({ baseURL: 'http://localhost:8000' })
-// const api = axios.create({ baseURL: 'https://local360.com.br/lanche-bem/public' })
+const api = axios.create({ baseURL: process.env.api })
 
 // api.defaults.headers.common.Authorization = SessionStorage.has('token') ? 'Bearer ' + SessionStorage.getItem('token') : null
 

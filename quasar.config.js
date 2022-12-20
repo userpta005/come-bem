@@ -65,9 +65,11 @@ module.exports = configure(function (ctx) {
 
       // rebuildCache: true, // rebuilds Vite/linter/etc cache on startup
 
-      publicPath: ctx.dev ? '' : 'lanche-bem-portal/'
+      publicPath: ctx.dev ? '' : 'lanche-bem-portal/',
       // analyze: true,
-      // env: {},
+      env: {
+        api: ctx.dev ? 'http://localhost:8000' : 'https://local360.com.br/lanche-bem/public'
+      }
       // rawDefine: {}
       // ignorePublicFolder: true,
       // minify: false,
