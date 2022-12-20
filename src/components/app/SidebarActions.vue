@@ -1,7 +1,7 @@
 <template>
   <div class="q-pa-sm">
     <div style="border: 0.15rem solid var(--orange);"
-      :style="$q.screen.gt.sm ? 'min-height: 65vh' : ''"
+      :style="$q.screen.gt.sm ? 'min-height: 50vh' : ''"
       class="column rounded-borders q-pa-sm">
       <div class="text-subtitle1 text-center q-mb-md">
         Ações

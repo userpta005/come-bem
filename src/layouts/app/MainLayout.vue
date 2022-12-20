@@ -31,6 +31,7 @@
     </q-header>
 
     <q-drawer v-model="leftDrawerOpen"
+      width="200"
       show-if-above
       bordered
       class="bg-main-secondary">

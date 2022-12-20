@@ -1,12 +1,13 @@
 <template>
   <div class="row">
-    <div class="col-3 flex flex-center q-pa-sm">
+    <div class="col-md-3 col-xs-12 flex flex-center q-pa-sm">
       <q-icon name="mdi-baby-face-outline"
         size="6rem"
         class="col-3" />
     </div>
-    <div class="col-9 row q-pa-sm">
-      <div class="col-md-6 col-xs-12 column q-pa-sm">
+    <div class="col-md-9 col-xs-12 row q-pa-sm">
+      <div class="col-md-6 col-xs-12 column q-pa-sm"
+        :class="{ 'flex flex-center': $q.screen.lt.md }">
         <div class="text-subtitle1 text-weight-medium">
           {{ store.dependent.people.name }}
         </div>
@@ -18,7 +19,8 @@
           Sexo: {{ gender(store.dependent.people.gender) }}
         </div>
       </div>
-      <div class="col-md-6 col-xs-12 column q-pa-sm">
+      <div class="col-md-6 col-xs-12 column q-pa-sm"
+        :class="{ 'flex flex-center': $q.screen.lt.md }">
         <div class="text-caption text-weight-medium q-mb-xs">
           Saldo: {{ floatToMoney(store.account.balance) }}
         </div>
@@ -32,7 +34,8 @@
           :true-value="1"
           :false-value="2"
           style="border: 1px solid grey"
-          class="self-start q-pa-xs rounded-borders"
+          class="q-pa-xs rounded-borders"
+          :class="{ 'self-start': $q.screen.gt.sm }"
           dense
           label="Desativar consumidor"
           :color="parseInt(store.account.status) === 1 ? 'green' : 'red'"
