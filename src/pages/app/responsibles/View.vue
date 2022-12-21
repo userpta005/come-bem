@@ -1,30 +1,30 @@
 <template>
-  <q-page class="pa-responsive-md">
+  <q-page style="min-height: auto; height:auto;">
     <div class="flex q-pa-sm"
       :class="{ 'flex-center': $q.screen.lt.md }">
-      <div class="text-h5">
-        Seja Bem-vindo
+      <h6 class="no-margin">
+        Seja bem vindo
         <q-separator color="main-primary"
-          style="height: 0.12rem;" />
-      </div>
+          size="0.12rem" />
+      </h6>
     </div>
-    <div class="row">
-      <SectionDependents class="col-md-9 col-xs-12" />
-      <SidebarActions class="col-md-3 col-xs-12"
-        :class="{ 'order-first': $q.screen.lt.md }" />
+    <div class="row"
+      :class="$q.screen.gt.sm ? 'justify-between no-wrap' : 'flex flex-center'">
+      <Dependents />
+      <SidebarActions :class="{ 'order-first': $q.screen.lt.md }" />
     </div>
   </q-page>
 </template>
 
 <script>
 import { defineComponent } from 'vue'
-import SectionDependents from 'src/components/app/SectionDependents.vue'
-import SidebarActions from 'src/components/app/SidebarActions.vue'
+import Dependents from 'src/components/app/responsibles/Dependents.vue'
+import SidebarActions from 'src/components/app/common/SidebarActions.vue'
 
 export default defineComponent({
   name: 'ResponsibleViewPage',
   components: {
-    SectionDependents,
+    Dependents,
     SidebarActions
   }
 })

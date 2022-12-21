@@ -1,16 +1,16 @@
 <template>
   <q-responsive :ratio="16 / 6">
-    <q-carousel animated
-      v-model="slide"
+    <q-carousel v-model="slide"
+      animated
       control-color="black"
       navigation
       infinite
-      :autoplay="autoplay"
       arrows
       transition-prev="slide-right"
       transition-next="slide-left"
       @mouseenter="autoplay = false"
-      @mouseleave="autoplay = true">
+      @mouseleave="autoplay = true"
+      :autoplay="autoplay">
       <q-carousel-slide v-for="(item, index) in slides"
         :key="index"
         :name="index"
@@ -23,7 +23,7 @@
 import { defineComponent, ref } from 'vue'
 
 export default defineComponent({
-  name: 'CustomCarousel',
+  name: 'PortalCarousel',
   props: {
     slides: Array
   },

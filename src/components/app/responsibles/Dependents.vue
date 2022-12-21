@@ -5,36 +5,34 @@
       v-for="(dependent, index) in store.userClient.dependents"
       :key="index"
       v-show="dependent.accounts.length">
-      <div style="border: 0.15rem solid var(--orange); width: 200px;"
+      <div style="border: 0.15rem solid var(--orange); width: 300px;"
         class="column flex-center rounded-borders q-pa-sm"
         v-if="dependent.accounts.length">
         <q-icon name="mdi-baby-face-outline"
-          size="4rem" />
-        <div class="text-subtitle1 text-weight-medium">
+          size="5rem" />
+        <span class="text-weight-medium">
           {{ dependent.people.name }}
-        </div>
-        <div class="text-subtitle2 text-weight-light q-mb-xs">
-          <SelectAccount :dependent="dependent"
-            :account="dependent.accounts[store.dependentIndexes[`index${index}`].accountIndex]"
-            :dependentIndex="index" />
-        </div>
-        <div class="text-caption text-weight-medium q-mb-xs">
+        </span>
+        <SelectAccount :dependent="dependent"
+          :account="dependent.accounts[store.dependentIndexes[`index${index}`].accountIndex]"
+          :dependentIndex="index" />
+        <span class="text-weight-regular q-mb-xs">
           Saldo: {{ floatToMoney(dependent.accounts[store.dependentIndexes[`index${index}`].accountIndex].balance) }}
-        </div>
-        <div class="text-caption text-weight-regular text-main-secondary q-mb-xs">
+        </span>
+        <span class="text-weight-regular text-main-secondary q-mb-xs">
           Consumidor: {{ status(dependent.accounts[store.dependentIndexes[`index${index}`].accountIndex].status) }}
           <q-separator />
-        </div>
-        <div class="text-caption text-weight-light self-start">
+        </span>
+        <span class="text-weight-regular text-center q-mb-xs">
           Nascimento: {{ brDate(dependent.birthdate) }}
-        </div>
-        <div class="text-caption text-weight-light self-start q-mb-xs">
+        </span>
+        <span class="text-weight-regular q-mb-xs">
           Sexo: {{ gender(dependent.gender) }}
-        </div>
-        <q-btn color="main-primary"
+        </span>
+        <q-btn label="Ver detalhes"
+          color="main-primary"
           text-color="white"
-          size="sm"
-          label="Quero saber mais"
+          no-caps
           @click="toGoDependent(dependent, index)" />
       </div>
     </div>
@@ -49,7 +47,7 @@ import SelectAccount from 'components/app/responsibles/SelectAccount.vue'
 import { useRouter } from 'vue-router'
 
 export default defineComponent({
-  name: 'SectionDependents',
+  name: 'ResponsibleDependents',
   components: {
     SelectAccount
   },

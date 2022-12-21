@@ -1,22 +1,26 @@
 <template>
-  <q-page class="px-responsive-xl py-responsive-sm">
-    <InternalContent :content="content" />
+  <q-page class="px-responsive-xl q-py-md">
+    <MainContent :content="main" />
   </q-page>
 </template>
 
 <script>
 import { defineComponent, ref } from 'vue'
-import InternalContent from 'components/portal/others/InternalContent.vue'
+import MainContent from 'components/portal/common/MainContent.vue'
 
 export default defineComponent({
   name: 'ToParentsPage',
   components: {
-    InternalContent
+    MainContent
   },
   setup () {
-    const content = ref({
+    const main = ref({
       title: {
-        label: 'Vantagens para pais e filhos'
+        label: 'Vantagens para pais e filhos',
+        selfAlignment: 'self-center',
+        separator: false,
+        separatorColor: 'main-primary',
+        separatorSize: '0.12rem'
       },
       items: [
         {
@@ -64,7 +68,7 @@ export default defineComponent({
       ]
     })
     return {
-      content
+      main
     }
   }
 })

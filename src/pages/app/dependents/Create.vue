@@ -1,11 +1,11 @@
 <template>
-  <q-page class="pa-responsive-md">
+  <q-page>
     <div class="flex q-pa-sm">
-      <div class="text-h5">
+      <h6 class="no-margin">
         Cadastro de consumidor
         <q-separator color="main-primary"
-          style="height: 0.12rem;" />
-      </div>
+          size="0.12rem" />
+      </h6>
     </div>
     <q-form @submit.prevent="handleSubmit"
       class="row q-pa-sm q-col-gutter-xs"
@@ -84,16 +84,19 @@
         lazy-rules="ondemand"
         :rules="[val => (!!val) || 'Turno é obrigatória']" />
 
-      <div class="col-12 flex-center q-gutter-sm"
+      <div class="col-12 flex flex-center"
         :class="$q.screen.lt.md ? 'column' : 'row'">
         <q-btn label="Voltar"
+          class="q-ma-xs"
           :class="{ 'order-last': $q.screen.lt.md }"
           text-color="grey-8"
+          outline
           style="width: 150px;"
           :to="{ name: 'responsible' }" />
 
         <q-btn type="submit"
           label="Confirmar"
+          class="q-ma-xs"
           color="main-primary"
           style="width: 150px;" />
       </div>

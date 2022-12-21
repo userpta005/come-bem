@@ -1,57 +1,68 @@
-<style lang="sass" scoped>
-.my-event
-  position: relative
-  font-size: 12px
-  width: 100%
-  margin: 1px 0 0 0
-  justify-content: center
-  text-overflow: ellipsis
-  overflow: hidden
-  cursor: pointer
+<style lang="scss" scoped>
+.my-event {
+  position: relative;
+  font-size: 12px;
+  width: 100%;
+  margin: 1px 0 0 0;
+  justify-content: center;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  cursor: pointer;
+}
 
-.title
-  position: relative
-  display: flex
-  justify-content: center
-  align-items: center
-  height: 100%
+.title {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
 
-.text-white
-  color: white
+.text-white {
+  color: white;
+}
 
-.bg-blue
-  background: blue
+.bg-blue {
+  background: blue;
+}
 
-.bg-green
-  background: green
+.bg-green {
+  background: green;
+}
 
-.bg-orange
-  background: orange
+.bg-orange {
+  background: orange;
+}
 
-.bg-red
-  background: red
+.bg-red {
+  background: red;
+}
 
-.bg-teal
-  background: teal
+.bg-teal {
+  background: teal;
+}
 
-.bg-grey
-  background: grey
+.bg-grey {
+  background: grey;
+}
 
-.bg-purple
+.bg-purple {
   background: purple
+}
 
-.rounded-border
+.rounded-border {
   border-radius: 2px
+}
 </style>
 
 <template>
-  <div class="subcontent">
+  <div class="subcontent q-pa-sm">
     <!-- <navigation-bar @today="onToday"
       @prev="onPrev"
       @next="onNext" /> -->
 
     <div class="row justify-center">
-      <div style="display: flex; max-width: 800px; width: 100%;">
+      <div style="display: flex; width: 100%;">
         <q-calendar-month ref="calendar"
           v-model="selectedDate"
           animated

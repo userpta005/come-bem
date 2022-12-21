@@ -31,7 +31,6 @@
     </q-header>
 
     <q-drawer v-model="leftDrawerOpen"
-      width="200"
       show-if-above
       bordered
       class="bg-main-secondary">
@@ -48,7 +47,7 @@
     </q-drawer>
 
     <q-page-container>
-      <router-view />
+      <router-view class="pa-responsive-sm" />
     </q-page-container>
   </q-layout>
 </template>
@@ -56,15 +55,15 @@
 <script>
 import { defineComponent, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useQuasar } from 'quasar'
+import { LocalStorage, SessionStorage, useQuasar } from 'quasar'
 import notify from 'src/composables/notify'
-import EssentialLink from 'src/components/app/EssentialLink.vue'
+import EssentialLink from 'src/components/app/others/EssentialLink.vue'
 import useStorageStore from 'src/stores/storage'
 
 const linksList = [
   {
     title: 'Painel',
-    caption: '',
+    caption: null,
     icon: 'mdi-home',
     routeName: 'dashboard'
   }
@@ -72,14 +71,13 @@ const linksList = [
 
 export default defineComponent({
   name: 'MainLayout',
-
   components: {
     EssentialLink
   },
 
   setup () {
-    const $q = useQuasar()
     const { notifyError, notifySuccess } = notify()
+    const $q = useQuasar()
     const store = useStorageStore()
     const router = useRouter()
     const leftDrawerOpen = ref(false)
@@ -96,7 +94,11 @@ export default defineComponent({
           notifySuccess(message)
           router.push({ name: 'login' })
         } catch (error) {
+          store.$reset()
+          LocalStorage.clear()
+          SessionStorage.clear()
           notifyError(error)
+          router.push({ name: 'login' })
         }
       })
     }

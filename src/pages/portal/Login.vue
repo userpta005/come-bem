@@ -1,66 +1,79 @@
 <template>
-  <q-page style="min-height: auto; height: auto;">
-    <div class="row">
-      <div class="col-md-6 col-xs-12 pa-responsive-lg">
-        <div class="flex flex-center q-mb-md">
+  <q-page style="min-height: auto; height: auto;"
+    class="row">
+    <div class="col-md-6 col-xs-12 px-responsive-xl q-py-md flex flex-center">
+      <div style="width: 100%;">
+        <div class="flex flex-center">
           <img src="imgs/logo-vertical.png"
-            style="max-height: 100px" />
+            class="q-pa-md"
+            style="max-height: 180px" />
         </div>
-        <p class="text-body1 text-center">
+        <p class="text-center">
           Informe seus dados abaixo.
         </p>
-        <q-form @submit.prevent="handleSubmit"
-          class="q-col-gutter-sm">
-
+        <q-form @submit.prevent="handleSubmit">
           <q-input label="Email"
+            class="q-pa-md"
             outlined
             clearable
             type="email"
             lazy-rules="ondemand"
             v-model="form.email"
             :rules="[
-              val => (val && val.length > 0) || 'Email é obrigatório',
+              val => (!!val && val.length > 0) || 'Email é obrigatório',
               val => (val.length <= 100) || 'Máximo 100 caracteres !',
             ]" />
 
           <q-input label="Password"
+            :type="isPwd ? 'password' : 'text'"
+            class="q-pa-md"
             outlined
             clearable
-            type="password"
             lazy-rules="ondemand"
             v-model="form.password"
             :rules="[
-              val => (val && val.length > 0) || 'Senha é obrigatório',
+              val => (!!val && val.length > 0) || 'Senha é obrigatório',
               val => (val.length <= 100) || 'Máximo 100 caracteres !',
-            ]" />
+            ]">
+            <template v-slot:append>
+              <q-icon :name="isPwd ? 'visibility_off' : 'visibility'"
+                class="cursor-pointer"
+                @click="isPwd = !isPwd" />
+            </template>
+          </q-input>
 
           <q-checkbox v-model="form.remember_me"
+            class="q-pa-md"
             label="Lembrar-me" />
 
-          <div class="col-12 column items-center q-gutter-sm">
+          <div class="col-12 column flex-center">
             <q-btn type="submit"
               label="Entrar"
               color="main-primary"
+              no-caps
+              class="q-ma-sm"
               style="width: 150px;" />
 
-            <q-btn label="Criar Cadastro"
+            <q-btn label="Cadastre-se"
               text-color="grey-8"
+              outline
+              no-caps
+              class="q-ma-sm"
               style="width: 150px;"
               :to="{ name: 'register' }" />
           </div>
         </q-form>
       </div>
-      <div class="col-md-6 col-xs-12 flex flex-center"
-        v-if="$q.screen.gt.sm">
-        <q-img src="imgs/28920.jpg"
-          style="max-height: 100vh;" />
-      </div>
     </div>
+    <q-img src="imgs/28920.jpg"
+      class="col-6"
+      style="height: 80vh;"
+      v-if="$q.screen.gt.sm" />
   </q-page>
 </template>
 
 <script>
-import { defineComponent, reactive } from 'vue'
+import { defineComponent, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import notify from 'src/composables/notify'
 import useStorageStore from 'src/stores/storage'
@@ -71,9 +84,10 @@ export default defineComponent({
     const { notifySuccess, notifyError } = notify()
     const router = useRouter()
     const store = useStorageStore()
+    const isPwd = ref(true)
     const form = reactive({
-      email: '',
-      password: '',
+      email: null,
+      password: null,
       remember_me: false
     })
     const handleSubmit = async () => {
@@ -86,6 +100,7 @@ export default defineComponent({
       }
     }
     return {
+      isPwd,
       form,
       handleSubmit
     }

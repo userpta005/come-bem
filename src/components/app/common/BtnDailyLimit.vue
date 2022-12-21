@@ -1,21 +1,21 @@
 <template>
   <q-btn label="Limite diário"
-    size="sm"
-    class="bg-main-quaternary q-mb-sm"
+    class="bg-main-quaternary q-ma-sm"
     text-color="white"
+    no-caps
     :disable="store.disableButtons"
     @click="prompt = true" />
 
   <q-dialog @hide="clearInputs"
     v-model="prompt"
     persistent>
-    <q-card class="q-pa-md"
+    <q-card class="q-pa-xs"
       style="min-width: 300px; max-width: 500px">
       <q-card-section>
-        <div class="text-h6 text-center">Limite diário</div>
+        <h6 class="no-margin text-center">Limite diário</h6>
       </q-card-section>
 
-      <q-card-section class="q-pt-none">
+      <q-card-section class="text-center q-pt-none">
         Adicione o limite diário para este consumidor:
       </q-card-section>
 
@@ -42,11 +42,13 @@
           <q-btn label="Sair"
             text-color="grey-8"
             outline
-            v-close-popup />
+            v-close-popup
+            style="width: 100px;" />
 
           <q-btn type="submit"
             label="Confirmar"
-            color="main-primary" />
+            color="main-primary"
+            style="width: 100px;" />
         </q-card-actions>
       </q-form>
     </q-card>

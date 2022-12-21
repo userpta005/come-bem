@@ -2,11 +2,9 @@
   <q-btn-dropdown :label="store.account.store.people.name"
     flat
     dense
-    size="0.8rem"
     no-caps
     align="left"
-    text-color="grey-8"
-    class="no-padding">
+    class="text-weight-regular no-padding">
     <q-list dense>
       <q-item clickable
         v-close-popup

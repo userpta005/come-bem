@@ -1,14 +1,15 @@
 <template>
-  <q-page class="pa-responsive-md">
+  <q-page>
     <div class="flex q-pa-sm">
-      <div class="text-h5">
+      <h6 class="no-margin">
         Escolha seu perfil
         <q-separator color="main-primary"
-          style="height: 0.12rem;" />
-      </div>
+          size="0.12rem" />
+      </h6>
     </div>
     <q-btn flat
       class="q-pa-sm"
+      no-caps
       :disable="store.isDependent && !store.isResponsibleDependent"
       :to="responsibleRoute">
       <div class="column flex-center">
@@ -19,6 +20,7 @@
     </q-btn>
     <q-btn flat
       class="q-pa-sm"
+      no-caps
       :disable="store.isResponsible && !store.isResponsibleDependent"
       :to="dependentRoute">
       <div class="column flex-center">
@@ -50,7 +52,13 @@ export default defineComponent({
     const dependentRoute = ref({ name: 'dashboard' })
     if (store.isDependent || store.isResponsibleDependent) {
       store.dependent = store.userDependent
+      store.dependentId = store.dependent.id
+      store.accounts = store.dependent.accounts
       store.account = store.dependent.accounts[0]
+      store.accountId = store.account.id
+      store.hasUser = !!store.dependent.people.user
+      store.disableButtons = parseInt(store.account.status) === 2
+      store.app_token = store.account.store.app_token
       dependentRoute.value = {
         name: 'dependent',
         params: { dependent: store.dependent.id, account: store.account.id }

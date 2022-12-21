@@ -1,24 +1,24 @@
 <template>
-  <div class="row">
-    <div class="col-md-3 col-xs-12 row pa-responsive-xs"
+  <artcile class="row">
+    <div class="col-md-3 col-sm-6 col-xs-12 row no-wrap"
       v-for="(item, index)  in content"
       :key="index">
-      <div class="col-2 flex flex-center">
+      <div class="col-auto flex flex-center q-pa-sm">
         <q-icon :name="item.iconName"
           :size="item.iconSize" />
       </div>
-      <div class="col-10 flex items-center pa-responsive-xs">
-        <div class="text-body1">{{ item.text }}</div>
+      <div class="col-shrink flex items-center q-pa-sm">
+        <span>{{ item.text }}</span>
       </div>
     </div>
-  </div>
+  </artcile>
 </template>
 
 <script>
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'InternalContentTop',
+  name: 'ArticleContent',
   props: {
     content: {
       type: Array

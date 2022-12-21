@@ -1,20 +1,21 @@
 <template>
-  <q-page style="min-height: auto; height: auto;">
-    <div class="row">
-      <div class="col-md-6 col-xs-12 pa-responsive-lg">
-        <p class="text-h5 text-weight-bold text-main-tertiary text-center">
+  <q-page style="min-height: auto; height: auto;"
+    class="row">
+    <div class="col-md-6 col-xs-12 px-responsive-xl q-py-md flex flex-center">
+      <div style="width: 100%;">
+        <h6 class="no-margin text-weight-bold text-main-tertiary text-center">
           Cadastro para ativação
-        </p>
-        <p class="text-body1">
+        </h6>
+        <p class="q-mt-md text-center">
           A equipe do Lanche Bem está pronta para atender e ajudar no uso dos nossos serviços.
         </p>
-        <p class="text-body1">
+        <p class="text-center">
           Para que a ativação seja feita, preencha os campos abaixo.
         </p>
         <q-form @submit.prevent="handleSubmit"
-          class="row q-col-gutter-sm">
+          class="row">
           <q-input label="Nome completo"
-            class="col-12"
+            class="col-12 q-pa-md"
             outlined
             clearable
             lazy-rules="ondemand"
@@ -25,7 +26,7 @@
             ]" />
 
           <q-input label="Email"
-            class="col-12"
+            class="col-12 q-pa-md"
             outlined
             clearable
             type="email"
@@ -37,70 +38,70 @@
             ]" />
 
           <q-input label="Telefone"
-            class="col-md-6 col-xs-12"
+            class="col-md-6 col-xs-12 q-pa-md"
             outlined
             clearable
-            v-model="form.phone"
-            mask="(##) ##### - ####"
             fill-mask
+            mask="(##) ##### - ####"
             lazy-rules="ondemand"
+            v-model="form.phone"
             :rules="[val => (!!val && val.length > 0) || 'Telefone é obrigatório']" />
 
           <q-input label="Dt. de nascimento"
+            class="col-md-6 col-xs-12 q-pa-md"
             stack-label
-            v-model="form.birthdate"
             type="date"
-            class="col-md-6 col-xs-12"
             outlined
             clearable
             lazy-rules="ondemand"
+            v-model="form.birthdate"
             :rules="[val => (!!val && val.length > 0) || 'Dt. de nascimento é obrigatória']" />
 
-          <SelectCity class="col-md-6 col-xs-12"
+          <SelectCity class="col-md-6 col-xs-12 q-pa-md"
             v-model="form.city_id" />
 
-          <div class="col-md-6 col-xs-12 row justify-center q-col-gutter-x-sm">
-            <div>Você é:</div>
+          <SelectStore class="col-md-6 col-xs-12 q-pa-md"
+            v-model="form.store_id" />
+
+          <div class="col-12 flex flex-center">
+            <div class="q-pa-md">Você é:</div>
             <q-option-group type="radio"
               dense
               :options="[{ label: 'Pai/Tutor', value: 1, }, { label: 'Consumidor/Filho', value: 2 }]"
               v-model="form.type" />
           </div>
 
-          <SelectStore class="col-md-6 col-xs-12"
-            v-model="form.store_id" />
-
           <q-field :value="form.terms"
+            class="col-12 q-pa-md"
             borderless
-            dense
-            class="col-12">
+            dense>
             <template v-slot:control>
               <q-checkbox v-model="form.terms"
                 label="Confirmo que li e estou de acordo com os termos de uso e a política de privacidade" />
             </template>
           </q-field>
 
-          <div class="col-12 flex-center q-gutter-sm"
-            :class="$q.screen.lt.md ? 'column' : 'row'">
+          <div class="col-12 flex flex-center">
             <q-btn label="Voltar"
-              :class="{ 'order-last': $q.screen.lt.md }"
+              class="q-ma-sm"
               text-color="grey-8"
+              outline
               style="width: 150px;"
               :to="{ name: 'login' }" />
 
             <q-btn type="submit"
               label="Confirmar"
+              class="q-ma-sm"
               color="main-primary"
               style="width: 150px;" />
           </div>
         </q-form>
       </div>
-      <div class="col-md-6 col-xs-12 flex flex-center"
-        v-if="$q.screen.gt.sm">
-        <q-img src="imgs/31094449_bp6l_agt0_220810.jpg"
-          style="max-height: 100vh;" />
-      </div>
     </div>
+    <q-img src="imgs/31094449_bp6l_agt0_220810.jpg"
+      class="col-6"
+      style="max-height: 80vh;"
+      v-if="$q.screen.gt.sm" />
   </q-page>
 </template>
 

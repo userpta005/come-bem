@@ -1,53 +1,50 @@
 <template>
   <div class="row">
-    <div class="col-12 flex"
-      :class="content.title.justifyContent ?? 'justify-center'">
-      <div class="text-h5 text-weight-bold text-main-tertiary text-center pa-responsive-md">
-        {{ content.title.label }}
-        <q-separator :color="content.title.separatorColor"
-          :size="content.title.separatorSize"
-          v-if="content.title.separator" />
-      </div>
-    </div>
+    <h6 class="no-margin text-weight-bold text-main-tertiary q-py-md"
+      :class="content.title.selfAlignment ?? 'self-center'">
+      {{ content.title.label }}
+      <q-separator :color="content.title.separatorColor"
+        :size="content.title.separatorSize"
+        v-if="content.title.separator" />
+    </h6>
     <div class="col-12">
       <q-carousel v-model="slide"
         animated
         padding
-        control-color="black"
         navigation
         infinite
-        :autoplay="autoplay"
-        arrows
+        control-color="black"
         transition-prev="slide-right"
         transition-next="slide-left"
         @mouseenter="autoplay = false"
-        @mouseleave="autoplay = true">
+        @mouseleave="autoplay = false"
+        :autoplay="false">
         <q-carousel-slide v-for="(slides, index) in content.items"
           :key="index"
           :name="index">
-
           <div class="row no-wrap fit">
-            <div class="col-xs-12 pa-responsive-xs"
-              style="min-width: 230px;"
+            <div class="q-pa-sm"
+              style="min-width: 250px;"
               :class="`col-md-${12 / slides.slice(0, 4).length}`"
               v-for="(item, index) in slides.slice(0, 4)"
               :key="index">
 
               <div class="column rounded-borders fit"
-                :style="item.border === false ? '' : 'border: 0.15rem solid var(--orange)'">
+                :style="!item.border || 'border: 0.15rem solid var(--orange)'">
                 <div :class="item.title ? 'col-6' : 'col-12'">
                   <q-img :src="item.img_url"
-                    class="fit rounded-borders"
-                    :ratio="(1 / 2)" />
+                    class="fit rounded-borders" />
                 </div>
                 <div class="col-6 column"
                   v-if="item.title">
-                  <div class="col-grow text-subtitle2 text-center q-pa-xs flex flex-center">{{ item.title }}
-                  </div>
-                  <div class="col-shrink text-caption text-center q-pa-xs">{{ item.description }}</div>
+                  <span class="col text-subtitle2 text-center q-pa-xs flex flex-center">
+                    {{ item.title }}
+                  </span>
+                  <span class="col-shrink text-caption text-center q-pa-xs">
+                    {{ item.description }}
+                  </span>
                 </div>
               </div>
-
             </div>
           </div>
 

@@ -1,34 +1,3 @@
-@media (min-width: 1919.99px) {
-  html {
-    zoom: 1.6
-  }
-}
-
-@media (min-width: 1440px) and (max-width: 1919.99px) {
-  html {
-    zoom: 1.5
-  }
-}
-
-@media (min-width: 1024px) and (max-width: 1439.99px) {
-  html {
-    zoom: 1.4
-  }
-}
-
-@media (min-width: 600px) and (max-width: 1023.99px) {
-  html {
-    zoom: 1.3
-  }
-}
-
-@media (min-width: 0px) and (max-width: 599.99px) {
-  html {
-    zoom: 1.2
-  }
-}
-
-
 :root {
   --orange: #FF7E07;
   --medium-dark-cyan-green: #008746;
@@ -162,15 +131,15 @@
   color: var(--yellow);
 }
 
-$xl: 16px;
+$xl: 15px;
 $lg: 12px;
-$md: 8px;
-$sm: 4px;
-$xs: 2px;
-$n-xl: 16;
-$n-lg: 8;
-$n-md: 4;
-$n-sm: 2;
+$md: 9px;
+$sm: 6px;
+$xs: 3px;
+$n-xl: 12;
+$n-lg: 9;
+$n-md: 6;
+$n-sm: 3;
 $n-xs: 1;
 
 @media (min-width: 1919.99px) {

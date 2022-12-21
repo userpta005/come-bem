@@ -1,11 +1,10 @@
 <template>
   <q-page>
-    <div class="px-responsive-xl py-responsive-md">
-      <InternalContentTop class="pa-responsive-md"
-        :content="contentTop" />
-      <InternalContent :content="content" />
-      <InternalContentBottom :content="contentBottom" />
-      <InternalContentBottom :content="contentBottomSecundary" />
+    <div class="px-responsive-xl q-py-md">
+      <ArticleContent :content="article" />
+      <MainContent :content="main" />
+      <SectionContent :content="topSectionContent" />
+      <SectionContent :content="bottomSectionContent" />
     </div>
     <NewsLetter />
   </q-page>
@@ -13,21 +12,21 @@
 
 <script>
 import { defineComponent, ref } from 'vue'
-import InternalContentTop from 'src/components/portal/others/InternalContentTop.vue'
-import InternalContent from 'components/portal/others/InternalContent.vue'
-import InternalContentBottom from 'components/portal/others/InternalContentBottom.vue'
-import NewsLetter from 'components/portal/others/NewsLetter.vue'
+import ArticleContent from 'src/components/portal/common/ArticleContent.vue'
+import MainContent from 'src/components/portal/common/MainContent.vue'
+import SectionContent from 'src/components/portal/common/SectionContent.vue'
+import NewsLetter from 'components/portal/common/NewsLetter.vue'
 
 export default defineComponent({
   name: 'HomePage',
   components: {
-    InternalContentTop,
-    InternalContent,
-    InternalContentBottom,
+    ArticleContent,
+    MainContent,
+    SectionContent,
     NewsLetter
   },
   setup () {
-    const contentTop = ref([
+    const article = ref([
       {
         iconName: 'mdi-cart-check',
         iconSize: '2rem',
@@ -49,12 +48,13 @@ export default defineComponent({
         text: 'Compra segura com pulseira ou cartão personalizado!'
       }
     ])
-    const content = ref({
+    const main = ref({
       title: {
         label: 'Como funciona?',
-        justifyContent: 'justify-start',
+        selfAlignment: 'self-start',
         separator: true,
-        separatorColor: 'main-primary'
+        separatorColor: 'main-primary',
+        separatorSize: '0.12rem'
       },
       items: [
         {
@@ -87,10 +87,10 @@ export default defineComponent({
         }
       ]
     })
-    const contentBottom = ref({
+    const topSectionContent = ref({
       title: {
         label: 'Depoimentos',
-        justifyContent: 'justify-start',
+        selfAlignment: 'self-start',
         separator: true,
         separatorColor: 'main-primary',
         separatorSize: '0.12rem'
@@ -100,52 +100,60 @@ export default defineComponent({
           {
             img_url: 'https://cdn.quasar.dev/img/mountains.jpg',
             title: '"A melhor escolha que a cantina já fez"',
-            description: 'Bárbara Costa - Mãe, 25 anos.'
+            description: 'Bárbara Costa - Mãe, 25 anos.',
+            border: true
           },
           {
             img_url: 'https://cdn.quasar.dev/img/parallax1.jpg',
             title: '"Não preciso mais me preocupar com a alimentação dos meus filhos, graças ao lanche bem"',
-            description: 'Geovana Silva - Mãe, 38 anos.'
+            description: 'Geovana Silva - Mãe, 38 anos.',
+            border: true
           },
           {
             img_url: 'https://cdn.quasar.dev/img/parallax2.jpg',
             title: '"Fico bem mais tranquilo com a alimentação do meu filho agora"',
-            description: 'Jorge Rodrigues - Pai, 40 anos.'
+            description: 'Jorge Rodrigues - Pai, 40 anos.',
+            border: true
           },
           {
             img_url: 'https://cdn.quasar.dev/img/quasar.jpg',
             title: '"Posso controlar a alimentação do meu filho de casa!"',
-            description: 'Rodrigo Barros - Pai, 32 anos.'
+            description: 'Rodrigo Barros - Pai, 32 anos.',
+            border: true
           }
         ],
         [
           {
             img_url: 'https://cdn.quasar.dev/img/cat.jpg',
             title: '"A melhor escolha que a cantina já fez"',
-            description: 'Bárbara Costa - Mãe, 25 anos.'
+            description: 'Bárbara Costa - Mãe, 25 anos.',
+            border: true
           },
           {
             img_url: 'https://cdn.quasar.dev/img/linux-avatar.png',
             title: '"Não preciso mais me preocupar com a alimentação dos meus filhos, graças ao lanche bem"',
-            description: 'Geovana Silva - Mãe, 38 anos.'
+            description: 'Geovana Silva - Mãe, 38 anos.',
+            border: true
           },
           {
             img_url: 'https://cdn.quasar.dev/img/material.png',
             title: '"Fico bem mais tranquilo com a alimentação do meu filho agora"',
-            description: 'Jorge Rodrigues - Pai, 40 anos.'
+            description: 'Jorge Rodrigues - Pai, 40 anos.',
+            border: true
           },
           {
             img_url: 'https://cdn.quasar.dev/img/donuts.png',
             title: '"Posso controlar a alimentação do meu filho de casa!"',
-            description: 'Rodrigo Barros - Pai, 32 anos.'
+            description: 'Rodrigo Barros - Pai, 32 anos.',
+            border: true
           }
         ]
       ]
     })
-    const contentBottomSecundary = ref({
+    const bottomSectionContent = ref({
       title: {
         label: 'Instagram: Últimos posts',
-        justifyContent: 'justify-start',
+        selfAlignment: 'self-start',
         separator: true,
         separatorColor: 'main-primary',
         separatorSize: '0.12rem'
@@ -182,10 +190,10 @@ export default defineComponent({
       ]
     })
     return {
-      content,
-      contentTop,
-      contentBottom,
-      contentBottomSecundary
+      main,
+      article,
+      topSectionContent,
+      bottomSectionContent
     }
   }
 })
