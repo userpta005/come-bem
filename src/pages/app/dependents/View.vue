@@ -3,7 +3,10 @@
     class="row reverse-wrap justify-center">
     <div class="col-lg col-xs-12 q-ma-sm">
       <DependentHeader />
-      <QCalendar />
+      <QCalendar v-if="store.mainContent === 'QCalendar'" />
+      <LimitProduts v-if="store.mainContent === 'LimitProduts'" />
+      <ConsumptionHistory v-if="store.mainContent === 'ConsumptionHistory'" />
+      <FinancialHistory v-if="store.mainContent === 'FinancialHistory'" />
     </div>
     <SidebarActions />
   </q-page>
@@ -15,18 +18,35 @@ import DependentHeader from 'src/components/app/dependents/DependentHeader.vue'
 import SidebarActions from 'src/components/app/common/SidebarActions.vue'
 import useStorageStore from 'src/stores/storage'
 import QCalendar from 'src/components/app/dependents/QCalendar.vue'
+import LimitProduts from 'src/components/app/dependents/LimitProducts.vue'
+import ConsumptionHistory from 'src/components/app/dependents/ConsumptionHistory.vue'
+import FinancialHistory from 'src/components/app/dependents/FinancialHistory.vue'
+import { useRoute } from 'vue-router'
 
 export default defineComponent({
   name: 'DependentViewPage',
   components: {
     DependentHeader,
     SidebarActions,
-    QCalendar
+    QCalendar,
+    LimitProduts,
+    ConsumptionHistory,
+    FinancialHistory
   },
   setup () {
+    const route = useRoute()
     const store = useStorageStore()
-    store.requestUser()
-    return {}
+
+    const refreshData = async () => {
+      await store.requestUser()
+      store.refreshData(route.params.dependent, route.params.account)
+    }
+
+    refreshData()
+
+    return {
+      store
+    }
   }
 })
 </script>

@@ -6,13 +6,11 @@ const useStorageStore = defineStore('storage', {
     userClient: null,
     userDependent: null,
     dependent: null,
-    dependentId: null,
-    accounts: null,
     account: null,
-    accountId: null,
     hasUser: false,
-    dependentIndexes: {},
     disableButtons: false,
+    dependentIndexes: {},
+    mainContent: 'QCalendar',
     app_token: null,
     token: null
   }),
@@ -55,6 +53,10 @@ const useStorageStore = defineStore('storage', {
       return this.userClient.dependents.find((value) => parseInt(value.id) === parseInt(dependentId))
     },
 
+    getAccountById (accountId) {
+      return this.dependent.accounts.find((value) => parseInt(value.id) === parseInt(accountId))
+    },
+
     getDependenIndexById (dependentId) {
       return this.userClient.dependents.findIndex((value) => parseInt(value.id) === parseInt(dependentId))
     },
@@ -69,6 +71,14 @@ const useStorageStore = defineStore('storage', {
           }
         })
       }
+    },
+
+    refreshData (dependentId, accountId) {
+      this.dependent = this.getDependentById(dependentId)
+      this.account = this.getAccountById(accountId)
+      this.hasUser = !!this.dependent.people.user
+      this.disableButtons = parseInt(this.account.status) === 2
+      this.app_token = this.account.store.app_token
     },
 
     async requestUser () {
@@ -93,13 +103,11 @@ const useStorageStore = defineStore('storage', {
       this.userClient = null
       this.userDependent = null
       this.dependent = null
-      this.dependentId = null
-      this.accounts = null
       this.account = null
-      this.accountId = null
       this.hasUser = false
-      this.dependentIndexes = {}
       this.disableButtons = false
+      this.dependentIndexes = {}
+      this.mainContent = 'QCalendar'
       this.app_token = null
       this.token = null
       return data.message

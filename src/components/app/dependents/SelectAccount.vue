@@ -8,9 +8,9 @@
     <q-list dense>
       <q-item clickable
         v-close-popup
-        v-for="(item, index) in store.accounts"
+        v-for="(item, index) in store.dependent.accounts"
         :key="index"
-        :active="parseInt(store.accountId) === parseInt(item.id)"
+        :active="parseInt(store.account.id) === parseInt(item.id)"
         @click="onItemClick(item, index)">
         <q-item-section>
           <q-item-label>{{ item.store.people.name }}</q-item-label>
@@ -34,9 +34,9 @@ export default defineComponent({
 
     const onItemClick = (item, index) => {
       store.account = item
-      store.accountId = store.account.id
-      store.dependentIndexes[`index${store.getDependenIndexById(store.dependentId)}`].accountIndex = index
+      store.hasUser = !!store.dependent.people.user
       store.disableButtons = parseInt(store.account.status) === 2
+      store.dependentIndexes[`index${store.getDependenIndexById(store.dependent.id)}`].accountIndex = index
       store.app_token = store.account.store.app_token
       router.replace({ name: route.name, params: { account: item.id } })
     }

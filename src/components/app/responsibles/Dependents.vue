@@ -65,10 +65,7 @@ export default defineComponent({
 
     const toGoDependent = (dependent, index) => {
       store.dependent = dependent
-      store.dependentId = store.dependent.id
-      store.accounts = store.dependent.accounts
       store.account = store.dependent.accounts[store.dependentIndexes[`index${index}`].accountIndex]
-      store.accountId = store.account.id
       store.hasUser = !!store.dependent.people.user
       store.disableButtons = parseInt(store.account.status) === 2
       store.app_token = store.account.store.app_token

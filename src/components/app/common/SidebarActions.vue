@@ -23,6 +23,7 @@
         class="bg-main-quaternary q-ma-sm"
         text-color="white"
         no-caps
+        @click="store.mainContent = 'LimitProduts'"
         :disable="store.disableButtons"
         v-if="['responsible-dependent', 'dependent'].includes($route.name)" />
 
@@ -36,6 +37,7 @@
         class="bg-main-quaternary q-ma-sm"
         text-color="white"
         no-caps
+        @click="store.mainContent = 'ConsumptionHistory'"
         :disable="store.disableButtons"
         v-if="['responsible-dependent', 'dependent'].includes($route.name)" />
 
@@ -43,6 +45,7 @@
         class="bg-main-quaternary q-ma-sm"
         text-color="white"
         no-caps
+        @click="store.mainContent = 'FinancialHistory'"
         :disable="store.disableButtons"
         v-if="['responsible-dependent', 'dependent'].includes($route.name)" />
 

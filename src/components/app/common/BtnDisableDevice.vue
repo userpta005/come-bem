@@ -56,18 +56,26 @@
 import { defineComponent, ref } from 'vue'
 import useStorageStore from 'src/stores/storage'
 import notify from 'src/composables/notify'
+import { useRoute } from 'vue-router'
 
 export default defineComponent({
   name: 'BtnDisableDevice',
   setup () {
     const { notifySuccess, notifyError } = notify()
+    const route = useRoute()
     const store = useStorageStore()
     const prompt = ref(false)
 
     const handleSubmit = async () => {
       try {
-        const data = await store.axios({ method: 'put', url: '/api/v1/cards/block', data: { cards: store.account.cards } })
+        const data = await store.axios({
+          method: 'put',
+          url: '/api/v1/cards/block',
+          data: { cards: store.account.cards }
+        })
         prompt.value = false
+        store.setUser(data.data)
+        store.refreshData(route.params.dependent, route.params.account)
         notifySuccess(data.message)
       } catch (error) {
         notifyError(error)

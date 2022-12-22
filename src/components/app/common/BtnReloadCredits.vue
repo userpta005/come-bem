@@ -61,11 +61,14 @@
 import { defineComponent, ref, reactive } from 'vue'
 import notify from 'src/composables/notify'
 import useStorageStore from 'src/stores/storage'
+import { useRoute } from 'vue-router'
 
 export default defineComponent({
   name: 'BtnReloadCredits',
   setup () {
     const { notifySuccess, notifyError } = notify()
+    const route = useRoute()
+    console.log(route.name)
     const store = useStorageStore()
     const prompt = ref(false)
     const paymentMethods = ref([])
@@ -95,10 +98,12 @@ export default defineComponent({
       try {
         const data = await store.axios({
           method: 'post',
-          url: `/api/v1/accounts/${store.accountId}/credit-purchases`,
+          url: `/api/v1/accounts/${store.account.id}/credit-purchases`,
           data: form
         })
         prompt.value = false
+        store.setUser(data.data)
+        store.refreshData(route.params.dependent, route.params.account)
         notifySuccess(data.message)
       } catch (error) {
         notifyError(error)

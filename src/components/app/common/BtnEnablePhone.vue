@@ -81,11 +81,13 @@
 import { defineComponent, ref, reactive } from 'vue'
 import notify from 'src/composables/notify'
 import useStorageStore from 'src/stores/storage'
+import { useRoute } from 'vue-router'
 
 export default defineComponent({
   name: 'BtnEnablePhone',
   setup () {
     const { notifySuccess, notifyError } = notify()
+    const route = useRoute()
     const store = useStorageStore()
     const prompt = ref(false)
 
@@ -105,11 +107,12 @@ export default defineComponent({
       try {
         const data = await store.axios({
           method: 'post',
-          url: `/api/v1/dependents/${store.dependentId}/create-user`,
+          url: `/api/v1/dependents/${store.dependent.id}/create-user`,
           data: form
         })
-        store.hasUser = true
         prompt.value = false
+        store.setUser(data.data)
+        store.refreshData(route.params.dependent, route.params.account)
         notifySuccess(data.message)
       } catch (error) {
         notifyError(error)

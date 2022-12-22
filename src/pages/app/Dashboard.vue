@@ -52,10 +52,7 @@ export default defineComponent({
     const dependentRoute = ref({ name: 'dashboard' })
     if (store.isDependent || store.isResponsibleDependent) {
       store.dependent = store.userDependent
-      store.dependentId = store.dependent.id
-      store.accounts = store.dependent.accounts
       store.account = store.dependent.accounts[0]
-      store.accountId = store.account.id
       store.hasUser = !!store.dependent.people.user
       store.disableButtons = parseInt(store.account.status) === 2
       store.app_token = store.account.store.app_token

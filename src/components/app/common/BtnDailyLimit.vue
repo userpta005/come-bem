@@ -59,11 +59,13 @@
 import { defineComponent, ref, reactive } from 'vue'
 import notify from 'src/composables/notify'
 import useStorageStore from 'src/stores/storage'
+import { useRoute } from 'vue-router'
 
 export default defineComponent({
   name: 'BtnDailyLimit',
   setup () {
     const { notifySuccess, notifyError } = notify()
+    const route = useRoute()
     const store = useStorageStore()
     const prompt = ref(false)
     const form = reactive({ daily_limit: 0 })
@@ -74,11 +76,12 @@ export default defineComponent({
       try {
         const data = await store.axios({
           method: 'put',
-          url: `/api/v1/accounts/${store.accountId}`,
+          url: `/api/v1/accounts/${store.account.id}`,
           data: form
         })
-        store.account.daily_limit = form.daily_limit
         prompt.value = false
+        store.setUser(data.data)
+        store.refreshData(route.params.dependent, route.params.account)
         notifySuccess(data.message)
       } catch (error) {
         notifyError(error)
