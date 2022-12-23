@@ -3,10 +3,10 @@
     class="row reverse-wrap items-end justify-center">
     <div class="col-lg col-xs-12 px-responsive-sm">
       <DependentHeader />
-      <QCalendar v-if="store.mainContent === 'QCalendar'" />
-      <LimitProduts v-if="store.mainContent === 'LimitProduts'" />
-      <ConsumptionHistory v-if="store.mainContent === 'ConsumptionHistory'" />
-      <FinancialHistory v-if="store.mainContent === 'FinancialHistory'" />
+      <QCalendar v-if="store.mainContent === 'QCalendar' && !store.disableButtons" />
+      <LimitProduts v-if="store.mainContent === 'LimitProduts' && !store.disableButtons" />
+      <ConsumptionHistory v-if="store.mainContent === 'ConsumptionHistory' && !store.disableButtons" />
+      <FinancialHistory v-if="store.mainContent === 'FinancialHistory' && !store.disableButtons" />
     </div>
     <SidebarActions />
   </q-page>
