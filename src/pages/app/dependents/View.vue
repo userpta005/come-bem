@@ -1,7 +1,7 @@
 <template>
   <q-page style="min-height: auto; height:auto;"
-    class="row reverse-wrap justify-center">
-    <div class="col-lg col-xs-12 q-ma-sm">
+    class="row reverse-wrap items-end justify-center">
+    <div class="col-lg col-xs-12 px-responsive-sm">
       <DependentHeader />
       <QCalendar v-if="store.mainContent === 'QCalendar'" />
       <LimitProduts v-if="store.mainContent === 'LimitProduts'" />

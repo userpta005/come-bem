@@ -68,7 +68,6 @@ export default defineComponent({
   setup () {
     const { notifySuccess, notifyError } = notify()
     const route = useRoute()
-    console.log(route.name)
     const store = useStorageStore()
     const prompt = ref(false)
     const paymentMethods = ref([])

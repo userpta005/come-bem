@@ -6,9 +6,9 @@
       :class="{ 'col-12': $q.screen.lt.md }" />
     <div class="column q-pa-sm"
       :class="{ 'col-12 flex-center': $q.screen.lt.md }">
-      <span class="text-weight-medium q-ma-xs">
+      <h6 class="q-ma-xs">
         {{ store.dependent.people.name }}
-      </span>
+      </h6>
       <SelectAccount class="q-ma-xs" />
       <span class="text-weight-regular q-ma-xs">
         Nascimento: {{ brDate(store.dependent.people.birthdate) }}
@@ -33,7 +33,7 @@
         :true-value="1"
         :false-value="2"
         style="border: 1px solid grey"
-        class="q-ba-xs rounded-borders"
+        class="q-pa-xs rounded-borders"
         :class="{ 'self-start': $q.screen.gt.sm }"
         :color="parseInt(store.account.status) === 1 ? 'green' : 'red'"
         keep-color

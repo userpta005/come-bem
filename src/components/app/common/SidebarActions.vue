@@ -1,9 +1,9 @@
 <template>
   <div style="border: 0.15rem solid var(--orange); min-width: 300px;"
     class="column rounded-borders q-ma-sm"
-    :style="$q.screen.gt.sm ? 'min-height: 50vh' : ''">
+    :style="$q.screen.gt.sm ? 'height:550px;' : ''">
     <div class="col-shrink column q-pa-sm">
-      <h6 class="no-margin text-center">
+      <h6 class="no-margin q-py-sm text-center">
         Ações
         <q-separator color="grey-8"
           size="0.12rem" />
@@ -50,7 +50,7 @@
         v-if="['responsible-dependent', 'dependent'].includes($route.name)" />
 
       <q-btn label="Voltar"
-        class="q-ma-sm"
+        class="q-ma-sm q-mb-lg"
         outline
         no-caps
         :to="{ name: backTo }" />
