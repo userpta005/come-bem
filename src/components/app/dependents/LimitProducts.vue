@@ -47,7 +47,7 @@
           @click="handleRemoveLimitedProduct(limitedProduct.id)" />
       </div>
     </div>
-    <div class="row">
+    <div class="row flex-center">
       <q-btn label="Sair"
         class="rounded-borders q-ma-xs"
         text-color="grey-8"
@@ -71,7 +71,7 @@
 import { defineComponent, ref } from 'vue'
 import useStorageStore from 'src/stores/storage'
 import notify from 'src/composables/notify'
-import { onBeforeRouteUpdate, useRoute } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { floatToMoney } from 'src/utils/helpers'
 
 export default defineComponent({
@@ -114,7 +114,7 @@ export default defineComponent({
     }
 
     const handleAddLimitedProduct = (product) => {
-      const productExists = limitedProducts.value.find(value => parseInt(value.id) === product.id)
+      const productExists = limitedProducts.value.find(value => parseInt(value.id) === parseInt(product.id))
       if (!productExists) {
         limitedProducts.value.push(product)
       }
@@ -141,12 +141,6 @@ export default defineComponent({
 
     handleGetSections()
     handleGetProducts()
-
-    onBeforeRouteUpdate(() => {
-      handleGetSections()
-      handleGetProducts()
-      limitedProducts.value = store.account.limited_products
-    })
 
     return {
       store,

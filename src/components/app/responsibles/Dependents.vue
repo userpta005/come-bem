@@ -68,6 +68,9 @@ export default defineComponent({
       store.account = store.dependent.accounts[store.dependentIndexes[`index${index}`].accountIndex]
       store.hasUser = !!store.dependent.people.user
       store.disableButtons = parseInt(store.account.status) === 2
+      store.mainContent = 'QCalendar'
+      store.purchaseDate = null
+      store.cart = []
       store.app_token = store.account.store.app_token
       router.push({
         name: 'responsible-dependent',

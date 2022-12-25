@@ -16,8 +16,24 @@ export default function notify () {
     })
   }
 
+  const notifyInfo = (message) => {
+    $q.notify({
+      type: 'info',
+      message: message || 'Erro !'
+    })
+  }
+
+  const notifyWarning = (message) => {
+    $q.notify({
+      type: 'warning',
+      message: message || 'Erro !'
+    })
+  }
+
   return {
     notifySuccess,
-    notifyError
+    notifyError,
+    notifyInfo,
+    notifyWarning
   }
 }

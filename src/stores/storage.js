@@ -11,6 +11,8 @@ const useStorageStore = defineStore('storage', {
     disableButtons: false,
     dependentIndexes: {},
     mainContent: 'QCalendar',
+    purchaseDate: null,
+    cart: [],
     app_token: null,
     token: null
   }),
@@ -78,6 +80,9 @@ const useStorageStore = defineStore('storage', {
       this.account = this.getAccountById(accountId)
       this.hasUser = !!this.dependent.people.user
       this.disableButtons = parseInt(this.account.status) === 2
+      this.mainContent = 'QCalendar'
+      this.purchaseDate = null
+      this.cart = []
       this.app_token = this.account.store.app_token
     },
 
@@ -108,6 +113,8 @@ const useStorageStore = defineStore('storage', {
       this.disableButtons = false
       this.dependentIndexes = {}
       this.mainContent = 'QCalendar'
+      this.purchaseDate = null
+      this.cart = []
       this.app_token = null
       this.token = null
       return data.message

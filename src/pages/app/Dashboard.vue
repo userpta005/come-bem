@@ -55,6 +55,9 @@ export default defineComponent({
       store.account = store.dependent.accounts[0]
       store.hasUser = !!store.dependent.people.user
       store.disableButtons = parseInt(store.account.status) === 2
+      store.mainContent = 'QCalendar'
+      store.purchaseDate = null
+      store.cart = []
       store.app_token = store.account.store.app_token
       dependentRoute.value = {
         name: 'dependent',
