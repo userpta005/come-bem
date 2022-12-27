@@ -7,15 +7,23 @@
       </q-card-section>
 
       <q-card-section class="q-pt-none text-center column">
-        <div class="row no-wrap flex-center"
+        <div class="column flex-center"
           v-for="(order, index) in orders"
           :key="index">
-          <h6 class="no-margin text-weight-regular q-pa-xs">{{ order.time.slice(0, 5) }}</h6>
-          <q-icon class="cursor-pointer q-pa-xs"
-            name="mdi-delete"
-            color="red"
-            size="md"
-            @click="handleRemoveOrder(order)" />
+          <div class="column">
+            <div class="row no-wrap">
+              <h6 class="no-margin text-weight-regular q-pa-xs">{{ order.time.slice(0, 5) }}</h6>
+              <q-icon class="cursor-pointer q-pa-xs"
+                name="mdi-delete"
+                color="red"
+                size="md"
+                @click="handleRemoveOrder(order)" />
+            </div>
+            <div class="column items-start">
+              <span class="q-pa-xs" v-for="(item, index) in order.order_items"
+                :key="index">{{ item.product.name }} ({{ parseInt(item.quantity) }}x)</span>
+            </div>
+          </div>
         </div>
       </q-card-section>
 
@@ -46,6 +54,8 @@ export default defineComponent({
     const store = useStorageStore()
     const { notifyError, notifySuccess } = notify()
     const route = useRoute()
+
+    console.log(store.account.orders)
 
     const handleRemoveOrder = async (order) => {
       try {
