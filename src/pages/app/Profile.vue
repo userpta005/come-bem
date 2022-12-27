@@ -41,7 +41,7 @@
           text-color="grey-8"
           outline
           style="width: 150px;"
-          :to="{ name: 'responsible' }" />
+          :to="{ name: 'dashboard' }" />
 
         <q-btn type="submit"
           label="Confirmar"
