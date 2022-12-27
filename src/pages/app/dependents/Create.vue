@@ -149,7 +149,6 @@ export default defineComponent({
           url: `/api/v1/clients/${store.userClient.id}/dependents`,
           data: form
         })
-        store.setUser(data.data)
         notifySuccess(data.message)
         router.push({ name: 'responsible' })
       } catch (error) {

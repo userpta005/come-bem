@@ -20,6 +20,20 @@
           <q-list>
             <q-item clickable
               v-close-popup
+              :to="{ name: 'profile' }">
+              <q-item-section>
+                <q-item-label>Perfil</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item clickable
+              v-close-popup
+              :to="{ name: 'change-password' }">
+              <q-item-section>
+                <q-item-label>Alterar senha</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item clickable
+              v-close-popup
               @click="handleLogout">
               <q-item-section>
                 <q-item-label>Sair</q-item-label>

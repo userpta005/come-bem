@@ -101,7 +101,7 @@ export default defineComponent({
           method: 'get',
           url: `/api/v1/accounts/${store.account.id}/products`
         })
-        products.value = filteredProducts.value = data.data.filter((product) => product.stock && parseInt(product.stock.quantity) > 0)
+        products.value = filteredProducts.value = data.data.filter((product) => (product.stock && parseInt(product.stock.quantity) > 0) && !product.limited_products.length)
       } catch (error) {
         notifyError(error)
       }

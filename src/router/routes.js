@@ -18,6 +18,8 @@ const routes = [
     component: () => import('src/layouts/app/MainLayout.vue'),
     children: [
       { path: '', name: 'dashboard', component: () => import('src/pages/app/Dashboard.vue') },
+      { path: 'change-password', name: 'change-password', component: () => import('src/pages/app/ChangePassword.vue') },
+      { path: 'profile', name: 'profile', component: () => import('src/pages/app/Profile.vue') },
       { path: 'responsible/:responsible', name: 'responsible', component: () => import('src/pages/app/responsibles/View.vue') },
       {
         path: 'responsible/:responsible/dependent/:dependent/account/:account',
