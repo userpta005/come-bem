@@ -55,8 +55,6 @@ export default defineComponent({
     const { notifyError, notifySuccess } = notify()
     const route = useRoute()
 
-    console.log(store.account.orders)
-
     const handleRemoveOrder = async (order) => {
       try {
         const data = await store.axios({
