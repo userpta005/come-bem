@@ -12,11 +12,13 @@
   "dependencies": {
     "@quasar/extras": "^1.0.0",
     "axios": "^0.21.1",
+    "chart.js": "^4.1.1",
     "date-fns": "^2.29.3",
     "pinia": "^2.0.28",
     "pinia-plugin-persistedstate": "^3.0.1",
     "quasar": "^2.6.0",
     "vue": "^3.0.0",
+    "vue-chartjs": "^5.1.0",
     "vue-router": "^4.0.0"
   },
   "devDependencies": {

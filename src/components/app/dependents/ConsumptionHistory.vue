@@ -32,34 +32,41 @@
         <span class="q-pa-sm">Pouco nutritivo</span>
       </div>
     </div>
-    <q-table title="Histórico de consumo: Últimos 30 dias"
-      class="col-12"
-      :columns="columns"
-      :rows="rows"
-      :separator="[{ label: 'None', value: 'none' }]"
-      row-key="id"
-      flat>
-      <template v-slot:body-cell-nutritional_classification="props">
-        <q-td :props="props">
-          <q-badge :color="badgeColor(props.row.nutritional_classification)"
-            style="height:15px; width: 15px;"
-            rounded />
-        </q-td>
-      </template>
-      <template v-slot:bottom-row>
-        <q-tr>
-          <q-td colspan="4">
-            <b>Total:</b>
+    <div class="row col-12">
+      <q-table title="Histórico de consumo: Últimos 30 dias"
+        class="col-md-9 col-xs-12"
+        :columns="columns"
+        :rows="rows"
+        :separator="[{ label: 'None', value: 'none' }]"
+        row-key="id"
+        flat>
+        <template v-slot:body-cell-nutritional_classification="props">
+          <q-td :props="props">
+            <q-badge :color="badgeColor(props.row.nutritional_classification)"
+              style="height:15px; width: 15px;"
+              rounded />
           </q-td>
-          <q-td class="text-right">
-            {{ parseInt(totalQuantity) }}
-          </q-td>
-          <q-td class="text-right">
-            {{ floatToMoney(amount) }}
-          </q-td>
-        </q-tr>
-      </template>
-    </q-table>
+        </template>
+        <template v-slot:bottom-row>
+          <q-tr>
+            <q-td colspan="4">
+              <b>Total:</b>
+            </q-td>
+            <q-td class="text-right">
+              {{ parseInt(totalQuantity) }}
+            </q-td>
+            <q-td class="text-right">
+              {{ floatToMoney(amount) }}
+            </q-td>
+          </q-tr>
+        </template>
+      </q-table>
+      <div class="col-md-3 col-xs-12 flex flex-center">
+        <Pie :data="chartData"
+          :options="{ responsive: true }"
+          style="max-width: 200px; max-height: 200px;"></Pie>
+      </div>
+    </div>
     <q-btn label="Sair"
       class="rounded-borders q-ma-md col-12"
       text-color="grey-8"
@@ -83,9 +90,17 @@
 import { defineComponent, computed } from 'vue'
 import useStorageStore from 'src/stores/storage'
 import { floatToMoney, brDate } from 'src/utils/helpers'
+// eslint-disable-next-line import/namespace
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
+import { Pie } from 'vue-chartjs'
+
+ChartJS.register(ArcElement, Tooltip, Legend)
 
 export default defineComponent({
   name: 'ConsumptionHistory',
+  components: {
+    Pie
+  },
   setup () {
     const store = useStorageStore()
 
@@ -124,6 +139,22 @@ export default defineComponent({
         quantity += parseInt(item.quantity)
       })
       return quantity
+    })
+
+    const formatToChat = computed(() => {
+      const data = [0, 0, 0, 0]
+      rows.value.forEach((item) => {
+        if (parseInt(item.nutritional_classification) === 1) {
+          data[0]++
+        } else if (parseInt(item.nutritional_classification) === 2) {
+          data[3]++
+        } else if (parseInt(item.nutritional_classification) === 3) {
+          data[2]++
+        } else if (parseInt(item.nutritional_classification) === 4) {
+          data[1]++
+        }
+      })
+      return data
     })
 
     const badgeColor = (nutritionalClassification) => {
@@ -185,6 +216,16 @@ export default defineComponent({
         format: (val, row) => floatToMoney(val)
       }
     ]
+
+    const chartData = {
+      datasets: [
+        {
+          backgroundColor: ['grey', 'green', 'yellow', 'red'],
+          data: formatToChat.value
+        }
+      ]
+    }
+
     return {
       store,
       columns,
@@ -192,7 +233,8 @@ export default defineComponent({
       amount,
       totalQuantity,
       floatToMoney,
-      badgeColor
+      badgeColor,
+      chartData
     }
   }
 })
