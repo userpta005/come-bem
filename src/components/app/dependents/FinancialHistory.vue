@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pa-sm column">
+  <div class="column">
     <q-table title="Histórico financeiro: Últimos 30 dias"
       :columns="columns"
       :rows="store.account.account_entries"

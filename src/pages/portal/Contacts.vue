@@ -3,14 +3,14 @@
     class="row">
     <div class="col-md-6 col-xs-12 px-responsive-xl q-py-md flex flex-center">
       <div style="width: 100%;">
-        <h6 class="no-margin q-mb-md text-weight-bold text-main-tertiary text-center">Contato</h6>
-        <p class="q-mt-md text-center">
+        <h5 class="no-margin text-weight-bold text-main-tertiary text-center">Contato</h5>
+        <p class="q-mt-md">
           Informe os dados no formulário para contatarmos e entendermos como ajudar
           ou somar mais para você e a sua empresa.
         </p>
         <q-form @submit.prevent="handleSubmit">
           <q-input label="Nome"
-            class="q-pa-md"
+            class="q-py-md"
             outlined
             clearable
             lazy-rules="ondemand"
@@ -21,7 +21,7 @@
             ]" />
 
           <q-input label="Email"
-            class="q-pa-md"
+            class="q-py-md"
             outlined
             clearable
             type="email"
@@ -33,7 +33,7 @@
             ]" />
 
           <q-input label="Telefone"
-            class="q-pa-md"
+            class="q-py-md"
             outlined
             clearable
             v-model="form.phone"
@@ -43,7 +43,7 @@
             :rules="[val => (!!val && val.length > 0) || 'Telefone é obrigatório']" />
 
           <q-input label="Mensagem"
-            class="q-pa-md"
+            class="q-py-md"
             autogrow
             outlined
             clearable
@@ -52,15 +52,18 @@
 
           <div class="flex flex-center">
             <q-btn type="submit"
+              class="q-my-md"
               label="Enviar"
-              color="main-primary" />
+              style="width: 150px;"
+              color="main-primary"
+              no-caps />
           </div>
         </q-form>
       </div>
     </div>
-    <q-img src="imgs/front-view-people-having-meeting-office.jpg"
-      class="col-6"
+    <img src="imgs/front-view-people-having-meeting-office.jpg"
       style="height: 80vh;"
+      class="col-6"
       v-if="$q.screen.gt.sm" />
   </q-page>
 </template>

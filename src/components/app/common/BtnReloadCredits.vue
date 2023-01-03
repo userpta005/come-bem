@@ -1,6 +1,6 @@
 <template>
   <q-btn label="Recarregar créditos"
-    class="bg-main-quaternary q-ma-sm"
+    class="text-weight-regular bg-main-quaternary q-mb-sm"
     text-color="white"
     no-caps
     :disable="store.disableButtons"

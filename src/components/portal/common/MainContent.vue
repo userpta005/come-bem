@@ -1,29 +1,31 @@
 <template>
   <main class="column">
-    <h6 class="no-margin text-weight-bold text-main-tertiary q-py-md"
+    <h5 class="no-margin text-weight-bold text-main-tertiary q-py-md"
       :class="content.title.selfAlignment">
       {{ content.title.label }}
       <q-separator :color="content.title.separatorColor"
         :size="content.title.separatorSize"
         v-if="content.title.separator" />
-    </h6>
-    <div class="row no-wrap q-py-md"
-      v-for="(item, index)  in content.items"
+    </h5>
+    <div v-for="(item, index)  in content.items"
       :key="index">
-      <div class="col-auto flex flex-center q-pa-sm">
-        <q-icon :name="item.iconName"
-          :size="item.iconSize" />
+      <div class="row no-wrap q-py-sm">
+        <div class="col-auto flex flex-center q-pr-md">
+          <q-icon :name="item.iconName"
+            :size="item.iconSize" />
+        </div>
+        <div class="col-shrink column">
+          <p class="text-weight-bold q-mb-xs">{{ item.title }}</p>
+          <span>{{ item.text }}</span>
+        </div>
       </div>
-      <div class="col-shrink column q-pa-sm">
-        <p class="text-weight-bold">{{ item.title }}</p>
-        <span>{{ item.text }}</span>
-        <q-separator v-if="(item.separator)" />
-      </div>
+      <q-separator v-if="(item.separator)" />
     </div>
-    <q-btn label="Quero saber mais"
-      class="self-center q-ma-sm"
+    <q-btn label="Saber mais"
+      class="self-center q-ma-md"
       color="main-primary"
       text-color="white"
+      no-caps
       :to="{ name: 'contacts' }" />
   </main>
 </template>

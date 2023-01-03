@@ -1,43 +1,50 @@
 <template>
-  <q-page>
-    <div class="flex q-pa-sm">
-      <h6 class="no-margin">
-        Escolha seu perfil
-        <q-separator color="main-primary"
-          size="0.12rem" />
-      </h6>
-    </div>
+  <q-page :class="{ 'column items-center': $q.screen.lt.sm }">
+
+    <CustomTitle title="Escolha seu perfil" />
+
     <q-btn flat
-      class="q-pa-sm"
       no-caps
+      class="text-weight-regular"
+      style="height: 150px; width: 150px;"
+      :class="$q.screen.gt.sm ? 'q-mr-md' : 'q-mb-md'"
       :disable="store.isDependent && !store.isResponsibleDependent"
       :to="responsibleRoute">
       <div class="column flex-center">
-        <q-icon name="mdi-human-male-boy"
-          size="6rem" />
-        Responsável/Pai
+        <q-img src="~assets/familia.png"
+          height="100px"
+          width="100px" />
+        Pais/Tutor
       </div>
     </q-btn>
+
     <q-btn flat
-      class="q-pa-sm"
       no-caps
+      class="text-weight-regular"
+      style="height: 150px; width: 150px;"
       :disable="store.isResponsible && !store.isResponsibleDependent"
       :to="dependentRoute">
       <div class="column flex-center">
-        <q-icon name="mdi-human-child"
-          size="6rem" />
+        <q-img src="~assets/aluna.png"
+          height="100px"
+          width="100px" />
         Consumidor/Filho
       </div>
     </q-btn>
+
   </q-page>
 </template>
 
 <script>
 import { defineComponent, ref } from 'vue'
 import useStorageStore from 'src/stores/storage'
+import CustomTitle from 'src/components/app/common/CustomTitle.vue'
 
 export default defineComponent({
   name: 'DashboardPage',
+  components: {
+    CustomTitle
+  },
   setup () {
     const store = useStorageStore()
 

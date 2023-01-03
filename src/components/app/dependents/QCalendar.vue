@@ -1,9 +1,20 @@
 <template>
-  <div class="subcontent q-pa-sm">
-    <h6 class="no-margin q-pb-sm">Pedir Lanche</h6>
-    <div class="row justify-between q-pb-sm">
+  <div class="subcontent">
+    <h6 class="no-margin">Pedir Lanche</h6>
+    <div class="row items-center justify-between q-pb-sm">
       <span>Selecione uma data para agendamento de lanches:</span>
-      <span>{{ title }}</span>
+      <div class="flex items-center"
+        :class="$q.screen.lt.md ? 'col-12 justify-end' : ''">
+        <q-btn flat
+          icon="mdi-chevron-left"
+          size="md"
+          @click="onPrev" />
+        <h6 class="no-margin text-weight-regular">{{ title.replace(/^\w/, c => c.toUpperCase()) }}</h6>
+        <q-btn flat
+          icon="mdi-chevron-right"
+          size="md"
+          @click="onNext" />
+      </div>
     </div>
     <div class="flex content-center items-center no-wrap">
       <div class="flex"
@@ -16,13 +27,14 @@
           bordered
           locale="pt-br"
           :disabled-before="disabledBefore"
-          @click-day="onClickDay">
+          @click-day="onClickDay"
+          @moved="onMoved">
           <template #day="{ scope: { timestamp } }">
             <template v-for="(event) in eventsMap[timestamp.date]"
               :key="event.id">
               <div class="flex flex-center">
                 <div class="title q-calendar__ellipsis"
-                  :style="{ color: getRandomColor() }">
+                  :style="{ color: getRandomDarkColor() }">
                   {{ event.time.slice(0, 5) }}
                 </div>
               </div>
@@ -64,10 +76,12 @@ import '@quasar/quasar-ui-qcalendar/src/QCalendarVariables.sass'
 import '@quasar/quasar-ui-qcalendar/src/QCalendarTransitions.sass'
 import '@quasar/quasar-ui-qcalendar/src/QCalendarMonth.sass'
 
-import { defineComponent, computed, ref } from 'vue'
+import { defineComponent } from 'vue'
 import useStorageStore from 'src/stores/storage'
-import { getRandomColor } from 'src/utils/helpers'
+import { getRandomDarkColor } from 'src/utils/helpers'
 import PurchaseOrders from 'src/components/app/dependents/PurchaseOrders.vue'
+import { parseISO, format } from 'date-fns'
+import pt from 'date-fns/locale/pt-BR'
 
 export default defineComponent({
   name: 'MiniModeFirstDayMonday',
@@ -75,23 +89,26 @@ export default defineComponent({
     QCalendarMonth,
     PurchaseOrders
   },
-  setup () {
-    const store = useStorageStore()
-    const orders = ref()
-    const showOrders = ref(false)
-    const selectedDate = today()
-    const date = new Date()
-    const title = date.toLocaleDateString('pt-BR',
-      {
-        year: 'numeric',
-        month: 'long',
-        timeZone: 'America/Sao_Paulo'
-      })
-
-    const eventsMap = computed(() => {
+  data () {
+    return {
+      store: useStorageStore(),
+      orders: null,
+      showOrders: false,
+      selectedDate: today(),
+      title: (new Date()).toLocaleDateString('pt-BR',
+        {
+          year: 'numeric',
+          month: 'long',
+          timeZone: 'America/Sao_Paulo'
+        }),
+      getRandomDarkColor
+    }
+  },
+  computed: {
+    eventsMap () {
       const map = {}
-      if (store.account.orders.length > 0) {
-        store.account.orders.forEach(event => {
+      if (this.store.account.orders.length > 0) {
+        this.store.account.orders.forEach(event => {
           (map[event.date] = (map[event.date] || [])).push(event)
           if (event.days !== undefined) {
             let timestamp = parseTimestamp(event.date)
@@ -107,33 +124,36 @@ export default defineComponent({
         })
       }
       return map
-    })
+    },
 
-    const disabledBefore = computed(() => {
+    disabledBefore () {
       let ts = parseTimestamp(today())
       ts = addToDate(ts, { day: -1 })
       return ts.date
-    })
-
-    function onClickDay (data) {
-      store.purchaseDate = data.scope.timestamp.date
-      orders.value = store.account.orders.filter(value => value.date === data.scope.timestamp.date)
-      if (orders.value.length) {
-        showOrders.value = true
-      } else if (!data.scope.timestamp.disabled) {
-        store.mainContent = 'PurchaseOrder'
-      }
     }
+  },
+  methods: {
+    onClickDay (data) {
+      this.store.purchaseDate = data.scope.timestamp.date
+      this.orders = this.store.account.orders.filter(value => value.date === data.scope.timestamp.date)
+      if (this.orders.length && !data.scope.timestamp.disabled && !data.scope.outside) {
+        this.showOrders = true
+      } else if (!data.scope.timestamp.disabled && !data.scope.outside) {
+        this.store.mainContent = 'PurchaseOrder'
+      }
+    },
 
-    return {
-      disabledBefore,
-      onClickDay,
-      selectedDate,
-      title,
-      eventsMap,
-      getRandomColor,
-      showOrders,
-      orders
+    onPrev () {
+      this.$refs.calendar.prev()
+    },
+
+    onNext () {
+      this.$refs.calendar.next()
+    },
+
+    onMoved (data) {
+      const date = parseISO(data.date)
+      this.title = format(date, 'MMMM yyyy', { locale: pt })
     }
   }
 })

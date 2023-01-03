@@ -1,14 +1,15 @@
 <template>
   <div class="row">
-    <h6 class="no-margin text-weight-bold text-main-tertiary q-py-md"
+    <h5 class="no-margin text-weight-bold text-main-tertiary q-py-md"
       :class="content.title.selfAlignment ?? 'self-center'">
       {{ content.title.label }}
       <q-separator :color="content.title.separatorColor"
         :size="content.title.separatorSize"
         v-if="content.title.separator" />
-    </h6>
+    </h5>
     <div class="col-12">
       <q-carousel v-model="slide"
+        height="500px"
         animated
         padding
         navigation
@@ -17,8 +18,8 @@
         transition-prev="slide-right"
         transition-next="slide-left"
         @mouseenter="autoplay = false"
-        @mouseleave="autoplay = false"
-        :autoplay="false">
+        @mouseleave="autoplay = true"
+        :autoplay="autoplay">
         <q-carousel-slide v-for="(slides, index) in content.items"
           :key="index"
           :name="index">
@@ -32,7 +33,7 @@
               <div class="column rounded-borders fit"
                 :style="!item.border || 'border: 0.15rem solid var(--orange)'">
                 <div :class="item.title ? 'col-6' : 'col-12'">
-                  <q-img :src="item.img_url"
+                  <img :src="item.img_url"
                     class="fit rounded-borders" />
                 </div>
                 <div class="col-6 column"

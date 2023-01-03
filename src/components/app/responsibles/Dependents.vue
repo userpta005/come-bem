@@ -1,41 +1,56 @@
 <template>
-  <div class="row q-pa-sm"
-    :class="{ 'flex-center': $q.screen.lt.md }">
-    <div class="q-pa-xs"
+  <div class="row q-col-gutter-md"
+    :class="{ 'flex-center': $q.screen.lt.sm }">
+
+    <div v-show="dependent.accounts.length"
       v-for="(dependent, index) in store.userClient.dependents"
-      :key="index"
-      v-show="dependent.accounts.length">
-      <div style="border: 0.15rem solid var(--orange); width: 300px;"
-        class="column flex-center rounded-borders q-pa-sm"
+      :key="index">
+
+      <div class="column flex-center rounded-borders"
+        style="border: 2px solid var(--orange); min-width: 250px; min-height: 350px;"
+        :style="$q.screen.lt.sm ? 'min-width: 300px;' : ''"
         v-if="dependent.accounts.length">
-        <q-icon name="mdi-baby-face-outline"
-          size="5rem" />
+
+        <q-img src="~assets/child.png"
+          style="height: 100px; width: 80px;"
+          class="q-mb-xs" />
+
         <span class="text-weight-medium">
           {{ dependent.people.name }}
         </span>
+
         <SelectAccount :dependent="dependent"
           :account="dependent.accounts[store.dependentIndexes[`index${index}`].accountIndex]"
           :dependentIndex="index" />
-        <span class="text-weight-regular q-mb-xs">
+
+        <span class="text-weight-medium q-mb-xs">
           Saldo: {{ floatToMoney(dependent.accounts[store.dependentIndexes[`index${index}`].accountIndex].balance) }}
         </span>
+
         <span class="text-weight-regular text-main-secondary q-mb-xs">
           Consumidor: {{ status(dependent.accounts[store.dependentIndexes[`index${index}`].accountIndex].status) }}
           <q-separator />
         </span>
-        <span class="text-weight-regular text-center q-mb-xs">
+
+        <span class="text-weight-regular q-mb-xs">
           Nascimento: {{ brDate(dependent.birthdate) }}
         </span>
+
         <span class="text-weight-regular q-mb-xs">
           Sexo: {{ gender(dependent.gender) }}
         </span>
+
         <q-btn label="Ver detalhes"
           color="main-primary"
           text-color="white"
           no-caps
+          style="width: 80%;"
           @click="toGoDependent(dependent, index)" />
+
       </div>
+
     </div>
+
   </div>
 </template>
 

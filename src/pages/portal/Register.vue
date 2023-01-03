@@ -1,15 +1,15 @@
 <template>
   <q-page style="min-height: auto; height: auto;"
     class="row">
-    <div class="col-md-6 col-xs-12 px-responsive-xl q-py-md flex flex-center">
+    <div class="col-md-6 col-xs-12 px-responsive-xl q-py-xl flex flex-center">
       <div style="width: 100%;">
-        <h6 class="no-margin text-weight-bold text-main-tertiary text-center">
+        <h5 class="no-margin text-weight-bold text-main-tertiary text-center">
           Cadastro para ativação
-        </h6>
-        <p class="q-mt-md text-center">
+        </h5>
+        <p class="q-mt-md q-mx-md">
           A equipe do Lanche Bem está pronta para atender e ajudar no uso dos nossos serviços.
         </p>
-        <p class="text-center">
+        <p class="q-mx-md">
           Para que a ativação seja feita, preencha os campos abaixo.
         </p>
         <q-form @submit.prevent="handleSubmit"
@@ -63,6 +63,31 @@
           <SelectStore class="col-md-6 col-xs-12 q-pa-md"
             v-model="form.store_id" />
 
+          <q-input type="password"
+            class="col-md-6 col-xs-12 q-pa-md"
+            label="Senha"
+            outlined
+            clearable
+            lazy-rules="ondemand"
+            v-model="form.password"
+            :rules="[
+              val => (val && val.length > 0) || 'Senha é obrigatório',
+              val => (val.length >= 8) || 'Minímo 8 caracteres !',
+            ]" />
+
+          <q-input type="password"
+            class="col-md-6 col-xs-12 q-pa-md"
+            label="Confirmar senha"
+            outlined
+            clearable
+            lazy-rules="ondemand"
+            v-model="form.password_confirmation"
+            :rules="[
+              val => (val && val.length > 0) || 'Senha é obrigatório',
+              val => (val.length >= 8) || 'Minímo 8 caracteres !',
+              val => (val === form.password) || 'A senha não corresponde !',
+            ]" />
+
           <div class="col-12 flex flex-center">
             <div class="q-pa-md">Você é:</div>
             <q-option-group type="radio"
@@ -87,20 +112,22 @@
               text-color="grey-8"
               outline
               style="width: 150px;"
-              :to="{ name: 'login' }" />
+              :to="{ name: 'login' }"
+              no-caps />
 
             <q-btn type="submit"
               label="Confirmar"
               class="q-ma-sm"
               color="main-primary"
-              style="width: 150px;" />
+              style="width: 150px;"
+              no-caps />
           </div>
         </q-form>
       </div>
     </div>
-    <q-img src="imgs/31094449_bp6l_agt0_220810.jpg"
+    <img src="imgs/31094449_bp6l_agt0_220810.jpg"
       class="col-6"
-      style="max-height: 80vh;"
+      style="height: 80vh;"
       v-if="$q.screen.gt.sm" />
   </q-page>
 </template>
@@ -134,6 +161,8 @@ export default defineComponent({
       city_id: null,
       type: 1,
       store_id: null,
+      password: null,
+      password_confirmation: null,
       terms: false
     })
 

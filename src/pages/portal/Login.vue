@@ -5,7 +5,7 @@
       <div style="width: 100%;">
         <div class="flex flex-center">
           <img src="imgs/logo-vertical.png"
-            class="q-pa-md"
+            class="q-pb-md"
             style="max-height: 180px" />
         </div>
         <p class="text-center">
@@ -13,7 +13,7 @@
         </p>
         <q-form @submit.prevent="handleSubmit">
           <q-input label="Email"
-            class="q-pa-md"
+            class="q-py-md"
             outlined
             clearable
             type="email"
@@ -26,7 +26,7 @@
 
           <q-input label="Password"
             :type="isPwd ? 'password' : 'text'"
-            class="q-pa-md"
+            class="q-py-md"
             outlined
             clearable
             lazy-rules="ondemand"
@@ -43,10 +43,10 @@
           </q-input>
 
           <q-checkbox v-model="form.remember_me"
-            class="q-pa-md"
+            class="q-py-md"
             label="Lembrar-me" />
 
-          <div class="col-12 column flex-center">
+          <div class="col-12 row flex-center">
             <q-btn type="submit"
               label="Entrar"
               color="main-primary"
@@ -54,7 +54,7 @@
               class="q-ma-sm"
               style="width: 150px;" />
 
-            <q-btn label="Cadastre-se"
+            <q-btn label="Criar cadastro"
               text-color="grey-8"
               outline
               no-caps
@@ -65,7 +65,7 @@
         </q-form>
       </div>
     </div>
-    <q-img src="imgs/28920.jpg"
+    <img src="imgs/28920.jpg"
       class="col-6"
       style="height: 80vh;"
       v-if="$q.screen.gt.sm" />
@@ -81,7 +81,7 @@ import useStorageStore from 'src/stores/storage'
 export default defineComponent({
   name: 'LoginPage',
   setup () {
-    const { notifySuccess, notifyError } = notify()
+    const { notifyError } = notify()
     const router = useRouter()
     const store = useStorageStore()
     const isPwd = ref(true)
@@ -92,8 +92,7 @@ export default defineComponent({
     })
     const handleSubmit = async () => {
       try {
-        const message = await store.login(form)
-        notifySuccess(message)
+        await store.login(form)
         router.push({ name: 'dashboard' })
       } catch (error) {
         notifyError(error)

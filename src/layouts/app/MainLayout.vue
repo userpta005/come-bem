@@ -47,7 +47,8 @@
     <q-drawer v-model="leftDrawerOpen"
       show-if-above
       bordered
-      class="bg-main-secondary">
+      class="bg-main-secondary"
+      :breakpoint="1439.99">
       <q-list>
         <q-item-label header
           class="text-white">
@@ -61,7 +62,7 @@
     </q-drawer>
 
     <q-page-container>
-      <router-view class="pa-responsive-sm" />
+      <router-view class="px-responsive-sm q-py-lg" />
     </q-page-container>
   </q-layout>
 </template>
@@ -73,6 +74,7 @@ import { LocalStorage, SessionStorage, useQuasar } from 'quasar'
 import notify from 'src/composables/notify'
 import EssentialLink from 'src/components/app/others/EssentialLink.vue'
 import useStorageStore from 'src/stores/storage'
+import CustomDialog from 'src/components/common/CustomDialog.vue'
 
 const linksList = [
   {
@@ -90,7 +92,7 @@ export default defineComponent({
   },
 
   setup () {
-    const { notifyError, notifySuccess } = notify()
+    const { notifyError } = notify()
     const $q = useQuasar()
     const store = useStorageStore()
     const router = useRouter()
@@ -98,14 +100,14 @@ export default defineComponent({
 
     const handleLogout = async () => {
       $q.dialog({
-        title: 'Logout',
-        message: 'Você realmente quer sair?',
-        cancel: true,
-        persistent: true
+        component: CustomDialog,
+        componentProps: {
+          message: 'Você realmente quer sair?',
+          warning: true
+        }
       }).onOk(async () => {
         try {
-          const message = await store.logout()
-          notifySuccess(message)
+          await store.logout()
           router.push({ name: 'login' })
         } catch (error) {
           store.$reset()

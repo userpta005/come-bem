@@ -1,60 +1,66 @@
 <template>
-  <div style="border: 0.15rem solid var(--orange); min-width: 300px;"
-    class="column rounded-borders q-ma-sm"
-    :style="$q.screen.gt.sm ? 'height:550px;' : ''">
-    <div class="col-shrink column q-pa-sm">
-      <h6 class="no-margin q-py-sm text-center">
-        Ações
-        <q-separator color="grey-8"
-          size="0.12rem" />
-      </h6>
+  <div>
+    <div style="border: 2px solid var(--orange); min-width: 300px;"
+      class="column rounded-borders"
+      :style="$q.screen.gt.sm ? 'min-height: 600px;' : ''">
+
+      <div class="col-shrink column q-px-sm q-my-md">
+        <h6 class="no-margin text-center">
+          Ações
+          <q-separator color="black" />
+        </h6>
+      </div>
+
+      <div class="col-grow column justify-start q-px-lg">
+
+        <q-btn label="Adicionar consumidor"
+          class="text-weight-regular bg-main-quaternary q-mb-md"
+          text-color="white"
+          no-caps
+          :to="{ name: 'responsible-dependent-create' }"
+          v-if="['responsible'].includes($route.name)" />
+
+        <BtnReloadCredits v-if="['responsible-dependent', 'dependent'].includes($route.name)" />
+
+        <q-btn label="Cardápio"
+          class="text-weight-regular bg-main-quaternary q-mb-sm"
+          text-color="white"
+          no-caps
+          @click="store.mainContent = 'LimitProduts'"
+          :disable="store.disableButtons"
+          v-if="['responsible-dependent', 'dependent'].includes($route.name)" />
+
+        <BtnDisableDevice v-if="['responsible-dependent'].includes($route.name)" />
+
+        <BtnEnablePhone v-if="['responsible-dependent'].includes($route.name)" />
+
+        <BtnDailyLimit v-if="['responsible-dependent'].includes($route.name)" />
+
+        <q-btn label="Histórico de consumo"
+          class="text-weight-regular bg-main-quaternary q-mb-sm"
+          text-color="white"
+          no-caps
+          @click="store.mainContent = 'ConsumptionHistory'"
+          :disable="store.disableButtons"
+          v-if="['responsible-dependent', 'dependent'].includes($route.name)" />
+
+        <q-btn label="Histórico financeiro"
+          class="text-weight-regular bg-main-quaternary q-mb-sm"
+          text-color="white"
+          no-caps
+          @click="store.mainContent = 'FinancialHistory'"
+          :disable="store.disableButtons"
+          v-if="['responsible-dependent', 'dependent'].includes($route.name)" />
+
+        <q-btn label="Voltar"
+          class="text-weight-regular q-mb-md"
+          outline
+          no-caps
+          :to="{ name: backTo }" />
+      </div>
+
     </div>
-    <div class="col-grow column justify-start">
-      <q-btn label="Adicionar consumidor"
-        class="bg-main-quaternary q-ma-sm"
-        text-color="white"
-        no-caps
-        :to="{ name: 'responsible-dependent-create' }"
-        v-if="['responsible'].includes($route.name)" />
 
-      <BtnReloadCredits v-if="['responsible-dependent', 'dependent'].includes($route.name)" />
-
-      <q-btn label="Cardápio"
-        class="bg-main-quaternary q-ma-sm"
-        text-color="white"
-        no-caps
-        @click="store.mainContent = 'LimitProduts'"
-        :disable="store.disableButtons"
-        v-if="['responsible-dependent', 'dependent'].includes($route.name)" />
-
-      <BtnDisableDevice v-if="['responsible-dependent'].includes($route.name)" />
-
-      <BtnEnablePhone v-if="['responsible-dependent'].includes($route.name)" />
-
-      <BtnDailyLimit v-if="['responsible-dependent'].includes($route.name)" />
-
-      <q-btn label="Histórico de consumo"
-        class="bg-main-quaternary q-ma-sm"
-        text-color="white"
-        no-caps
-        @click="store.mainContent = 'ConsumptionHistory'"
-        :disable="store.disableButtons"
-        v-if="['responsible-dependent', 'dependent'].includes($route.name)" />
-
-      <q-btn label="Histórico financeiro"
-        class="bg-main-quaternary q-ma-sm"
-        text-color="white"
-        no-caps
-        @click="store.mainContent = 'FinancialHistory'"
-        :disable="store.disableButtons"
-        v-if="['responsible-dependent', 'dependent'].includes($route.name)" />
-
-      <q-btn label="Voltar"
-        class="q-ma-sm q-mb-lg"
-        outline
-        no-caps
-        :to="{ name: backTo }" />
-    </div>
   </div>
 </template>
 

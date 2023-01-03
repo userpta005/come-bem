@@ -1,18 +1,15 @@
 <template>
-  <q-page style="min-height: auto; height:auto;">
-    <div class="flex q-pa-sm"
-      :class="{ 'flex-center': $q.screen.lt.md }">
-      <h6 class="no-margin">
-        Seja bem vindo
-        <q-separator color="main-primary"
-          size="0.12rem" />
-      </h6>
-    </div>
-    <div class="row"
-      :class="$q.screen.gt.sm ? 'justify-between no-wrap' : 'flex flex-center'">
+  <q-page style="min-height: auto; height:auto;"
+    :class="{ 'column items-center': $q.screen.lt.sm }">
+
+    <CustomTitle title="Seja bem-vindo" />
+
+    <div class="row q-col-gutter-md"
+      :class="$q.screen.gt.xs ? 'no-wrap' : 'flex flex-center'">
       <Dependents />
-      <SidebarActions :class="{ 'order-first': $q.screen.lt.md }" />
+      <SidebarActions />
     </div>
+
   </q-page>
 </template>
 
@@ -20,10 +17,12 @@
 import { defineComponent } from 'vue'
 import Dependents from 'src/components/app/responsibles/Dependents.vue'
 import SidebarActions from 'src/components/app/common/SidebarActions.vue'
+import CustomTitle from 'src/components/app/common/CustomTitle.vue'
 
 export default defineComponent({
   name: 'ResponsibleViewPage',
   components: {
+    CustomTitle,
     Dependents,
     SidebarActions
   }

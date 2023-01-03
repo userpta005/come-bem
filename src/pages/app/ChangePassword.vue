@@ -1,15 +1,11 @@
 <template>
   <q-page>
-    <div class="flex q-pa-sm">
-      <h6 class="no-margin">
-        Editar senha
-        <q-separator color="main-primary"
-          size="0.12rem" />
-      </h6>
-    </div>
+
+    <CustomTitle title="Editar senha" />
+
     <q-form @submit.prevent="handleSubmit"
-      class="column q-pa-sm q-col-gutter-xs"
-      :style="$q.screen.gt.sm ? 'max-width: 50%;' : ''">
+      class="column q-col-gutter-xs"
+      :style="$q.screen.gt.sm ? 'max-width: 700px;' : ''">
 
       <q-input type="password"
         label="Senha atual"
@@ -45,7 +41,7 @@
           val => (val === form.password) || 'A senha não corresponde !',
         ]" />
 
-      <div class="col-12 flex flex-center"
+      <div class="col-12 flex items-center justify-end"
         :class="$q.screen.lt.md ? 'column' : 'row'">
         <q-btn label="Voltar"
           class="q-ma-xs"
@@ -53,13 +49,15 @@
           text-color="grey-8"
           outline
           style="width: 150px;"
+          no-caps
           :to="{ name: 'dashboard' }" />
 
         <q-btn type="submit"
-          label="Confirmar"
+          label="Salvar"
           class="q-ma-xs"
           color="main-primary"
-          style="width: 150px;" />
+          style="width: 150px;"
+          no-caps />
       </div>
     </q-form>
   </q-page>
@@ -70,9 +68,13 @@ import { defineComponent, reactive } from 'vue'
 import notify from 'src/composables/notify'
 import { useRouter } from 'vue-router'
 import useStorageStore from 'src/stores/storage'
+import CustomTitle from 'src/components/app/common/CustomTitle.vue'
 
 export default defineComponent({
   name: 'ChangePasswordPage',
+  components: {
+    CustomTitle
+  },
   setup () {
     const { notifySuccess, notifyError } = notify()
     const store = useStorageStore()

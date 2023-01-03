@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pa-sm column">
+  <div class="column">
     <h6 class="no-margin q-px-xs q-py-sm">Cardápio</h6>
     <div class="row justify-evenly">
       <div class="column flex-center cursor-pointer q-ma-xs"
@@ -83,7 +83,7 @@ export default defineComponent({
     const sections = ref([])
     const products = ref([])
     const filteredProducts = ref([])
-    const limitedProducts = ref(store.account.limited_products)
+    const limitedProducts = ref(store.account.limited_products.map((value) => value))
 
     const handleGetSections = async () => {
       try {

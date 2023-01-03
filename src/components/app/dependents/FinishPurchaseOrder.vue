@@ -1,5 +1,5 @@
 <template>
-  <q-form class="q-pa-sm column"
+  <q-form class="column"
     @submit.prevent="handleSubmit">
     <h6 class="no-margin q-pa-xs">Pedido de compra</h6>
     <span class="q-pa-xs">Itens do pedido</span>

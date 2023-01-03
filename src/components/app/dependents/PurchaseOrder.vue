@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pa-sm column">
+  <div class="column">
     <h6 class="no-margin q-px-xs q-py-sm">Pedir lanche</h6>
     <div class="row justify-evenly">
       <div class="column flex-center cursor-pointer q-ma-xs"

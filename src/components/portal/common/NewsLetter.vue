@@ -39,10 +39,21 @@
       <q-btn label="Cadastrar"
         type="submit"
         color="main-primary"
-        text-color="white" />
+        text-color="white"
+        no-caps />
     </q-form>
   </div>
 </template>
+
+<style lang="css">
+.q-field__inner {
+  background-color: rgba(255, 255, 255, 0.40);
+  border-radius: 5px;
+}
+.q-field__native {
+  color: #353535;
+}
+</style>
 
 <script>
 import { defineComponent, ref } from 'vue'

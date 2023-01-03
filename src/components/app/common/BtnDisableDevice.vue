@@ -1,10 +1,10 @@
 <template>
   <q-btn label="Bloquear dispositivos"
-    class="bg-main-quaternary q-ma-sm"
+    class="text-weight-regular bg-main-quaternary q-mb-sm"
     text-color="white"
     no-caps
     :disable="store.disableButtons"
-    @click="prompt = true" />
+    @click="handleOpen" />
 
   <q-dialog v-model="prompt"
     persistent>
@@ -21,7 +21,7 @@
       <q-form @submit.prevent="handleSubmit">
 
         <q-card-section class="column q-pt-none q-gutter-sm">
-          <q-toggle v-for="(card, index) in store.account.cards"
+          <q-toggle v-for="(card, index) in cards"
             :key="index"
             v-model="card.status"
             :true-value="1"
@@ -64,14 +64,28 @@ export default defineComponent({
     const { notifySuccess, notifyError } = notify()
     const route = useRoute()
     const store = useStorageStore()
+    const cards = ref([])
     const prompt = ref(false)
+
+    const handleOpen = () => {
+      cards.value = store.account.cards.map((value) => {
+        const obj = {}
+        obj.id = value.id
+        obj.uuid = value.uuid
+        obj.status = value.status
+        obj.account = {}
+        obj.account.store_id = value.account.store_id
+        return obj
+      })
+      prompt.value = true
+    }
 
     const handleSubmit = async () => {
       try {
         const data = await store.axios({
           method: 'put',
           url: '/api/v1/cards/block',
-          data: { cards: store.account.cards }
+          data: { cards: cards.value }
         })
         prompt.value = false
         store.setUser(data.data)
@@ -84,8 +98,10 @@ export default defineComponent({
 
     return {
       store,
+      cards,
       prompt,
-      handleSubmit
+      handleSubmit,
+      handleOpen
     }
   }
 })

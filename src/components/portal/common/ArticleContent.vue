@@ -1,17 +1,17 @@
 <template>
-  <artcile class="row">
-    <div class="col-md-3 col-sm-6 col-xs-12 row no-wrap"
+  <article class="row">
+    <div class="col-md-3 col-sm-6 col-xs-12 row no-wrap q-py-sm q-pr-sm"
       v-for="(item, index)  in content"
       :key="index">
-      <div class="col-auto flex flex-center q-pa-sm">
+      <div class="col-auto flex flex-center q-pr-md">
         <q-icon :name="item.iconName"
           :size="item.iconSize" />
       </div>
-      <div class="col-shrink flex items-center q-pa-sm">
+      <div class="col-shrink flex items-center">
         <span>{{ item.text }}</span>
       </div>
     </div>
-  </artcile>
+  </article>
 </template>
 
 <script>

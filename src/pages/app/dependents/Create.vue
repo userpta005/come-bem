@@ -1,15 +1,10 @@
 <template>
   <q-page>
-    <div class="flex q-pa-sm">
-      <h6 class="no-margin">
-        Cadastro de consumidor
-        <q-separator color="main-primary"
-          size="0.12rem" />
-      </h6>
-    </div>
+    <CustomTitle title="Cadastro de consumidor" />
+
     <q-form @submit.prevent="handleSubmit"
-      class="row q-pa-sm q-col-gutter-xs"
-      :style="$q.screen.gt.sm ? 'max-width: 70%;' : ''">
+      class="row q-col-gutter-sm"
+      :style="$q.screen.gt.sm ? 'max-width: 700px;' : ''">
 
       <q-input label="Nome completo"
         class="col-12"
@@ -18,9 +13,9 @@
         lazy-rules="ondemand"
         v-model="form.name"
         :rules="[
-          val => (!!val && val.length > 0) || 'Nome completo é obrigatório',
-          val => (val.length <= 100) || 'Máximo 100 caracteres !',
-        ]" />
+  val => (!!val && val.length > 0) || 'Nome completo é obrigatório',
+  val => (val.length <= 100) || 'Máximo 100 caracteres !',
+]" />
 
       <q-select v-model="form.gender"
         outlined
@@ -57,9 +52,9 @@
         lazy-rules="ondemand"
         v-model="form.school_year"
         :rules="[
-          val => (!!val && val.length > 0) || 'Série é obrigatório',
-          val => (val.length <= 10) || 'Máximo 10 caracteres !',
-        ]" />
+  val => (!!val && val.length > 0) || 'Série é obrigatório',
+  val => (val.length <= 10) || 'Máximo 10 caracteres !',
+]" />
 
       <q-input label="Turma"
         class="col-md-3 col-sm-6 col-xs-12"
@@ -68,9 +63,9 @@
         lazy-rules="ondemand"
         v-model="form.class"
         :rules="[
-          val => (!!val && val.length > 0) || 'Turma é obrigatório',
-          val => (val.length <= 10) || 'Máximo 10 caracteres !',
-        ]" />
+  val => (!!val && val.length > 0) || 'Turma é obrigatório',
+  val => (val.length <= 10) || 'Máximo 10 caracteres !',
+]" />
 
       <q-select v-model="form.turn"
         outlined
@@ -84,23 +79,24 @@
         lazy-rules="ondemand"
         :rules="[val => (!!val) || 'Turno é obrigatória']" />
 
-      <div class="col-12 flex flex-center"
-        :class="$q.screen.lt.md ? 'column' : 'row'">
-        <q-btn label="Voltar"
+      <div class="col-12 flex flex-center">
+        <q-btn label="Cancelar"
           class="q-ma-xs"
-          :class="{ 'order-last': $q.screen.lt.md }"
           text-color="grey-8"
           outline
           style="width: 150px;"
-          :to="{ name: 'responsible' }" />
+          :to="{ name: 'responsible' }"
+          no-caps />
 
         <q-btn type="submit"
           label="Confirmar"
           class="q-ma-xs"
           color="main-primary"
-          style="width: 150px;" />
+          style="width: 150px;"
+          no-caps />
       </div>
     </q-form>
+
   </q-page>
 </template>
 
@@ -111,10 +107,12 @@ import { useRouter } from 'vue-router'
 import SelectCity from 'src/components/common/SelectCity.vue'
 import SelectStore from 'src/components/common/SelectStore.vue'
 import useStorageStore from 'src/stores/storage'
+import CustomTitle from 'src/components/app/common/CustomTitle.vue'
 
 export default defineComponent({
   name: 'DependentCreatePage',
   components: {
+    CustomTitle,
     SelectCity,
     SelectStore
   },

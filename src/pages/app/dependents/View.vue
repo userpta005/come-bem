@@ -1,8 +1,9 @@
 <template>
   <q-page style="min-height: auto; height:auto;"
-    class="row reverse-wrap items-end justify-center">
-    <div class="col-lg col-xs-12 px-responsive-sm">
-      <DependentHeader />
+    class="row justify-center">
+
+    <div class="col-md col-xs-12 pa-responsive-sm">
+      <DependentHeader class="q-mb-md" />
       <QCalendar v-if="store.mainContent === 'QCalendar' && !store.disableButtons" />
       <PurchaseOrder v-if="store.mainContent === 'PurchaseOrder' && !store.disableButtons" />
       <FinishPurchaseOrder v-if="store.mainContent === 'FinishPurchaseOrder' && !store.disableButtons" />
@@ -10,7 +11,9 @@
       <ConsumptionHistory v-if="store.mainContent === 'ConsumptionHistory' && !store.disableButtons" />
       <FinancialHistory v-if="store.mainContent === 'FinancialHistory' && !store.disableButtons" />
     </div>
-    <SidebarActions />
+
+    <SidebarActions :style="$q.screen.gt.sm ? 'padding-top: 100px;' : ''" />
+
   </q-page>
 </template>
 

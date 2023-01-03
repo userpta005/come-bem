@@ -4,7 +4,7 @@
     class="bg-main-senary row flex-center px-responsive-xl q-py-md">
     <img src="imgs/logo-horizontal.png"
       style="max-height: 60px;"
-      :class="{ 'q-mb-md': $q.screen.lt.md }" />
+      :class="{ 'q-mb-md': $q.screen.lt.sm }" />
     <q-space v-if="$q.screen.gt.xs" />
     <q-btn v-show="$q.screen.gt.sm"
       v-for="(link, index) in linksList"

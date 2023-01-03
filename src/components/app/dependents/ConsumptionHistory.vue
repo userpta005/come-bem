@@ -1,5 +1,5 @@
 <template>
-  <div class="row q-pa-sm">
+  <div class="row">
     <div class="col-12"
       :class="$q.screen.lt.md ? 'column flex-center' : 'row items-center'">
       <span class="q-pa-sm">Legenda:</span>

@@ -1,5 +1,5 @@
 <template>
-  <q-page>
+  <q-page style="min-height: auto; height: auto;">
     <div class="px-responsive-xl q-py-md">
       <ArticleContent :content="article" />
       <MainContent :content="main" />

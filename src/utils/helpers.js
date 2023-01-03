@@ -11,16 +11,20 @@ const brDate = (timestamp) => {
 }
 
 function getRandomColor () {
-  const letters = '0123456789ABCDEF'
-  let color = '#'
-  for (let i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)]
-  }
-  return color
+  const color = Math.floor(Math.random() * 0x1000000).toString(16)
+  return '#' + ('000000' + color).slice(-6)
+}
+
+function getRandomDarkColor () {
+  const r = Math.floor(Math.random() * 256)
+  const g = Math.floor(Math.random() * 256)
+  const b = Math.floor(Math.random() * 256)
+  return `rgb(${r}, ${g}, ${b})`
 }
 
 export {
   floatToMoney,
   brDate,
-  getRandomColor
+  getRandomColor,
+  getRandomDarkColor
 }
