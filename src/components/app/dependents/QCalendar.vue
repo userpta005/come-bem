@@ -22,7 +22,6 @@
         <q-calendar-month ref="calendar"
           v-model="selectedDate"
           :weekdays="[1, 2, 3, 4, 5, 6, 0]"
-          :day-min-height="80"
           animated
           bordered
           locale="pt-br"
