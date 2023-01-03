@@ -8,7 +8,7 @@
 
       <q-card-section class="flex flex-center"
         v-if="warning">
-        <img src="/src/assets/warning.png"
+        <img src="~assets/warning.png"
           style="height: 100px; width: 100px;">
       </q-card-section>
 

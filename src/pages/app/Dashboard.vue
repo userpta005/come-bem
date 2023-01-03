@@ -11,7 +11,7 @@
       :disable="store.isDependent && !store.isResponsibleDependent"
       :to="responsibleRoute">
       <div class="column flex-center">
-        <q-img src="/src/assets/familia.png"
+        <q-img src="~assets/familia.png"
           height="100px"
           width="100px" />
         Pais/Tutor
@@ -25,7 +25,7 @@
       :disable="store.isResponsible && !store.isResponsibleDependent"
       :to="dependentRoute">
       <div class="column flex-center">
-        <q-img src="/src/assets/aluna.png"
+        <q-img src="~assets/aluna.png"
           height="100px"
           width="100px" />
         Consumidor/Filho
