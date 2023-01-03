@@ -109,12 +109,15 @@ export default defineComponent({
         try {
           await store.logout()
           router.push({ name: 'login' })
-        } catch (error) {
           store.$reset()
           LocalStorage.clear()
           SessionStorage.clear()
-          notifyError(error)
+        } catch (error) {
           router.push({ name: 'login' })
+          notifyError(error)
+          store.$reset()
+          LocalStorage.clear()
+          SessionStorage.clear()
         }
       })
     }

@@ -78,7 +78,7 @@ export default defineComponent({
     const { notifyError, notifySuccess } = notify()
     const route = useRoute()
     const store = useStorageStore()
-    const title = format(parseISO(store.purchaseDate), 'dd MMM yyyy')
+    const title = store.purchaseDate ? format(parseISO(store.purchaseDate), 'dd MMM yyyy') : null
 
     const handleRemoveOrder = async (order) => {
       try {

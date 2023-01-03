@@ -105,18 +105,6 @@ const useStorageStore = defineStore('storage', {
 
     async logout () {
       const data = await this.axios({ method: 'delete', url: '/api/v1/auth/logout' })
-      this.userClient = null
-      this.userDependent = null
-      this.dependent = null
-      this.account = null
-      this.hasUser = false
-      this.disableButtons = false
-      this.dependentIndexes = {}
-      this.mainContent = 'QCalendar'
-      this.purchaseDate = null
-      this.cart = []
-      this.app_token = null
-      this.token = null
       return data.message
     }
   },
