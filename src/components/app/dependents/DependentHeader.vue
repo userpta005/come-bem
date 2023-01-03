@@ -6,7 +6,7 @@
 
       <div class="flex items-center col-grow"
         :class="{ 'col-12 justify-center': $q.screen.lt.sm }">
-        <q-img src="~assets/child.png"
+        <q-img src="/src/assets/child.png"
           height="130px"
           width="110px" />
       </div>

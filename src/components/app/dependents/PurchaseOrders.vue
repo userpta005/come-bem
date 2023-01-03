@@ -1,27 +1,41 @@
 <template>
   <q-dialog persistent>
     <q-card class="q-pa-sm"
-      style="min-width: 300px; max-width: 500px">
-      <q-card-section>
-        <h5 class="no-margin text-center">{{ brDate(store.purchaseDate) }}</h5>
+      style="min-width: 300px;">
+      <q-card-section class="flex flex-center">
+        <div class="container">
+          <h5 class="no-margin text-center">{{ title }}</h5>
+          <q-separator color="main-primary" />
+        </div>
       </q-card-section>
 
       <q-card-section class="q-pt-none text-center column">
-        <div class="column flex-center"
+        <div class="column"
           v-for="(order, index) in orders"
           :key="index">
           <div class="column">
             <div class="row no-wrap">
-              <h6 class="no-margin text-weight-regular q-pa-xs">{{ order.time.slice(0, 5) }}</h6>
-              <q-icon class="cursor-pointer q-pa-xs"
-                name="mdi-delete"
+              <h6 class="no-margin text-weight-regular q-pb-sm"
+                :style="{ color: getRandomDarkColor() }">
+                Pedido: #{{ order.id.toString().padStart(3, '0') }}
+              </h6>
+            </div>
+            <div class="row no-wrap justify-between items-center">
+              <div class="row items-center">
+                <span class="q-pr-xs q-pb-xs"
+                  v-for="(item, index) in order.order_items"
+                  :key="index">
+                  <q-badge :color="badgeColor(item.product.nutritional_classification)"
+                    style="height:15px; width: 15px;"
+                    rounded />
+                  {{ item.product.name }}
+                </span>
+              </div>
+              <q-icon class="cursor-pointer q-pb-xs"
+                name="mdi-delete-circle"
                 color="red"
                 size="md"
                 @click="handleRemoveOrder(order)" />
-            </div>
-            <div class="column items-start">
-              <span class="q-pa-xs" v-for="(item, index) in order.order_items"
-                :key="index">{{ item.product.name }} ({{ parseInt(item.quantity) }}x)</span>
             </div>
           </div>
         </div>
@@ -30,10 +44,19 @@
       <q-card-actions align="center"
         class="text-primary">
         <q-btn label="Sair"
+          class="q-ma-xs"
           text-color="grey-8"
           outline
           v-close-popup
-          style="width: 100px;" />
+          no-caps
+          style="width: 160px;" />
+        <q-btn label="Novo pedido"
+          class="q-ma-xs"
+          color="main-primary"
+          no-caps
+          style="width: 160px;"
+          icon-right="mdi-cart-outline"
+          @click="handleNewOrder" />
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -42,18 +65,20 @@
 <script>
 import { defineComponent } from 'vue'
 import useStorageStore from 'src/stores/storage'
-import { brDate } from 'src/utils/helpers'
+import { brDate, getRandomDarkColor } from 'src/utils/helpers'
 import notify from 'src/composables/notify'
 import { useRoute } from 'vue-router'
+import { parseISO, format } from 'date-fns'
 
 export default defineComponent({
   name: 'PurchaseOrders',
   props: ['orders'],
   emits: ['closeModal'],
   setup (props, { emit }) {
-    const store = useStorageStore()
     const { notifyError, notifySuccess } = notify()
     const route = useRoute()
+    const store = useStorageStore()
+    const title = format(parseISO(store.purchaseDate), 'dd MMM yyyy')
 
     const handleRemoveOrder = async (order) => {
       try {
@@ -70,10 +95,30 @@ export default defineComponent({
       }
     }
 
+    const handleNewOrder = () => {
+      store.mainContent = 'PurchaseOrder'
+    }
+
+    const badgeColor = (nutritionalClassification) => {
+      if (parseInt(nutritionalClassification) === 1) {
+        return 'grey'
+      } else if (parseInt(nutritionalClassification) === 2) {
+        return 'red'
+      } else if (parseInt(nutritionalClassification) === 3) {
+        return 'yellow'
+      } else if (parseInt(nutritionalClassification) === 4) {
+        return 'green'
+      }
+    }
+
     return {
       store,
+      title,
       handleRemoveOrder,
-      brDate
+      brDate,
+      badgeColor,
+      getRandomDarkColor,
+      handleNewOrder
     }
   }
 })

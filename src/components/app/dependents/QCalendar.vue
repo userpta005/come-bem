@@ -22,7 +22,7 @@
         <q-calendar-month ref="calendar"
           v-model="selectedDate"
           :weekdays="[1, 2, 3, 4, 5, 6, 0]"
-          :day-min-height="80"
+          :day-min-height="100"
           animated
           bordered
           locale="pt-br"
@@ -35,7 +35,7 @@
               <div class="flex flex-center">
                 <div class="title q-calendar__ellipsis"
                   :style="{ color: getRandomDarkColor() }">
-                  {{ event.time.slice(0, 5) }}
+                  #{{ event.id.toString().padStart(3, '0') }}
                 </div>
               </div>
             </template>

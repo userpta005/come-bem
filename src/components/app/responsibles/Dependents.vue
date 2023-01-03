@@ -11,7 +11,7 @@
         :style="$q.screen.lt.sm ? 'min-width: 300px;' : ''"
         v-if="dependent.accounts.length">
 
-        <q-img src="~assets/child.png"
+        <q-img src="/src/assets/child.png"
           style="height: 100px; width: 80px;"
           class="q-mb-xs" />
 
