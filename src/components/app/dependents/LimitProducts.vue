@@ -1,42 +1,54 @@
 <template>
   <div class="column">
-    <h6 class="no-margin q-px-xs q-py-sm">Cardápio</h6>
+
+    <h6 class="no-margin q-py-sm">Cardápio</h6>
+
     <div class="row justify-evenly">
-      <div class="column flex-center cursor-pointer q-ma-xs"
+      <div class="column items-center justify-between cursor-pointer q-ma-sm"
         v-for="(section, index) in sections"
         :key="index"
         @click="handleFilterProducts(section.id)">
         <q-img :src="section.image_url"
           height="60px"
           width="60px"
-          class="rounded-borders q-ma-xs" />
-        <span class="flex flex-center q-ma-xs">{{ section.name }}</span>
+          class="rounded-borders" />
+        <span class="flex flex-center">{{ section.name }}</span>
       </div>
     </div>
-    <q-separator />
-    <span class="text-caption text-weight-medium text-red q-px-xs q-py-sm">
+
+    <q-separator class="q-mt-sm" />
+
+    <span class="text-caption text-weight-medium text-red q-mt-md q-mb-sm">
       Para restringir o consumo do produto do cardápio, clique na
       imagem abaixo.
     </span>
-    <div class="row">
-      <div class="column flex-center cursor-pointer rounded-borders q-ma-xs"
-        style="border: 0.15rem solid var(--orange); height: 150px; width: 150px;"
+
+    <div class="row"
+      :class="$q.screen.lt.sm ? 'flex-center' : ''">
+      <div class="column justify-evenly items-center cursor-pointer rounded-borders q-my-sm q-mr-md"
+        style="border: 2px solid var(--orange); height: 180px; width: 180px;"
+        :class="{ 'limitedProduct': handleProductIsLimited(product) }"
         v-for="(product, index) in filteredProducts"
         :key="index"
         @click="handleAddLimitedProduct(product)">
         <q-img :src="product.image_url"
           height="60px"
           width="60px"
-          class="rounded-borders q-ma-xs" />
-        <span class="flex flex-center q-ma-xs">{{ product.name }}</span>
-        <span class="flex flex-center q-ma-xs">{{ floatToMoney(product.price) }}</span>
+          class="rounded-borders"
+          :class="{ 'imageLimitedProduct': handleProductIsLimited(product) }" />
+        <span class="text-center">{{ product.name }}</span>
+        <span class="text-center">{{ floatToMoney(product.price) }}</span>
+        <span class="textLimitedProduct text-center"
+          v-if="handleProductIsLimited(product)">Produto restrito</span>
       </div>
     </div>
-    <h6 class="no-margin q-px-xs q-py-sm"
+
+    <h6 class="no-margin q-py-sm"
       v-if="$route.name === 'responsible-dependent'">Produtos restritos</h6>
+
     <div class="column"
       v-if="$route.name === 'responsible-dependent'">
-      <div class="row justify-between items-center q-ma-xs"
+      <div class="row justify-between items-center q-ml-lg q-my-xs"
         v-for="(limitedProduct, index) in limitedProducts"
         :key="index">
         {{ limitedProduct.name }}
@@ -47,8 +59,14 @@
           @click="handleRemoveLimitedProduct(limitedProduct.id)" />
       </div>
     </div>
-    <div class="row flex-center">
-      <q-btn label="Sair"
+
+    <span class="text-center"
+      v-if="$route.name === 'responsible-dependent' && !limitedProducts.length">
+      Nenhum produto restrito.
+    </span>
+
+    <div class="row flex-center q-mt-lg">
+      <q-btn label="Voltar"
         class="rounded-borders q-ma-xs"
         text-color="grey-8"
         outline
@@ -62,10 +80,32 @@
         no-caps
         style="width: 150px;"
         @click="handleSubmit"
-        v-if="$route.name === 'responsible-dependent'" />
+        v-if="$route.name === 'responsible-dependent' && limitedProductSelected" />
     </div>
+
   </div>
 </template>
+
+<style>
+.limitedProduct {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.imageLimitedProduct {
+  filter: brightness(50%)
+}
+
+.textLimitedProduct {
+  position: absolute;
+  text-align: center;
+  justify-content: center;
+  color: white;
+  font-size: 20px;
+}
+</style>
 
 <script>
 import { defineComponent, ref } from 'vue'
@@ -83,7 +123,8 @@ export default defineComponent({
     const sections = ref([])
     const products = ref([])
     const filteredProducts = ref([])
-    const limitedProducts = ref(store.account.limited_products.map((value) => value))
+    const limitedProducts = ref(store.account.limited_products.filter((value) => value))
+    const limitedProductSelected = ref(false)
 
     const handleGetSections = async () => {
       try {
@@ -117,11 +158,17 @@ export default defineComponent({
       const productExists = limitedProducts.value.find(value => parseInt(value.id) === parseInt(product.id))
       if (!productExists) {
         limitedProducts.value.push(product)
+        limitedProductSelected.value = true
       }
     }
 
     const handleRemoveLimitedProduct = (limitedProductId) => {
       limitedProducts.value = limitedProducts.value.filter(limitedProduct => parseInt(limitedProduct.id) !== parseInt(limitedProductId))
+      limitedProductSelected.value = true
+    }
+
+    const handleProductIsLimited = (product) => {
+      return limitedProducts.value.find(limitedProduct => parseInt(limitedProduct.id) === parseInt(product.id))
     }
 
     const handleSubmit = async () => {
@@ -147,9 +194,11 @@ export default defineComponent({
       sections,
       filteredProducts,
       limitedProducts,
+      limitedProductSelected,
       handleFilterProducts,
       handleRemoveLimitedProduct,
       handleAddLimitedProduct,
+      handleProductIsLimited,
       handleSubmit,
       floatToMoney
     }
