@@ -5,7 +5,7 @@
     <CustomTitle title="Seja bem-vindo" />
 
     <div class="row q-col-gutter-md"
-      :class="$q.screen.gt.xs ? 'no-wrap' : 'flex flex-center'">
+      :class="$q.screen.gt.xs ? 'no-wrap justify-between' : 'flex flex-center'">
       <Dependents />
       <SidebarActions />
     </div>
