@@ -1,89 +1,135 @@
 <template>
   <q-form class="column"
+    :class="$q.screen.gt.xs ? 'items-start' : 'items-center'"
     @submit.prevent="handleSubmit">
-    <h6 class="no-margin q-pa-xs">Pedido de compra</h6>
-    <span class="q-pa-xs">Itens do pedido</span>
-    <div class="column q-pa-xs">
+
+    <h6 class="no-margin q-pb-sm">Pedido de compra</h6>
+
+    <span class="q-pb-sm">Itens do pedido</span>
+
+    <div class="column q-pb-sm"
+      :class="$q.screen.gt.xs ? 'items-start' : 'items-center'">
+
       <q-card bordered
         flat
-        class="q-my-xs row"
-        :style="$q.screen.gt.sm ? 'width: 600px;' : 'width: 320px;'"
+        class="row q-mb-sm"
+        :style="$q.screen.gt.sm ? 'width: 600px;' : ($q.screen.gt.xs ? 'width: 500px;' : 'width: 320px;')"
         v-for="(product, index) in store.cart"
         :key="index">
+
         <q-card-section horizontal
           class="flex flex-center q-pa-sm">
+
           <q-img :src="product.image_url"
             height="80px"
             width="80px"
-            class="rounded-borders q-ma-xs" />
+            class="rounded-borders" />
+
         </q-card-section>
+
         <q-card-section horizontal
-          class="col-grow column flex-center q-pa-sm">
-          <span class="q-pa-xs">{{ product.name }}</span>
-          <div class="row no-wrap flex-center q-pa-xs">
-            <q-icon class="cursor-pointer q-pa-xs"
-              name="mdi-minus-circle-outline"
-              size="md"
-              @click="handleMinus(product)" />
-            <h6 class="no-margin q-pa-xs">{{ product.quantity }}</h6>
-            <q-icon class="cursor-pointer q-pa-xs"
-              name="mdi-plus-circle-outline"
-              size="md"
-              @click="handlePlus(product)" />
+          class="col-grow column items-start q-pa-sm q-pl-md">
+
+          <div class="column flex-center">
+            <span class="q-pb-sm">{{ product.name }}</span>
+
+            <div class="row no-wrap flex-center">
+
+              <q-icon class="cursor-pointer"
+                name="mdi-minus-circle-outline"
+                size="md"
+                @click="handleMinus(product)" />
+
+              <h6 class="no-margin q-px-xs">{{ product.quantity }}</h6>
+
+              <q-icon class="cursor-pointer"
+                name="mdi-plus-circle-outline"
+                size="md"
+                @click="handlePlus(product)" />
+
+            </div>
           </div>
+
         </q-card-section>
+
         <q-card-section horizontal
-          class="column flex-center q-pa-sm">
-          <q-icon class="cursor-pointer q-pa-xs"
+          class="column items-center justify-between q-pa-sm q-pr-md">
+
+          <q-icon class="cursor-pointer q-pb-sm"
             name="mdi-delete"
             color="red"
             size="lg"
             @click="handleRemoveProduct(product)" />
-          <span class="q-pa-xs">{{ floatToMoney(product.quantity * product.price) }}</span>
+
+          <span>{{ floatToMoney(parseInt(product.quantity) * parseFloat(product.price)) }}</span>
+
         </q-card-section>
+
       </q-card>
+
     </div>
-    <div class="row no-wrap justify-between items-center q-pa-xs"
-      :style="$q.screen.gt.sm ? 'width: 600px;' : 'width: 320px;'">
-      <span class="text-weight-medium q-pa-xs">Total:</span>
-      <span class="text-weight-medium q-pa-xs">{{ floatToMoney(total) }}</span>
+
+    <div class="row no-wrap justify-between items-center q-pb-sm"
+      :style="$q.screen.gt.sm ? 'width: 600px;' : ($q.screen.gt.xs ? 'width: 500px;' : 'width: 320px;')">
+
+      <span class="text-weight-medium">Total:</span>
+      <span class="text-weight-medium q-pr-md">{{ floatToMoney(total) }}</span>
+
     </div>
+
     <q-separator color="black"
-      class="q-ma-xs"
-      :style="$q.screen.gt.sm ? 'width: 600px;' : 'width: 320px;'" />
-    <span class="q-pa-xs">Data do consumo</span>
-    <div class="row no-wrap justify-between items-center q-pa-xs"
-      :style="$q.screen.gt.sm ? 'width: 600px;' : 'width: 320px;'">
+      class="q-mb-sm"
+      :style="$q.screen.gt.sm ? 'width: 600px;' : ($q.screen.gt.xs ? 'width: 500px;' : 'width: 320px;')" />
+
+    <span class="q-pb-sm">Data do consumo</span>
+
+    <div class="row no-wrap justify-between items-center q-pb-sm px-responsive-sm"
+      :style="$q.screen.gt.sm ? 'width: 600px;' : ($q.screen.gt.xs ? 'width: 500px;' : 'width: 320px;')">
+
       <q-input v-model="store.purchaseDate"
         type="date"
         label="Data"
         stack-label
         outlined
-        disable />
-      <q-input v-model="time"
-        type="time"
-        label="Horário"
-        stack-label
+        disable
+        :rules="[val => (!!val) || 'Data é obrigatória']" />
+
+      <q-select v-model="turn"
         outlined
-        :rules="[val => !!val || 'Horário é obrigatório!']" />
+        label="Turno"
+        option-value="id"
+        option-label="label"
+        :options="turns"
+        map-options
+        emit-value
+        lazy-rules="ondemand"
+        :rules="[val => (!!val) || 'Turno é obrigatório']" />
+
     </div>
-    <div class="row flex-center q-pt-xl">
+
+    <div class="row items-center q-pb-sm px-responsive-sm"
+      :class="$q.screen.gt.xs ? 'justify-between' : 'justify-center'"
+      :style="$q.screen.gt.sm ? 'width: 600px;' : ($q.screen.gt.xs ? 'width: 500px;' : 'width: 320px;')">
+
       <q-btn label="Continuar comprando"
-        class="rounded-borders q-ma-xs"
+        class="rounded-borders"
         text-color="grey-8"
         outline
         no-caps
         style="width: 200px;"
-        :class="{ 'self-center': $q.screen.lt.md }"
+        :class="$q.screen.lt.sm ? 'q-mb-sm' : ''"
         @click="store.mainContent = 'PurchaseOrder'" />
+
       <q-btn type="submit"
         label="Finalizar compra"
-        class="rounded-borders q-ma-xs"
+        class="rounded-borders"
         color="main-primary"
         no-caps
         style="width: 200px;"
         icon-right="mdi-cart-outline" />
+
     </div>
+
   </q-form>
 </template>
 
@@ -100,7 +146,7 @@ export default defineComponent({
     const { notifyWarning, notifyError, notifySuccess } = notify()
     const route = useRoute()
     const store = useStorageStore()
-    const time = ref(null)
+    const turn = ref(1)
 
     const total = computed(() => {
       let total = 0
@@ -109,6 +155,12 @@ export default defineComponent({
       })
       return total
     })
+
+    const turns = ref([
+      { label: 'Matutino', id: 1 },
+      { label: 'Vespertino', id: 2 },
+      { label: 'Noturno', id: 3 }
+    ])
 
     const handlePlus = (product) => {
       if (product.quantity < product.stock.quantity) {
@@ -140,7 +192,7 @@ export default defineComponent({
           data: {
             products: store.cart,
             date: store.purchaseDate,
-            time: time.value
+            turn: turn.value
           }
         })
         store.setUser(data.data)
@@ -153,7 +205,8 @@ export default defineComponent({
 
     return {
       store,
-      time,
+      turn,
+      turns,
       handleMinus,
       handlePlus,
       handleRemoveProduct,

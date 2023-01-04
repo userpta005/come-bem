@@ -16,7 +16,7 @@
         </div>
         <div class="col-shrink column">
           <p class="text-weight-bold q-mb-xs">{{ item.title }}</p>
-          <span>{{ item.text }}</span>
+          <span style="text-indent: 15px;">{{ item.text }}</span>
         </div>
       </div>
       <q-separator v-if="(item.separator)" />
@@ -26,6 +26,7 @@
       color="main-primary"
       text-color="white"
       no-caps
+      style="width: 150px;"
       :to="{ name: 'contacts' }" />
   </main>
 </template>

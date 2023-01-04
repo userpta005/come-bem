@@ -21,9 +21,9 @@
             lazy-rules="ondemand"
             v-model="form.name"
             :rules="[
-              val => (!!val && val.length > 0) || 'Nome completo é obrigatório',
-              val => (val.length <= 100) || 'Máximo 100 caracteres !',
-            ]" />
+  val => (!!val && val.length > 0) || 'Nome completo é obrigatório',
+  val => (val.length <= 100) || 'Máximo 100 caracteres !',
+]" />
 
           <q-input label="Email"
             class="col-12 q-pa-md"
@@ -33,9 +33,9 @@
             lazy-rules="ondemand"
             v-model="form.email"
             :rules="[
-              val => (!!val && val.length > 0) || 'Email é obrigatório',
-              val => (val.length <= 100) || 'Máximo 100 caracteres !',
-            ]" />
+  val => (!!val && val.length > 0) || 'Email é obrigatório',
+  val => (val.length <= 100) || 'Máximo 100 caracteres !',
+]" />
 
           <q-input label="Telefone"
             class="col-md-6 col-xs-12 q-pa-md"
@@ -71,9 +71,9 @@
             lazy-rules="ondemand"
             v-model="form.password"
             :rules="[
-              val => (val && val.length > 0) || 'Senha é obrigatório',
-              val => (val.length >= 8) || 'Minímo 8 caracteres !',
-            ]" />
+  val => (val && val.length > 0) || 'Senha é obrigatório',
+  val => (val.length >= 8) || 'Minímo 8 caracteres !',
+]" />
 
           <q-input type="password"
             class="col-md-6 col-xs-12 q-pa-md"
@@ -83,10 +83,10 @@
             lazy-rules="ondemand"
             v-model="form.password_confirmation"
             :rules="[
-              val => (val && val.length > 0) || 'Senha é obrigatório',
-              val => (val.length >= 8) || 'Minímo 8 caracteres !',
-              val => (val === form.password) || 'A senha não corresponde !',
-            ]" />
+  val => (val && val.length > 0) || 'Senha é obrigatório',
+  val => (val.length >= 8) || 'Minímo 8 caracteres !',
+  val => (val === form.password) || 'A senha não corresponde !',
+]" />
 
           <div class="col-12 flex flex-center">
             <div class="q-pa-md">Você é:</div>
@@ -168,6 +168,10 @@ export default defineComponent({
 
     const handleSubmit = async () => {
       try {
+        if (!form.terms) {
+          notifyError('Termos de uso e política de privacidade obrigatórios !')
+          return
+        }
         await store.register(form)
         $q.dialog({
           title: 'Parabéns, cadastro concluído!',

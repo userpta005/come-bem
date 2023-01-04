@@ -1,8 +1,10 @@
 <template>
   <div class="column">
-    <h6 class="no-margin q-px-xs q-py-sm">Pedir lanche</h6>
+
+    <h6 class="no-margin q-py-sm">Pedir lanche</h6>
+
     <div class="row justify-evenly">
-      <div class="column flex-center cursor-pointer q-ma-xs"
+      <div class="column items-center justify-between cursor-pointer q-ma-sm"
         v-for="(section, index) in sections"
         :key="index"
         @click="handleFilterProducts(section.id)">
@@ -13,25 +15,45 @@
         <span class="flex flex-center q-ma-xs">{{ section.name }}</span>
       </div>
     </div>
+
     <q-separator />
-    <div class="row q-py-xl">
-      <q-card class="q-ma-sm"
-        style="height: 230px; width: 150px;"
+
+    <div class="row q-py-xl"
+      :class="$q.screen.lt.sm ? 'flex-center' : ''">
+
+      <q-card class="column justify-between q-mr-md q-mb-md"
+        style="height: 280px; width: 220px;"
         v-for="(product, index) in filteredProducts"
         :key="index">
-        <q-card-section class="flex flex-center q-pa-sm">
+
+        <q-card-section class="flex flex-center q-px-sm q-pt-md q-pb-xs">
           <q-img :src="product.image_url"
-            height="60px"
-            width="60px"
+            height="70px"
+            width="70px"
             class="rounded-borders" />
         </q-card-section>
 
-        <q-card-section class="column flex-center q-pa-sm">
-          <span class="flex flex-center q-ma-xs">{{ product.name }}</span>
-          <span class="flex flex-center q-ma-xs">{{ floatToMoney(product.price) }}</span>
+        <q-card-section class="column flex-center q-px-sm q-pt-sm q-pb-xs">
+          <span class="text-center q-pb-xs">{{ product.name }}</span>
+          <span class="text-center q-pb-xs">{{ floatToMoney(product.price) }}</span>
+          <div class="row no-wrap justify-around items-end full-width">
+
+            <q-icon class="cursor-pointer"
+              name="mdi-minus-circle-outline"
+              size="md"
+              @click="handleMinus(product)" />
+
+            <h6 class="no-margin q-px-xs">{{ product.quantity ?? 1 }}</h6>
+
+            <q-icon class="cursor-pointer"
+              name="mdi-plus-circle-outline"
+              size="md"
+              @click="handlePlus(product)" />
+
+          </div>
         </q-card-section>
 
-        <q-card-actions class="flex flex-center q-pa-sm">
+        <q-card-actions class="flex flex-center q-px-md q-pt-sm q-pb-md">
           <q-btn no-caps
             color="green-9"
             class="full-width"
@@ -40,17 +62,21 @@
             Comprar
           </q-btn>
         </q-card-actions>
+
       </q-card>
+
     </div>
+
     <div class="row flex-center">
+
       <q-btn label="Sair"
         class="rounded-borders q-ma-xs"
         text-color="grey-8"
         outline
         no-caps
         style="width: 200px;"
-        :class="{ 'self-center': $q.screen.lt.md }"
         @click="store.mainContent = 'QCalendar'" />
+
       <q-btn label="Finalizar compra"
         class="rounded-borders q-ma-xs"
         color="main-primary"
@@ -58,13 +84,17 @@
         style="width: 200px;"
         icon-right="mdi-cart-outline"
         @click="handleSubmit">
+
         <q-badge color="red"
           floating
           v-if="store.cart.length">
           {{ store.cart.length }}
         </q-badge>
+
       </q-btn>
+
     </div>
+
   </div>
 </template>
 
@@ -133,6 +163,26 @@ export default defineComponent({
       }
     }
 
+    const handlePlus = (product) => {
+      if (!('quantity' in product)) {
+        product.quantity = 1
+      }
+      if (product.quantity < product.stock.quantity) {
+        product.quantity++
+      } else {
+        notifyWarning('Estoque indisponível!')
+      }
+    }
+
+    const handleMinus = (product) => {
+      if (!('quantity' in product)) {
+        product.quantity = 1
+      }
+      if (product.quantity > 1) {
+        product.quantity--
+      }
+    }
+
     handleGetSections()
     handleGetProducts()
 
@@ -143,7 +193,9 @@ export default defineComponent({
       handleFilterProducts,
       handleSubmit,
       floatToMoney,
-      handleAddProduct
+      handleAddProduct,
+      handlePlus,
+      handleMinus
     }
   }
 })

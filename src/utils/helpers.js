@@ -1,7 +1,7 @@
 import { parseISO, format } from 'date-fns'
 
 const floatToMoney = (currency) => {
-  const formatted = parseInt(currency).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+  const formatted = parseFloat(currency).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
   return formatted
 }
 

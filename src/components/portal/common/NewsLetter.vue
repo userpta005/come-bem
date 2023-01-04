@@ -1,8 +1,8 @@
 <template>
   <div class="column bg-main-secondary px-responsive-xl text-white ">
-    <h6 class="no-margin text-weight-bold text-center q-py-md">
+    <h5 class="no-margin text-weight-bold text-center q-py-md">
       Newsletter
-    </h6>
+    </h5>
     <span class="text-center q-py-md">
       Fique por dentro de nossas novidades!
     </span>
@@ -17,9 +17,9 @@
         lazy-rules="ondemand"
         v-model="formNewsLetter.name"
         :rules="[
-          val => (!!val && val.length > 0) || 'Nome é obrigatório !',
-          val => (val.length <= 100) || 'Máximo 100 caracteres !',
-        ]" />
+  val => (!!val && val.length > 0) || 'Nome é obrigatório !',
+  val => (val.length <= 100) || 'Máximo 100 caracteres !',
+]" />
       <q-input type="email"
         class="col-md-6 col-xs-12 q-pa-md"
         label="Email"
@@ -30,9 +30,9 @@
         lazy-rules="ondemand"
         v-model="formNewsLetter.email"
         :rules="[
-          val => (!!val && val.length > 0) || 'Email é obrigatório',
-          val => (val.length <= 100) || 'Máximo 100 caracteres !',
-        ]" />
+  val => (!!val && val.length > 0) || 'Email é obrigatório',
+  val => (val.length <= 100) || 'Máximo 100 caracteres !',
+]" />
       <span class="col-12 text-center q-pa-md">
         Você receberá todas as promoções, novidades e ofertas direto no seu e-mail.
       </span>
@@ -40,7 +40,8 @@
         type="submit"
         color="main-primary"
         text-color="white"
-        no-caps />
+        no-caps
+        style="width: 150px;" />
     </q-form>
   </div>
 </template>
@@ -50,6 +51,7 @@
   background-color: rgba(255, 255, 255, 0.40);
   border-radius: 5px;
 }
+
 .q-field__native {
   color: #353535;
 }

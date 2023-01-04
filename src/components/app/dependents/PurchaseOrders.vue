@@ -22,16 +22,17 @@
             </div>
             <div class="row no-wrap justify-between items-center">
               <div class="row items-center">
-                <span class="q-pr-xs q-pb-xs"
+                <span class="flex justify-between items-center q-pr-sm q-pb-xs"
                   v-for="(item, index) in order.order_items"
                   :key="index">
                   <q-badge :color="badgeColor(item.product.nutritional_classification)"
+                    class="q-mr-sm"
                     style="height:15px; width: 15px;"
                     rounded />
                   {{ item.product.name }}
                 </span>
               </div>
-              <q-icon class="cursor-pointer q-pb-xs"
+              <q-icon class="cursor-pointer q-pb-xs q-pl-md"
                 name="mdi-delete-circle"
                 color="red"
                 size="md"
@@ -69,6 +70,7 @@ import { brDate, getRandomDarkColor } from 'src/utils/helpers'
 import notify from 'src/composables/notify'
 import { useRoute } from 'vue-router'
 import { parseISO, format } from 'date-fns'
+import pt from 'date-fns/locale/pt-BR'
 
 export default defineComponent({
   name: 'PurchaseOrders',
@@ -78,7 +80,9 @@ export default defineComponent({
     const { notifyError, notifySuccess } = notify()
     const route = useRoute()
     const store = useStorageStore()
-    const title = store.purchaseDate ? format(parseISO(store.purchaseDate), 'dd MMM yyyy') : null
+    const title = store.purchaseDate
+      ? format(parseISO(store.purchaseDate), 'dd MMM yyyy', { locale: pt })
+      : null
 
     const handleRemoveOrder = async (order) => {
       try {

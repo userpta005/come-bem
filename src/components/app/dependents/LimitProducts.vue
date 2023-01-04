@@ -11,8 +11,8 @@
         <q-img :src="section.image_url"
           height="60px"
           width="60px"
-          class="rounded-borders" />
-        <span class="flex flex-center">{{ section.name }}</span>
+          class="rounded-borders q-ma-xs" />
+        <span class="flex flex-center q-ma-xs">{{ section.name }}</span>
       </div>
     </div>
 
@@ -25,22 +25,27 @@
 
     <div class="row"
       :class="$q.screen.lt.sm ? 'flex-center' : ''">
-      <div class="column justify-evenly items-center cursor-pointer rounded-borders q-my-sm q-mr-md"
+
+      <div class="column justify-between items-center cursor-pointer rounded-borders q-my-sm q-mr-md"
         style="border: 2px solid var(--orange); height: 180px; width: 180px;"
         :class="{ 'limitedProduct': handleProductIsLimited(product) }"
         v-for="(product, index) in filteredProducts"
         :key="index"
         @click="handleAddLimitedProduct(product)">
+
         <q-img :src="product.image_url"
-          height="60px"
-          width="60px"
-          class="rounded-borders"
+          height="70px"
+          width="70px"
+          class="rounded-borders q-mt-sm"
           :class="{ 'imageLimitedProduct': handleProductIsLimited(product) }" />
-        <span class="text-center">{{ product.name }}</span>
-        <span class="text-center">{{ floatToMoney(product.price) }}</span>
-        <span class="textLimitedProduct text-center"
+
+        <span class="text-center q-pa-sm">{{ product.name }}</span>
+        <span class="text-center q-pb-sm">{{ floatToMoney(product.price) }}</span>
+        <span class="textLimitedProduct"
           v-if="handleProductIsLimited(product)">Produto restrito</span>
+
       </div>
+
     </div>
 
     <h6 class="no-margin q-py-sm"
@@ -89,8 +94,6 @@
 <style>
 .limitedProduct {
   position: relative;
-  display: flex;
-  align-items: center;
   background-color: rgba(0, 0, 0, 0.5);
 }
 
@@ -101,9 +104,9 @@
 .textLimitedProduct {
   position: absolute;
   text-align: center;
-  justify-content: center;
   color: white;
   font-size: 20px;
+  top: 75px;
 }
 </style>
 
