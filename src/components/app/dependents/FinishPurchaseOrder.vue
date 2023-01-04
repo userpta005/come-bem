@@ -33,7 +33,7 @@
           <div class="column flex-center">
             <span class="q-pb-sm">{{ product.name }}</span>
 
-            <div class="row no-wrap flex-center">
+            <div class="self-start row no-wrap flex-center">
 
               <q-icon class="cursor-pointer"
                 name="mdi-minus-circle-outline"
