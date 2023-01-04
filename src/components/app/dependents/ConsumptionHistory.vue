@@ -1,45 +1,53 @@
 <template>
-  <div class="row">
-    <div class="col-12"
-      :class="$q.screen.lt.md ? 'column flex-center' : 'row items-center'">
-      <span class="q-pa-sm">Legenda:</span>
-      <div class="flex flex-center">
-        <q-badge color="grey"
-          rounded
-          class="q-pa-xs"
-          style="height:15px; width: 15px;" />
-        <span class="q-pa-sm">Em Análise</span>
-      </div>
-      <div class="flex flex-center">
-        <q-badge color="green"
-          rounded
-          class="q-pa-sm"
-          style="height:15px; width: 15px;" />
-        <span class="q-pa-sm">Muito nutritivo</span>
-      </div>
-      <div class="flex flex-center">
-        <q-badge color="yellow"
-          rounded
-          class="q-pa-sm"
-          style="height:15px; width: 15px;" />
-        <span class="q-pa-sm">Moderado</span>
-      </div>
-      <div class="flex flex-center">
-        <q-badge color="red"
-          rounded
-          class="q-pa-sm"
-          style="height:15px; width: 15px;" />
-        <span class="q-pa-sm">Pouco nutritivo</span>
-      </div>
-    </div>
+  <div class="row"
+    :class="$q.screen.lt.md ? 'flex flex-center' : ''">
     <div class="row col-12">
-      <q-table title="Histórico de consumo: Últimos 30 dias"
-        class="col-md-9 col-xs-12"
+      <q-table class="col-md-9 col-xs-12"
         :columns="columns"
         :rows="rows"
         :separator="[{ label: 'None', value: 'none' }]"
         row-key="id"
         flat>
+        <template v-slot:top>
+          <div class="full-width">
+            <h6 class="no-margin text-weight-regular q-pb-sm"
+              :class="$q.screen.lt.sm ? 'column' : ''">
+              Histórico de consumo:
+              <span class="text-body1 text-weight-medium text-grey-8 "
+                :class="$q.screen.lt.sm ? '' : 'q-pl-sm'">
+                Últimos 30 dias
+              </span>
+            </h6>
+            <div class="container"
+              :class="$q.screen.lt.sm ? 'column justify-center' : 'row items-center'">
+              <span class="q-pr-sm q-pb-sm">Legenda:</span>
+              <div class="flex items-center q-pr-sm q-pb-sm">
+                <q-badge color="grey"
+                  rounded
+                  style="height:15px; width: 15px;" />
+                <span class="q-pl-sm">Em Análise</span>
+              </div>
+              <div class="flex items-center q-pr-sm q-pb-sm">
+                <q-badge color="green"
+                  rounded
+                  style="height:15px; width: 15px;" />
+                <span class="q-pl-sm">Muito nutritivo</span>
+              </div>
+              <div class="flex items-center q-pr-sm q-pb-sm">
+                <q-badge color="yellow"
+                  rounded
+                  style="height:15px; width: 15px;" />
+                <span class="q-pl-sm">Moderado</span>
+              </div>
+              <div class="flex items-center q-pr-sm q-pb-sm">
+                <q-badge color="red"
+                  rounded
+                  style="height:15px; width: 15px;" />
+                <span class="q-pl-sm">Pouco nutritivo</span>
+              </div>
+            </div>
+          </div>
+        </template>
         <template v-slot:body-cell-nutritional_classification="props">
           <q-td :props="props">
             <q-badge :color="badgeColor(props.row.nutritional_classification)"
@@ -47,12 +55,24 @@
               rounded />
           </q-td>
         </template>
+        <template v-slot:header-cell-product="props">
+          <q-th :props="props">
+            <span class="pl-responsive-md">{{ props.col.label }}</span>
+          </q-th>
+        </template>
+        <template v-slot:body-cell-product="props">
+          <q-td :props="props">
+            <span class="pl-responsive-md">
+              {{ props.row.product }}
+            </span>
+          </q-td>
+        </template>
         <template v-slot:bottom-row>
           <q-tr>
             <q-td colspan="4">
               <b>Total:</b>
             </q-td>
-            <q-td class="text-right">
+            <q-td class="text-center">
               {{ parseInt(totalQuantity) }}
             </q-td>
             <q-td class="text-right">
@@ -73,7 +93,6 @@
       outline
       no-caps
       style="width: 150px;"
-      :class="{ 'self-center': $q.screen.lt.md }"
       @click="store.mainContent = 'QCalendar'" />
   </div>
 </template>
@@ -187,7 +206,7 @@ export default defineComponent({
       },
       {
         name: 'product',
-        align: 'center',
+        align: 'left',
         label: 'Produto',
         field: 'product',
         sortable: true
@@ -201,7 +220,7 @@ export default defineComponent({
       },
       {
         name: 'quantity',
-        align: 'right',
+        align: 'center',
         label: 'Quantidade',
         field: 'quantity',
         sortable: true,

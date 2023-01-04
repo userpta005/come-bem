@@ -144,7 +144,6 @@ export default defineComponent({
     const handleAddProduct = (product) => {
       const productExists = store.cart.find(value => parseInt(value.id) === parseInt(product.id))
       if (!productExists) {
-        product.quantity = 1
         store.cart.push(product)
       } else {
         notifyWarning('Produto já está no carrinho !')

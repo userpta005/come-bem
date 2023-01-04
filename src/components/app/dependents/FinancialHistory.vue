@@ -1,32 +1,56 @@
 <template>
-  <div class="column">
-    <q-table title="Histórico financeiro: Últimos 30 dias"
-      :columns="columns"
-      :rows="store.account.account_entries"
-      :separator="[{ label: 'None', value: 'none' }]"
-      row-key="name"
-      flat>
-      <template v-slot:bottom-row>
-        <q-tr>
-          <q-td colspan="2">
-            <b>Total:</b>
+  <div class="row"
+    :class="$q.screen.lt.md ? 'flex flex-center' : ''">
+    <row class="col-12">
+      <q-table title="Histórico financeiro: Últimos 30 dias"
+        :columns="columns"
+        :rows="store.account.account_entries"
+        :separator="[{ label: 'None', value: 'none' }]"
+        row-key="name"
+        flat>
+        <template v-slot:header-cell-description="props">
+          <q-th :props="props">
+            <span class="pl-responsive-xl">{{ props.col.label }}</span>
+          </q-th>
+        </template>
+        <template v-slot:body-cell-description="props">
+          <q-td :props="props">
+            <span class="pl-responsive-xl">
+              {{ props.row.description }}
+            </span>
           </q-td>
-          <q-td class="text-right">
-            {{ floatToMoney(totalCredits) }}
-          </q-td>
-          <q-td class="text-right">
-            {{ floatToMoney(totalDebts) }}
-          </q-td>
-        </q-tr>
-      </template>
-    </q-table>
+        </template>
+        <template v-slot:top>
+          <h6 class="no-margin text-weight-regular"
+            :class="$q.screen.lt.sm ? 'column' : ''">
+            Histórico financeiro:
+            <span class="text-body1 text-weight-medium text-grey-8"
+              :class="$q.screen.lt.sm ? '' : 'q-pl-sm'">
+              Últimos 30 dias
+            </span>
+          </h6>
+        </template>
+        <template v-slot:bottom-row>
+          <q-tr>
+            <q-td colspan="2">
+              <b>Total:</b>
+            </q-td>
+            <q-td class="text-right">
+              {{ floatToMoney(totalCredits) }}
+            </q-td>
+            <q-td class="text-right">
+              {{ floatToMoney(totalDebts) }}
+            </q-td>
+          </q-tr>
+        </template>
+      </q-table>
+    </row>
     <q-btn label="Sair"
-      class="rounded-borders q-ma-md"
+      class="rounded-borders col-12 q-ma-md"
       text-color="grey-8"
       outline
       no-caps
       style="width: 150px;"
-      :class="{ 'self-center': $q.screen.lt.md }"
       @click="store.mainContent = 'QCalendar'" />
   </div>
 </template>
@@ -80,7 +104,7 @@ export default defineComponent({
       },
       {
         name: 'description',
-        align: 'center',
+        align: 'left',
         label: 'Tipo movimento',
         field: 'description',
         sortable: true

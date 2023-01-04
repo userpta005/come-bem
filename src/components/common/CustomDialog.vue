@@ -9,6 +9,12 @@
           style="height: 100px; width: 100px;">
       </q-card-section>
 
+      <q-card-section class="flex flex-center"
+        v-if="checked">
+        <img src="~assets/verificado.png"
+          style="height: 100px; width: 100px;">
+      </q-card-section>
+
       <q-card-section v-if="title">
         <h6 class="no-margin text-center">{{ title }}</h6>
       </q-card-section>
@@ -53,6 +59,10 @@ export default {
     warning: {
       type: Boolean,
       default: true
+    },
+    checked: {
+      type: Boolean,
+      default: false
     },
     cancel: {
       type: Boolean,

@@ -182,7 +182,9 @@ export default defineComponent({
             title: 'Parabéns, cadastro concluído!',
             message: 'Agora, basta escolher o modelo de cartão na cantina e estará habilitado para o uso.',
             cancel: false,
-            confirm: false
+            confirm: false,
+            warning: false,
+            checked: true
           }
         }).onOk(() => {
           router.push({ name: 'login' })
