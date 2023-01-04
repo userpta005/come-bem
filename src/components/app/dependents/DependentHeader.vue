@@ -22,13 +22,13 @@
               {{ store.dependent.people.name }}
             </h6>
 
-            <SelectAccount />
+            <SelectAccount class="q-mb-xs" />
 
-            <span class="text-weight-regular q-mb-xs">
+            <span class="text-body2 text-weight-medium text-grey-8 q-mb-sm">
               Nascimento: {{ brDate(store.dependent.people.birthdate) }}
             </span>
 
-            <span class="text-weight-regular q-mb-xs">
+            <span class="text-body2 text-weight-medium text-grey-8">
               Sexo: {{ gender(store.dependent.people.gender) }}
             </span>
 
@@ -37,15 +37,15 @@
           <div class="column items-end q-mb-sm"
             :class="{ 'col-12 flex-center': $q.screen.lt.sm }">
 
-            <span class="text-weight-medium q-mb-xs">
+            <span class="text-weight-medium q-mb-sm">
               Saldo: {{ floatToMoney(store.account.balance) }}
             </span>
 
-            <span class="text-weight-regular q-mb-xs">
+            <span class="text-body2 text-weight-regular q-mb-sm">
               Limite diário: {{ floatToMoney(store.account.daily_limit) }}
             </span>
 
-            <span class="text-weight-regular q-mb-xs">
+            <span class="text-body2 text-weight-regular q-mb-sm">
               Saldo do dia: {{ floatToMoney(0) }}
             </span>
 
@@ -54,7 +54,7 @@
               :true-value="1"
               :false-value="2"
               style="border: 1px solid grey"
-              class="q-py-xs q-px-md rounded-borders q-mb-xs"
+              class="q-py-xs q-px-md rounded-borders"
               :class="{ 'self-start': $q.screen.gt.xs }"
               :color="parseInt(statusDependent) === 1 ? 'green' : 'red'"
               keep-color

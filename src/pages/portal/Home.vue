@@ -2,7 +2,8 @@
   <q-page style="min-height: auto; height: auto;">
     <div class="px-responsive-xl q-py-md">
       <ArticleContent :content="article" />
-      <MainContent :content="main" />
+      <MainContent :content="main"
+        :textIndent="true" />
       <SectionContent :content="topSectionContent" />
       <SectionContent :content="bottomSectionContent" />
     </div>

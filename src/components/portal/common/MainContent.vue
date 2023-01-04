@@ -9,14 +9,16 @@
     </h5>
     <div v-for="(item, index)  in content.items"
       :key="index">
-      <div class="row no-wrap q-py-sm">
+      <div class="row no-wrap q-py-md">
         <div class="col-auto flex flex-center q-pr-md">
           <q-icon :name="item.iconName"
             :size="item.iconSize" />
         </div>
         <div class="col-shrink column">
           <p class="text-weight-bold q-mb-xs">{{ item.title }}</p>
-          <span style="text-indent: 15px;">{{ item.text }}</span>
+          <p align="justify"
+            class="no-margin"
+            :style="textIndent ? 'text-indent: 15px;' : ''">{{ item.text }}</p>
         </div>
       </div>
       <q-separator v-if="(item.separator)" />
@@ -38,7 +40,12 @@ export default defineComponent({
   name: 'MainContent',
   props: {
     content: {
-      type: Object
+      type: Object,
+      required: true
+    },
+    textIndent: {
+      type: Boolean,
+      default: false
     }
   }
 })

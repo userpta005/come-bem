@@ -50,6 +50,10 @@
 </template>
 
 <style lang="scss">
+.q-calendar__ellipsis::first-letter {
+  text-transform: uppercase;
+}
+
 .q-calendar-month__day.q-disabled-day,
 .q-calendar-month__day.q-outside {
   background-color: #ededed !important;

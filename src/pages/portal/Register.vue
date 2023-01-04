@@ -6,10 +6,12 @@
         <h5 class="no-margin text-weight-bold text-main-tertiary text-center">
           Cadastro para ativação
         </h5>
-        <p class="q-mt-md q-mx-md">
+        <p class="q-mt-md q-mx-md"
+          align="justify">
           A equipe do Lanche Bem está pronta para atender e ajudar no uso dos nossos serviços.
         </p>
-        <p class="q-mx-md">
+        <p class="q-mx-md"
+          align="justify">
           Para que a ativação seja feita, preencha os campos abaixo.
         </p>
         <q-form @submit.prevent="handleSubmit"
@@ -21,9 +23,9 @@
             lazy-rules="ondemand"
             v-model="form.name"
             :rules="[
-  val => (!!val && val.length > 0) || 'Nome completo é obrigatório',
-  val => (val.length <= 100) || 'Máximo 100 caracteres !',
-]" />
+              val => (!!val && val.length > 0) || 'Nome completo é obrigatório',
+              val => (val.length <= 100) || 'Máximo 100 caracteres !',
+            ]" />
 
           <q-input label="Email"
             class="col-12 q-pa-md"
@@ -33,9 +35,9 @@
             lazy-rules="ondemand"
             v-model="form.email"
             :rules="[
-  val => (!!val && val.length > 0) || 'Email é obrigatório',
-  val => (val.length <= 100) || 'Máximo 100 caracteres !',
-]" />
+              val => (!!val && val.length > 0) || 'Email é obrigatório',
+              val => (val.length <= 100) || 'Máximo 100 caracteres !',
+            ]" />
 
           <q-input label="Telefone"
             class="col-md-6 col-xs-12 q-pa-md"
@@ -71,9 +73,9 @@
             lazy-rules="ondemand"
             v-model="form.password"
             :rules="[
-  val => (val && val.length > 0) || 'Senha é obrigatório',
-  val => (val.length >= 8) || 'Minímo 8 caracteres !',
-]" />
+              val => (val && val.length > 0) || 'Senha é obrigatório',
+              val => (val.length >= 8) || 'Minímo 8 caracteres !',
+            ]" />
 
           <q-input type="password"
             class="col-md-6 col-xs-12 q-pa-md"
@@ -83,10 +85,10 @@
             lazy-rules="ondemand"
             v-model="form.password_confirmation"
             :rules="[
-  val => (val && val.length > 0) || 'Senha é obrigatório',
-  val => (val.length >= 8) || 'Minímo 8 caracteres !',
-  val => (val === form.password) || 'A senha não corresponde !',
-]" />
+              val => (val && val.length > 0) || 'Senha é obrigatório',
+              val => (val.length >= 8) || 'Minímo 8 caracteres !',
+              val => (val === form.password) || 'A senha não corresponde !',
+            ]" />
 
           <div class="col-12 flex flex-center">
             <div class="q-pa-md">Você é:</div>
@@ -140,6 +142,7 @@ import notify from 'src/composables/notify'
 import useStorageStore from 'src/stores/storage'
 import SelectCity from 'src/components/common/SelectCity.vue'
 import SelectStore from 'src/components/common/SelectStore.vue'
+import CustomDialog from 'src/components/common/CustomDialog.vue'
 
 export default defineComponent({
   name: 'RegisterPage',
@@ -174,9 +177,16 @@ export default defineComponent({
         }
         await store.register(form)
         $q.dialog({
-          title: 'Parabéns, cadastro concluído!',
-          message: 'Agora, basta escolher o modelo de cartão na cantina e estará habilitado para o uso.'
+          component: CustomDialog,
+          componentProps: {
+            title: 'Parabéns, cadastro concluído!',
+            message: 'Agora, basta escolher o modelo de cartão na cantina e estará habilitado para o uso.',
+            cancel: false,
+            confirm: false
+          }
         }).onOk(() => {
+          router.push({ name: 'login' })
+        }).onCancel(() => {
           router.push({ name: 'login' })
         })
       } catch (error) {
