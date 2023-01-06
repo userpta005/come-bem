@@ -1,57 +1,84 @@
 <template>
-  <q-btn label="Limite diário"
-    class="text-weight-regular bg-main-quaternary q-mb-sm"
+  <q-btn class="text-weight-regular bg-main-quaternary q-mb-sm"
     text-color="white"
     no-caps
+    align="left"
     :disable="store.disableButtons"
-    @click="prompt = true" />
+    @click="prompt = true">
+    <q-img src="~assets/financeiro.png"
+      height="20px"
+      width="20px"
+      style="margin-right: 12px;" />
+    Limite diário
+  </q-btn>
 
   <q-dialog @hide="clearInputs"
     v-model="prompt"
     persistent>
-    <q-card class="q-pa-xs"
-      style="min-width: 300px; max-width: 500px">
-      <q-card-section>
-        <h6 class="no-margin text-center">Limite diário</h6>
+
+    <q-card class="q-py-lg column justify-between"
+      style="max-width: 800px; min-height: 500px;"
+      :style="$q.screen.gt.xs ? 'min-width: 600px; padding-left: 80px; padding-right: 80px;' : 'min-width: 300px;'">
+
+      <q-card-section class="column flex-center">
+        <h5 class="no-margin text-center">
+          Limite diário
+          <q-separator color="main-primary" />
+        </h5>
       </q-card-section>
 
-      <q-card-section class="text-center q-pt-none">
-        Adicione o limite diário para este consumidor:
-      </q-card-section>
+      <q-form class="col column justify-between"
+        @submit.prevent="handleSubmit">
 
-      <q-form @submit.prevent="handleSubmit">
+        <div class="column">
 
-        <q-card-section class="q-pt-none q-gutter-xs">
-          <q-input label="Limite diário"
-            outlined
-            clearable
-            prefix="R$"
-            mask="#,##"
-            fill-mask="0"
-            reverse-fill-mask
-            lazy-rules="ondemand"
-            v-model="form.daily_limit"
-            :rules="[
-              val => (!!val && val.length > 0) || 'Limite diário é obrigatório'
-            ]" />
+          <q-card-section class="q-pt-none">
+            Adicione o limite diário para este consumidor:
+          </q-card-section>
 
-        </q-card-section>
+          <q-card-section class="q-pt-none">
 
-        <q-card-actions align="right"
-          class="text-primary">
+            <q-input label="Limite diário"
+              outlined
+              clearable
+              prefix="R$"
+              mask="#,##"
+              fill-mask="0"
+              reverse-fill-mask
+              lazy-rules="ondemand"
+              v-model="form.daily_limit"
+              :rules="[
+                val => (!!val && val.length > 0) || 'Limite diário é obrigatório'
+              ]" />
+
+          </q-card-section>
+
+        </div>
+
+        <q-card-actions align="center"
+          class="text-primary q-pa-md"
+          :class="$q.screen.gt.xs ? 'row' : 'column'">
           <q-btn label="Sair"
+            :class="$q.screen.gt.xs ? 'q-mr-lg' : 'q-mt-md'"
             text-color="grey-8"
             outline
             v-close-popup
-            style="width: 100px;" />
+            no-caps
+            style="width: 150px;" />
 
           <q-btn type="submit"
+            :class="$q.screen.gt.xs ? '' : 'order-first'"
+            class="no-margin"
             label="Confirmar"
             color="main-primary"
-            style="width: 100px;" />
+            style="width: 150px;"
+            no-caps />
         </q-card-actions>
+
       </q-form>
+
     </q-card>
+
   </q-dialog>
 </template>
 

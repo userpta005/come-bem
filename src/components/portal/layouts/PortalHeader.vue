@@ -1,7 +1,8 @@
 <template>
   <q-header reveal
     elevated
-    class="bg-main-senary row flex-center px-responsive-xl q-py-md">
+    class="bg-main-senary row items-center justify-end q-py-md"
+    :class="$q.screen.gt.md ? 'px-responsive-xl' : ($q.screen.gt.sm ? 'px-responsive-lg' : 'px-responsive-sm justify-center')">
     <img src="imgs/logo-horizontal.png"
       style="max-height: 60px;"
       :class="{ 'q-mb-md': $q.screen.lt.sm }" />

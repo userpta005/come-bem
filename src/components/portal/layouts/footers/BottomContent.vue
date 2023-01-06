@@ -1,5 +1,6 @@
 <template>
-  <div class="row flex-center bg-blue-grey-9 text-white px-responsive-xl q-py-md">
+  <div class="row flex-center bg-blue-grey-9 text-white q-py-md"
+    :class="$q.screen.gt.md ? 'px-responsive-xl' : ($q.screen.gt.sm ? 'px-responsive-lg' : 'px-responsive-md')">
     <span class="col-md-auto col-xs-12 text-center">
       CNPJ: 00.000.000/0001-00
     </span>

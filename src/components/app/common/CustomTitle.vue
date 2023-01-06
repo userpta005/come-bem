@@ -1,6 +1,6 @@
 <template>
   <div class="flex">
-    <h5 class="no-margin q-pb-md text-weight-regular">
+    <h5 class="no-margin q-pb-lg text-weight-regular">
       {{ title }}
       <q-separator color="main-primary" />
     </h5>

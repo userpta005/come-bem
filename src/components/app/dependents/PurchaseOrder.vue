@@ -1,100 +1,110 @@
 <template>
-  <div class="column">
+  <div class="row full-width">
+    <div class="column"
+      style="width: 650px;">
 
-    <h6 class="no-margin q-py-sm">Pedir lanche</h6>
+      <h6 class="no-margin text-weight-regular q-pb-sm">Pedir lanche</h6>
 
-    <div class="row justify-evenly">
-      <div class="column items-center justify-between cursor-pointer q-ma-sm"
-        v-for="(section, index) in sections"
-        :key="index"
-        @click="handleFilterProducts(section.id)">
-        <q-img :src="section.image_url"
-          height="60px"
-          width="60px"
-          class="rounded-borders q-ma-xs" />
-        <span class="flex flex-center q-ma-xs">{{ section.name }}</span>
+      <div class="row justify-evenly">
+        <div class="column items-center justify-between cursor-pointer q-mr-md q-mt-md"
+          v-for="(section, index) in sections"
+          :key="index"
+          @click="handleFilterProducts(section.id)">
+
+          <q-img :src="section.image_url"
+            height="50px"
+            width="50px"
+            class="rounded-borders q-mb-xs" />
+
+          <span class="flex flex-center">{{ section.name }}</span>
+
+        </div>
       </div>
+
+      <q-separator class="q-mt-sm"/>
+
+      <div class="row flex-center q-my-xl q-py-sm"
+        style="max-height: 600px; overflow: auto;">
+
+        <q-card class="column justify-evenly q-mr-md q-mb-md"
+          style="width: 200px; height: 275px;"
+          v-for="(product, index) in filteredProducts"
+          :key="index">
+
+          <q-card-section class="flex justify-center q-pb-sm">
+            <q-img :src="product.image_url"
+              height="70px"
+              width="70px"
+              class="rounded-borders" />
+          </q-card-section>
+
+          <q-card-section class="col column justify-between items-center q-pt-none q-pb-none">
+
+            <div class="col column items-center justify-evenly">
+              <span class="text-center">{{ limitString(product.name, 39) }}</span>
+              <span class="text-center text-weight-medium">{{ floatToMoney(product.price) }}</span>
+            </div>
+
+            <div class="row no-wrap justify-center items-end full-width q-py-xs">
+              <q-icon class="cursor-pointer"
+                name="mdi-minus-circle-outline"
+                size="md"
+                @click="handleMinus(product)" />
+
+              <h6 class="no-margin q-px-xs">{{ product.quantity ?? 1 }}</h6>
+
+              <q-icon class="cursor-pointer"
+                name="mdi-plus-circle-outline"
+                size="md"
+                @click="handlePlus(product)" />
+            </div>
+
+          </q-card-section>
+
+          <q-card-actions class="flex flex-center q-px-md q-pb-md q-pt-sm">
+            <q-btn no-caps
+              color="green-9"
+              class="full-width"
+              icon-right="mdi-cursor-pointer"
+              @click="handleAddProduct(product)">
+              Comprar
+            </q-btn>
+          </q-card-actions>
+
+        </q-card>
+
+      </div>
+
+      <div :class="$q.screen.gt.xs ? 'row flex-center' : 'column items-center'">
+
+        <q-btn label="Sair"
+          class="rounded-borders"
+          :class="$q.screen.gt.xs ? 'q-mr-lg' : 'q-mt-sm order-last'"
+          text-color="grey-8"
+          outline
+          no-caps
+          style="width: 200px;"
+          @click="store.mainContent = 'QCalendar'" />
+
+        <q-btn label="Finalizar compra"
+          class="rounded-borders"
+          color="main-primary"
+          no-caps
+          style="width: 200px;"
+          icon-right="mdi-cart-outline"
+          @click="handleSubmit">
+
+          <q-badge color="red"
+            floating
+            v-if="store.cart.length">
+            {{ store.cart.length }}
+          </q-badge>
+
+        </q-btn>
+
+      </div>
+
     </div>
-
-    <q-separator />
-
-    <div class="row q-py-xl"
-      :class="$q.screen.lt.sm ? 'flex-center' : ''">
-
-      <q-card class="column justify-between q-mr-md q-mb-md"
-        style="height: 280px; width: 220px;"
-        v-for="(product, index) in filteredProducts"
-        :key="index">
-
-        <q-card-section class="flex flex-center q-px-sm q-pt-md q-pb-xs">
-          <q-img :src="product.image_url"
-            height="70px"
-            width="70px"
-            class="rounded-borders" />
-        </q-card-section>
-
-        <q-card-section class="column flex-center q-px-sm q-pt-sm q-pb-xs">
-          <span class="text-center q-pb-xs">{{ product.name }}</span>
-          <span class="text-center q-pb-xs">{{ floatToMoney(product.price) }}</span>
-          <div class="row no-wrap justify-around items-end full-width">
-
-            <q-icon class="cursor-pointer"
-              name="mdi-minus-circle-outline"
-              size="md"
-              @click="handleMinus(product)" />
-
-            <h6 class="no-margin q-px-xs">{{ product.quantity ?? 1 }}</h6>
-
-            <q-icon class="cursor-pointer"
-              name="mdi-plus-circle-outline"
-              size="md"
-              @click="handlePlus(product)" />
-
-          </div>
-        </q-card-section>
-
-        <q-card-actions class="flex flex-center q-px-md q-pt-sm q-pb-md">
-          <q-btn no-caps
-            color="green-9"
-            class="full-width"
-            icon-right="mdi-cursor-pointer"
-            @click="handleAddProduct(product)">
-            Comprar
-          </q-btn>
-        </q-card-actions>
-
-      </q-card>
-
-    </div>
-
-    <div class="row flex-center">
-
-      <q-btn label="Sair"
-        class="rounded-borders q-ma-xs"
-        text-color="grey-8"
-        outline
-        no-caps
-        style="width: 200px;"
-        @click="store.mainContent = 'QCalendar'" />
-
-      <q-btn label="Finalizar compra"
-        class="rounded-borders q-ma-xs"
-        color="main-primary"
-        no-caps
-        style="width: 200px;"
-        icon-right="mdi-cart-outline"
-        @click="handleSubmit">
-
-        <q-badge color="red"
-          floating
-          v-if="store.cart.length">
-          {{ store.cart.length }}
-        </q-badge>
-
-      </q-btn>
-
-    </div>
-
   </div>
 </template>
 
@@ -102,7 +112,7 @@
 import { defineComponent, ref } from 'vue'
 import useStorageStore from 'src/stores/storage'
 import notify from 'src/composables/notify'
-import { floatToMoney } from 'src/utils/helpers'
+import { floatToMoney, limitString } from 'src/utils/helpers'
 
 export default defineComponent({
   name: 'PurchaseOrder',
@@ -197,7 +207,8 @@ export default defineComponent({
       floatToMoney,
       handleAddProduct,
       handlePlus,
-      handleMinus
+      handleMinus,
+      limitString
     }
   }
 })

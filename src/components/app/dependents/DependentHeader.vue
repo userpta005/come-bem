@@ -1,8 +1,7 @@
 <template>
-  <div>
-
+  <div class="row full-width q-mb-md">
     <div class="row"
-      :style="$q.screen.gt.xs ? 'max-width: 650px' : ''">
+      style="width: 650px;">
 
       <div class="flex items-center col-grow"
         :class="{ 'col-12 justify-center': $q.screen.lt.sm }">
@@ -12,15 +11,14 @@
       </div>
 
       <div class="col-grow">
-
         <div class="row justify-between">
 
           <div class="column q-mb-sm"
             :class="{ 'col-12 flex-center': $q.screen.lt.sm }">
 
-            <h6 class="no-margin">
+            <h5 class="no-margin text-weight-medium">
               {{ store.dependent.people.name }}
-            </h6>
+            </h5>
 
             <SelectAccount class="q-mb-xs" />
 
@@ -69,11 +67,9 @@
         <q-separator class="col-12"
           size="2px"
           color="main-primary" />
-
       </div>
 
     </div>
-
   </div>
 </template>
 

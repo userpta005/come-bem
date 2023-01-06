@@ -1,13 +1,15 @@
 <template>
   <div class="row"
     :class="$q.screen.lt.md ? 'flex flex-center' : ''">
-    <div class="row col-12">
-      <q-table class="col-md-9 col-xs-12"
+    <div class="row flex-center col-12">
+      <q-table class="col-md-grow col-xs-12"
         :columns="columns"
         :rows="rows"
         :separator="[{ label: 'None', value: 'none' }]"
         row-key="id"
         flat>
+        <template v-slot:pagination>
+        </template>
         <template v-slot:top>
           <div class="full-width">
             <h6 class="no-margin text-weight-regular q-pb-sm"
@@ -55,18 +57,6 @@
               rounded />
           </q-td>
         </template>
-        <template v-slot:header-cell-product="props">
-          <q-th :props="props">
-            <span class="pl-responsive-md">{{ props.col.label }}</span>
-          </q-th>
-        </template>
-        <template v-slot:body-cell-product="props">
-          <q-td :props="props">
-            <span class="pl-responsive-md">
-              {{ props.row.product }}
-            </span>
-          </q-td>
-        </template>
         <template v-slot:bottom-row>
           <q-tr>
             <q-td colspan="4">
@@ -76,15 +66,15 @@
               {{ parseInt(totalQuantity) }}
             </q-td>
             <q-td class="text-right">
-              {{ floatToMoney(amount) }}
+              {{ floatToMoney(amount).substring(3) }}
             </q-td>
           </q-tr>
         </template>
       </q-table>
-      <div class="col-md-3 col-xs-12 flex flex-center">
+      <div class="col-md-shrink col-xs-12 flex flex-center q-ml-md">
         <Pie :data="chartData"
           :options="{ responsive: true }"
-          style="max-width: 200px; max-height: 200px;"></Pie>
+          style="max-width: 150px; max-height: 150px;"></Pie>
       </div>
     </div>
     <q-btn label="Sair"
@@ -102,6 +92,8 @@
 .q-table tbody td,
 .q-table__bottom {
   font-size: 16px;
+  padding-left: 8px;
+  padding-right: 8px;
 }
 </style>
 
@@ -199,7 +191,7 @@ export default defineComponent({
       {
         name: 'date',
         align: 'center',
-        label: 'Data',
+        label: 'Data consumo/Hora',
         field: 'date',
         sortable: true,
         format: val => brDate(val)
@@ -232,7 +224,7 @@ export default defineComponent({
         label: 'Vl.Total(R$)',
         field: 'total',
         sortable: true,
-        format: (val, row) => floatToMoney(val)
+        format: (val, row) => floatToMoney(val).substring(3)
       }
     ]
 

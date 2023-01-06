@@ -24,22 +24,25 @@
         {{ message }}
       </q-card-section>
 
-      <q-card-actions class="column flex-center">
-        <q-btn label="Confirmar"
-          color="main-primary"
-          style="width: 120px;"
-          class="q-mb-sm"
-          no-caps
-          @click="onOKClick"
-          v-if="confirm" />
+      <q-card-actions :class="$q.screen.gt.xs ? 'row flex-center' : 'column flex-center'">
+
         <q-btn label="Fechar"
           text-color="grey-8"
           style="width: 120px;"
-          class="no-margin"
+          :class="$q.screen.gt.xs ? 'q-mr-md' : 'order-last q-mt-sm'"
           outline
           no-caps
           @click="onCancelClick"
           v-if="cancel" />
+
+        <q-btn label="Confirmar"
+          color="main-primary"
+          style="width: 120px;"
+          class="no-margin"
+          no-caps
+          @click="onOKClick"
+          v-if="confirm" />
+
       </q-card-actions>
     </q-card>
   </q-dialog>

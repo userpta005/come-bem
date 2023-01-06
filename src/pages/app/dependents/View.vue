@@ -3,7 +3,7 @@
     class="row justify-center">
 
     <div class="col-md col-xs-12 pa-responsive-sm">
-      <DependentHeader class="q-mb-md" />
+      <DependentHeader />
       <QCalendar v-if="store.mainContent === 'QCalendar' && !store.disableButtons" />
       <PurchaseOrder v-if="store.mainContent === 'PurchaseOrder' && !store.disableButtons" />
       <FinishPurchaseOrder v-if="store.mainContent === 'FinishPurchaseOrder' && !store.disableButtons" />

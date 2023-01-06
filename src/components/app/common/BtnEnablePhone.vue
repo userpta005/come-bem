@@ -1,10 +1,16 @@
 <template>
-  <q-btn label="Habilitar celular"
-    class="text-weight-regular bg-main-quaternary q-mb-sm"
+  <q-btn class="text-weight-regular bg-main-quaternary q-mb-sm"
     text-color="white"
     no-caps
+    align="left"
     :disable="store.disableButtons || store.hasUser"
-    @click="prompt = true" />
+    @click="prompt = true">
+    <q-img src="~assets/celular.png"
+      height="20px"
+      width="20px"
+      style="margin-right: 12px;" />
+    Habilitar celular
+  </q-btn>
 
   <q-dialog @hide="clearInputs"
     v-model="prompt"

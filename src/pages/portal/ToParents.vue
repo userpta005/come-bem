@@ -1,6 +1,7 @@
 <template>
-  <q-page class="px-responsive-xl q-py-md"
-    style="min-height: auto; height: auto;">
+  <q-page style="min-height: auto; height: auto;"
+    class="q-py-md"
+    :class="$q.screen.gt.md ? 'px-responsive-xl' : ($q.screen.gt.sm ? 'px-responsive-lg' : 'px-responsive-md')">
     <MainContent :content="main" />
   </q-page>
 </template>

@@ -1,7 +1,8 @@
 <template>
   <q-page style="min-height: auto; height: auto;"
     class="row">
-    <div class="col-md-6 col-xs-12 px-responsive-xl q-py-xl flex flex-center">
+    <div class="col-md-6 col-xs-12 q-py-xl flex flex-center"
+      :class="$q.screen.gt.md ? 'px-responsive-lg' : ($q.screen.gt.sm ? 'px-responsive-md' : 'px-responsive-sm')">
       <div style="width: 100%;">
         <h5 class="no-margin text-weight-bold text-main-tertiary text-center">
           Cadastro para ativação

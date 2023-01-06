@@ -2,7 +2,7 @@
   <div class="subcontent">
     <h6 class="no-margin">Pedir Lanche</h6>
     <div class="row items-center justify-between q-pb-sm">
-      <span>Selecione uma data para agendamento de lanches:</span>
+      <span class="text-weight-light" style="text-indent: 15px;">Selecione uma data para agendamento de lanches:</span>
       <div class="flex items-center"
         :class="$q.screen.lt.md ? 'col-12 justify-end' : ''">
         <q-btn flat
@@ -33,8 +33,7 @@
             <template v-for="(event) in eventsMap[timestamp.date]"
               :key="event.id">
               <div class="flex flex-center">
-                <div class="title q-calendar__ellipsis"
-                  :style="{ color: getRandomDarkColor() }">
+                <div class="title q-calendar__ellipsis">
                   #{{ event.id.toString().padStart(3, '0') }}
                 </div>
               </div>
@@ -82,7 +81,6 @@ import '@quasar/quasar-ui-qcalendar/src/QCalendarMonth.sass'
 
 import { defineComponent } from 'vue'
 import useStorageStore from 'src/stores/storage'
-import { getRandomDarkColor } from 'src/utils/helpers'
 import PurchaseOrders from 'src/components/app/dependents/PurchaseOrders.vue'
 import { parseISO, format } from 'date-fns'
 import pt from 'date-fns/locale/pt-BR'
@@ -104,8 +102,7 @@ export default defineComponent({
           year: 'numeric',
           month: 'long',
           timeZone: 'America/Sao_Paulo'
-        }),
-      getRandomDarkColor
+        })
     }
   },
   computed: {

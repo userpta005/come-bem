@@ -1,5 +1,6 @@
 <template>
-  <div class="row bg-blue-grey-8 text-white px-responsive-xl q-py-md">
+  <div class="row bg-blue-grey-8 text-white q-py-md"
+    :class="$q.screen.gt.md ? 'px-responsive-xl' : ($q.screen.gt.sm ? 'px-responsive-lg' : 'px-responsive-md')">
     <div class="col-md-3 col-xs-12 column flex-center">
       <img src="imgs/logo-vertical.png"
         style="max-height: 200px" />

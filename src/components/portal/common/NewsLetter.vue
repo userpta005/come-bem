@@ -1,12 +1,14 @@
 <template>
-  <div class="column bg-main-secondary px-responsive-xl text-white ">
+  <div class="column bg-main-secondary text-white "
+    :class="$q.screen.gt.md ? 'px-responsive-xl' : ($q.screen.gt.sm ? 'px-responsive-lg' : 'px-responsive-md')">
     <h5 class="no-margin text-weight-bold text-center q-py-md">
       Newsletter
     </h5>
     <span class="text-center q-py-md">
       Fique por dentro de nossas novidades!
     </span>
-    <q-form class="row flex-center q-py-md px-responsive-lg"
+    <q-form class="row flex-center q-py-md"
+      :class="$q.screen.gt.md ? 'px-responsive-lg' : ($q.screen.gt.sm ? 'px-responsive-md' : 'px-responsive-sm')"
       @submit.prevent="handleSubmit">
       <q-input label="Nome"
         color="white"
@@ -17,9 +19,9 @@
         lazy-rules="ondemand"
         v-model="formNewsLetter.name"
         :rules="[
-  val => (!!val && val.length > 0) || 'Nome é obrigatório !',
-  val => (val.length <= 100) || 'Máximo 100 caracteres !',
-]" />
+          val => (!!val && val.length > 0) || 'Nome é obrigatório !',
+          val => (val.length <= 100) || 'Máximo 100 caracteres !',
+        ]" />
       <q-input type="email"
         class="col-md-6 col-xs-12 q-pa-md"
         label="Email"
@@ -30,9 +32,9 @@
         lazy-rules="ondemand"
         v-model="formNewsLetter.email"
         :rules="[
-  val => (!!val && val.length > 0) || 'Email é obrigatório',
-  val => (val.length <= 100) || 'Máximo 100 caracteres !',
-]" />
+          val => (!!val && val.length > 0) || 'Email é obrigatório',
+          val => (val.length <= 100) || 'Máximo 100 caracteres !',
+        ]" />
       <span class="col-12 text-center q-pa-md">
         Você receberá todas as promoções, novidades e ofertas direto no seu e-mail.
       </span>

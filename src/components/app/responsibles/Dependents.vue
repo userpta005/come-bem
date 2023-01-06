@@ -7,36 +7,36 @@
       :key="index">
 
       <div class="column flex-center rounded-borders"
-        style="border: 2px solid var(--orange); min-width: 250px; min-height: 350px;"
+        style="border: 3px solid var(--orange); min-width: 250px; min-height: 350px;"
         :style="$q.screen.lt.sm ? 'min-width: 300px;' : ''"
         v-if="dependent.accounts.length">
 
         <q-img src="~assets/child.png"
-          style="height: 100px; width: 80px;"
+          style="height: 90px; width: 70px;"
           class="q-mb-xs" />
 
-        <span class="text-weight-medium">
+        <h6 class="no-margin text-weight-medium">
           {{ dependent.people.name }}
-        </span>
+        </h6>
 
         <SelectAccount :dependent="dependent"
           :account="dependent.accounts[store.dependentIndexes[`index${index}`].accountIndex]"
           :dependentIndex="index" />
 
-        <span class="text-weight-medium q-mb-xs">
+        <span class="text-weight-medium text-subtitle2 q-ma-sm">
           Saldo: {{ floatToMoney(dependent.accounts[store.dependentIndexes[`index${index}`].accountIndex].balance) }}
         </span>
 
-        <span class="text-weight-regular text-main-secondary q-mb-xs">
+        <span class="text-weight-regular text-subtitle2 text-main-secondary q-mb-xs">
           Consumidor: {{ status(dependent.accounts[store.dependentIndexes[`index${index}`].accountIndex].status) }}
           <q-separator />
         </span>
 
-        <span class="text-weight-regular q-mb-xs">
+        <span class="text-weight-medium text-grey-9 text-caption self-start q-ml-lg q-mb-xs">
           Nascimento: {{ brDate(dependent.birthdate) }}
         </span>
 
-        <span class="text-weight-regular q-mb-xs">
+        <span class="text-weight-medium text-grey-9 text-caption self-start q-ml-lg q-mb-md">
           Sexo: {{ gender(dependent.gender) }}
         </span>
 
@@ -44,7 +44,7 @@
           color="main-primary"
           text-color="white"
           no-caps
-          style="width: 80%;"
+          style="width: 82%;"
           @click="toGoDependent(dependent, index)" />
 
       </div>

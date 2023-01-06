@@ -1,136 +1,128 @@
 <template>
-  <q-form class="column"
-    :class="$q.screen.gt.xs ? 'items-start' : 'items-center'"
-    @submit.prevent="handleSubmit">
+  <div class="row full-width">
+    <q-form class="column"
+      style="width: 550px;"
+      @submit.prevent="handleSubmit">
 
-    <h6 class="no-margin q-pb-sm">Pedido de compra</h6>
+      <h6 class="no-margin text-weight-regular q-pb-sm">Pedido de compra</h6>
 
-    <span class="q-pb-sm">Itens do pedido</span>
+      <span class="q-pb-sm text-grey-8">Itens do pedido</span>
 
-    <div class="column q-pb-sm"
-      :class="$q.screen.gt.xs ? 'items-start' : 'items-center'">
+      <div class="column q-pb-sm">
+        <q-card bordered
+          flat
+          class="row q-mb-sm"
+          v-for="(product, index) in store.cart"
+          :key="index">
 
-      <q-card bordered
-        flat
-        class="row q-mb-sm"
-        :style="$q.screen.gt.sm ? 'width: 600px;' : ($q.screen.gt.xs ? 'width: 500px;' : 'width: 320px;')"
-        v-for="(product, index) in store.cart"
-        :key="index">
+          <q-card-section horizontal
+            class="flex flex-center q-pa-sm">
 
-        <q-card-section horizontal
-          class="flex flex-center q-pa-sm">
+            <q-img :src="product.image_url"
+              height="80px"
+              width="80px"
+              class="rounded-borders" />
 
-          <q-img :src="product.image_url"
-            height="80px"
-            width="80px"
-            class="rounded-borders" />
+          </q-card-section>
 
-        </q-card-section>
+          <q-card-section horizontal
+            class="col-grow column items-start q-pa-sm">
+            <div class="column flex-center">
+              <span class="q-pb-sm">{{ product.name }}</span>
 
-        <q-card-section horizontal
-          class="col-grow column items-start q-pa-sm q-pl-md">
+              <div class="self-start row no-wrap flex-center">
 
-          <div class="column flex-center">
-            <span class="q-pb-sm">{{ product.name }}</span>
+                <q-icon class="cursor-pointer"
+                  name="mdi-minus-circle-outline"
+                  size="md"
+                  @click="handleMinus(product)" />
 
-            <div class="self-start row no-wrap flex-center">
+                <h6 class="no-margin q-px-xs">{{ product.quantity }}</h6>
 
-              <q-icon class="cursor-pointer"
-                name="mdi-minus-circle-outline"
-                size="md"
-                @click="handleMinus(product)" />
+                <q-icon class="cursor-pointer"
+                  name="mdi-plus-circle-outline"
+                  size="md"
+                  @click="handlePlus(product)" />
 
-              <h6 class="no-margin q-px-xs">{{ product.quantity }}</h6>
-
-              <q-icon class="cursor-pointer"
-                name="mdi-plus-circle-outline"
-                size="md"
-                @click="handlePlus(product)" />
-
+              </div>
             </div>
-          </div>
+          </q-card-section>
 
-        </q-card-section>
+          <q-card-section horizontal
+            class="column items-center justify-between q-pa-sm q-pr-md">
 
-        <q-card-section horizontal
-          class="column items-center justify-between q-pa-sm q-pr-md">
+            <q-icon class="cursor-pointer q-pb-sm"
+              name="mdi-delete-circle"
+              color="grey"
+              size="lg"
+              @click="handleRemoveProduct(product)" />
 
-          <q-icon class="cursor-pointer q-pb-sm"
-            name="mdi-delete"
-            color="red"
-            size="lg"
-            @click="handleRemoveProduct(product)" />
+            <span>{{ floatToMoney(parseInt(product.quantity) * parseFloat(product.price)) }}</span>
 
-          <span>{{ floatToMoney(parseInt(product.quantity) * parseFloat(product.price)) }}</span>
+          </q-card-section>
 
-        </q-card-section>
+        </q-card>
+      </div>
 
-      </q-card>
+      <div class="row no-wrap justify-between items-center q-pb-sm">
+        <span class="text-weight-medium">Total:</span>
+        <span class="text-weight-medium q-pr-md">{{ floatToMoney(total) }}</span>
+      </div>
 
-    </div>
+      <q-separator color="black"
+        class="q-mb-sm" />
 
-    <div class="row no-wrap justify-between items-center q-pb-sm"
-      :style="$q.screen.gt.sm ? 'width: 600px;' : ($q.screen.gt.xs ? 'width: 500px;' : 'width: 320px;')">
+      <span class="q-pb-sm text-grey-8">Data do consumo</span>
 
-      <span class="text-weight-medium">Total:</span>
-      <span class="text-weight-medium q-pr-md">{{ floatToMoney(total) }}</span>
+      <div class="row no-wrap justify-between items-center q-pb-sm"
+        :style="$q.screen.gt.sm ? 'padding-left: 60px; padding-right: 60px;' : ''">
 
-    </div>
+        <q-input v-model="store.purchaseDate"
+          type="date"
+          label="Data"
+          stack-label
+          outlined
+          disable
+          :rules="[val => (!!val) || 'Data é obrigatória']" />
 
-    <q-separator color="black"
-      class="q-mb-sm"
-      :style="$q.screen.gt.sm ? 'width: 600px;' : ($q.screen.gt.xs ? 'width: 500px;' : 'width: 320px;')" />
+        <q-select v-model="turn"
+          outlined
+          label="Turno"
+          option-value="id"
+          option-label="label"
+          :options="turns"
+          map-options
+          emit-value
+          lazy-rules="ondemand"
+          :rules="[val => (!!val) || 'Turno é obrigatório']" />
 
-    <span class="q-pb-sm">Data do consumo</span>
+      </div>
 
-    <div class="row no-wrap justify-between items-center q-pb-sm px-responsive-sm"
-      :style="$q.screen.gt.sm ? 'width: 600px;' : ($q.screen.gt.xs ? 'width: 500px;' : 'width: 320px;')">
+      <div class="row items-center q-pb-sm"
+        :class="$q.screen.gt.xs ? 'justify-between' : 'justify-center'"
+        :style="$q.screen.gt.sm ? 'padding-left: 60px; padding-right: 60px;' : ''">
 
-      <q-input v-model="store.purchaseDate"
-        type="date"
-        label="Data"
-        stack-label
-        outlined
-        disable
-        :rules="[val => (!!val) || 'Data é obrigatória']" />
+        <q-btn label="Continuar comprando"
+          class="rounded-borders"
+          text-color="grey-8"
+          outline
+          no-caps
+          style="width: 200px;"
+          :class="$q.screen.lt.sm ? 'q-mb-sm' : ''"
+          @click="store.mainContent = 'PurchaseOrder'" />
 
-      <q-select v-model="turn"
-        outlined
-        label="Turno"
-        option-value="id"
-        option-label="label"
-        :options="turns"
-        map-options
-        emit-value
-        lazy-rules="ondemand"
-        :rules="[val => (!!val) || 'Turno é obrigatório']" />
+        <q-btn type="submit"
+          label="Finalizar compra"
+          class="rounded-borders"
+          color="main-primary"
+          no-caps
+          style="width: 200px;"
+          icon-right="mdi-cart-outline" />
 
-    </div>
+      </div>
 
-    <div class="row items-center q-pb-sm px-responsive-sm"
-      :class="$q.screen.gt.xs ? 'justify-between' : 'justify-center'"
-      :style="$q.screen.gt.sm ? 'width: 600px;' : ($q.screen.gt.xs ? 'width: 500px;' : 'width: 320px;')">
-
-      <q-btn label="Continuar comprando"
-        class="rounded-borders"
-        text-color="grey-8"
-        outline
-        no-caps
-        style="width: 200px;"
-        :class="$q.screen.lt.sm ? 'q-mb-sm' : ''"
-        @click="store.mainContent = 'PurchaseOrder'" />
-
-      <q-btn type="submit"
-        label="Finalizar compra"
-        class="rounded-borders"
-        color="main-primary"
-        no-caps
-        style="width: 200px;"
-        icon-right="mdi-cart-outline" />
-
-    </div>
-
-  </q-form>
+    </q-form>
+  </div>
 </template>
 
 <script>

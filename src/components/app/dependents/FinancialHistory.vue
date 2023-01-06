@@ -8,17 +8,7 @@
         :separator="[{ label: 'None', value: 'none' }]"
         row-key="name"
         flat>
-        <template v-slot:header-cell-description="props">
-          <q-th :props="props">
-            <span class="pl-responsive-xl">{{ props.col.label }}</span>
-          </q-th>
-        </template>
-        <template v-slot:body-cell-description="props">
-          <q-td :props="props">
-            <span class="pl-responsive-xl">
-              {{ props.row.description }}
-            </span>
-          </q-td>
+        <template v-slot:pagination>
         </template>
         <template v-slot:top>
           <h6 class="no-margin text-weight-regular"
@@ -36,10 +26,10 @@
               <b>Total:</b>
             </q-td>
             <q-td class="text-right">
-              {{ floatToMoney(totalCredits) }}
+              {{ floatToMoney(totalCredits).substring(3) }}
             </q-td>
             <q-td class="text-right">
-              {{ floatToMoney(totalDebts) }}
+              {{ floatToMoney(totalDebts).substring(3) }}
             </q-td>
           </q-tr>
         </template>
@@ -60,6 +50,8 @@
 .q-table tbody td,
 .q-table__bottom {
   font-size: 16px;
+  padding-left: 8px;
+  padding-right: 8px;
 }
 </style>
 
@@ -117,7 +109,7 @@ export default defineComponent({
         sortable: true,
         format: (val, row) => {
           if (parseInt(row.type) === 1) {
-            return floatToMoney(val)
+            return floatToMoney(val).substring(3)
           }
           return '0,00'
         }
@@ -130,7 +122,7 @@ export default defineComponent({
         sortable: true,
         format: (val, row) => {
           if (parseInt(row.type) === 2) {
-            return floatToMoney(val)
+            return floatToMoney(val).substring(3)
           }
           return '0,00'
         }

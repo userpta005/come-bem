@@ -1,7 +1,8 @@
 <template>
   <q-page style="min-height: auto; height: auto;"
     class="row">
-    <div class="col-md-6 col-xs-12 px-responsive-xl q-py-md flex flex-center">
+    <div class="col-md-6 col-xs-12 q-py-md flex flex-center"
+      :class="$q.screen.gt.md ? 'px-responsive-lg' : ($q.screen.gt.sm ? 'px-responsive-md' : 'px-responsive-sm')">
       <div style="width: 100%;">
         <div class="flex flex-center">
           <img src="imgs/logo-vertical.png"

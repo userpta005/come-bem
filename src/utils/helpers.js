@@ -22,9 +22,17 @@ function getRandomDarkColor () {
   return `rgb(${r}, ${g}, ${b})`
 }
 
+function limitString (str, num) {
+  if (str.length > num) {
+    return str.substring(0, num) + '...'
+  }
+  return str
+}
+
 export {
   floatToMoney,
   brDate,
   getRandomColor,
-  getRandomDarkColor
+  getRandomDarkColor,
+  limitString
 }

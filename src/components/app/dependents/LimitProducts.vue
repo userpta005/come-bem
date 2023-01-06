@@ -1,93 +1,111 @@
 <template>
-  <div class="column">
-
-    <h6 class="no-margin q-py-sm">Cardápio</h6>
-
-    <div class="row justify-evenly">
-      <div class="column items-center justify-between cursor-pointer q-ma-sm"
-        v-for="(section, index) in sections"
-        :key="index"
-        @click="handleFilterProducts(section.id)">
-        <q-img :src="section.image_url"
-          height="60px"
-          width="60px"
-          class="rounded-borders q-ma-xs" />
-        <span class="flex flex-center q-ma-xs">{{ section.name }}</span>
-      </div>
-    </div>
-
-    <q-separator class="q-mt-sm" />
-
-    <span class="text-caption text-weight-medium text-red q-mt-md q-mb-sm">
-      Para restringir o consumo do produto do cardápio, clique na
-      imagem abaixo.
-    </span>
-
-    <div class="row"
-      :class="$q.screen.lt.sm ? 'flex-center' : ''">
-
-      <div class="column justify-between items-center cursor-pointer rounded-borders q-my-sm q-mr-md"
-        style="border: 2px solid var(--orange); height: 180px; width: 180px;"
-        :class="{ 'limitedProduct': handleProductIsLimited(product) }"
-        v-for="(product, index) in filteredProducts"
-        :key="index"
-        @click="handleAddLimitedProduct(product)">
-
-        <q-img :src="product.image_url"
-          height="70px"
-          width="70px"
-          class="rounded-borders q-mt-sm"
-          :class="{ 'imageLimitedProduct': handleProductIsLimited(product) }" />
-
-        <span class="text-center q-pa-sm">{{ product.name }}</span>
-        <span class="text-center q-pb-sm">{{ floatToMoney(product.price) }}</span>
-        <span class="textLimitedProduct"
-          v-if="handleProductIsLimited(product)">Produto restrito</span>
-
-      </div>
-
-    </div>
-
-    <h6 class="no-margin q-py-sm"
-      v-if="$route.name === 'responsible-dependent'">Produtos restritos</h6>
-
+  <div class="row full-width">
     <div class="column"
-      v-if="$route.name === 'responsible-dependent'">
-      <div class="row justify-between items-center q-ml-lg q-my-xs"
-        v-for="(limitedProduct, index) in limitedProducts"
-        :key="index">
-        {{ limitedProduct.name }}
-        <q-icon class="cursor-pointer"
-          name="mdi-delete"
-          color="red"
-          size="lg"
-          @click="handleRemoveLimitedProduct(limitedProduct.id)" />
+      style="width: 650px;">
+
+      <h6 class="no-margin text-weight-regular q-pb-sm">Cardápio</h6>
+
+      <div class="row justify-evenly">
+        <div class="column items-center justify-between cursor-pointer q-mr-md q-mt-md"
+          v-for="(section, index) in sections"
+          :key="index"
+          @click="handleFilterProducts(section.id)">
+
+          <q-img :src="section.image_url"
+            height="50px"
+            width="50px"
+            class="rounded-borders q-mb-xs" />
+
+          <span class="flex flex-center">{{ section.name }}</span>
+
+        </div>
       </div>
+
+      <q-separator class="q-mt-sm" />
+
+      <span class="text-caption text-weight-medium text-red q-my-md">
+        Para restringir o consumo do produto do cardápio, clique na
+        imagem abaixo.
+      </span>
+
+      <div ref="containerProducts"
+        class="row flex-center q-py-sm"
+        style="max-height: 428px; overflow: auto;">
+
+        <q-card class="column items-center cursor-pointer q-mr-md q-mb-md"
+          style="width: 200px; height: 190px;"
+          :class="{ 'limitedProduct': handleProductIsLimited(product) }"
+          @click="handleAddLimitedProduct(product)"
+          v-for="(product, index) in filteredProducts"
+          :key="index">
+
+          <q-card-section class="flex justify-center">
+            <q-img :src="product.image_url"
+              height="70px"
+              width="70px"
+              class="rounded-borders"
+              :class="{ 'imageLimitedProduct': handleProductIsLimited(product) }" />
+          </q-card-section>
+
+          <q-card-section class="col column items-center justify-evenly q-pt-none">
+            <span class="text-center">{{ limitString(product.name, 39) }}</span>
+            <span class="text-center text-weight-medium">{{ floatToMoney(product.price) }}</span>
+          </q-card-section>
+
+          <span class="textLimitedProduct"
+            v-if="handleProductIsLimited(product)">Produto restrito</span>
+
+        </q-card>
+
+      </div>
+
+      <h6 class="no-margin text-weight-regular q-py-sm"
+        v-if="$route.name === 'responsible-dependent'">Produtos restritos</h6>
+
+      <div class="column"
+        v-if="$route.name === 'responsible-dependent'">
+
+        <div class="row no-wrap justify-between items-center q-ml-lg q-mr-xl q-mb-xs"
+          v-for="(limitedProduct, index) in limitedProducts"
+          :key="index">
+          {{ limitedProduct.name }}
+          <q-icon class="cursor-pointer q-ml-md"
+            name="mdi-delete-circle"
+            color="grey"
+            size="lg"
+            @click="handleRemoveLimitedProduct(limitedProduct.id)" />
+        </div>
+
+      </div>
+
+      <span class="text-center"
+        v-if="$route.name === 'responsible-dependent' && !limitedProducts.length">
+        Nenhum produto restrito.
+      </span>
+
+      <div class="q-mt-xl"
+        :class="$q.screen.gt.xs ? 'row flex-center' : 'column items-center'">
+
+        <q-btn label="Sair"
+          class="rounded-borders"
+          :class="$q.screen.gt.xs && $route.name === 'responsible-dependent' && limitedProductSelected ? 'q-mr-lg' : 'q-mt-sm order-last'"
+          text-color="grey-8"
+          outline
+          no-caps
+          style="width: 200px;"
+          @click="store.mainContent = 'QCalendar'" />
+
+        <q-btn label="Confirmar"
+          class="rounded-borders"
+          color="main-primary"
+          no-caps
+          style="width: 200px;"
+          @click="handleSubmit"
+          v-if="$route.name === 'responsible-dependent' && limitedProductSelected" />
+
+      </div>
+
     </div>
-
-    <span class="text-center"
-      v-if="$route.name === 'responsible-dependent' && !limitedProducts.length">
-      Nenhum produto restrito.
-    </span>
-
-    <div class="row flex-center q-mt-lg">
-      <q-btn label="Voltar"
-        class="rounded-borders q-ma-xs"
-        text-color="grey-8"
-        outline
-        no-caps
-        style="width: 150px;"
-        :class="{ 'self-center': $q.screen.lt.md }"
-        @click="store.mainContent = 'QCalendar'" />
-      <q-btn label="Confirmar"
-        class="rounded-borders q-ma-xs"
-        color="main-primary"
-        no-caps
-        style="width: 150px;"
-        @click="handleSubmit"
-        v-if="$route.name === 'responsible-dependent' && limitedProductSelected" />
-    </div>
-
   </div>
 </template>
 
@@ -106,7 +124,7 @@
   text-align: center;
   color: white;
   font-size: 20px;
-  top: 75px;
+  top: 80px;
 }
 </style>
 
@@ -115,7 +133,7 @@ import { defineComponent, ref } from 'vue'
 import useStorageStore from 'src/stores/storage'
 import notify from 'src/composables/notify'
 import { useRoute } from 'vue-router'
-import { floatToMoney } from 'src/utils/helpers'
+import { floatToMoney, limitString } from 'src/utils/helpers'
 
 export default defineComponent({
   name: 'LimitProducts',
@@ -158,10 +176,12 @@ export default defineComponent({
     }
 
     const handleAddLimitedProduct = (product) => {
-      const productExists = limitedProducts.value.find(value => parseInt(value.id) === parseInt(product.id))
-      if (!productExists) {
-        limitedProducts.value.push(product)
-        limitedProductSelected.value = true
+      if (route.name === 'responsible-dependent') {
+        const productExists = limitedProducts.value.find(value => parseInt(value.id) === parseInt(product.id))
+        if (!productExists) {
+          limitedProducts.value.push(product)
+          limitedProductSelected.value = true
+        }
       }
     }
 
@@ -203,7 +223,8 @@ export default defineComponent({
       handleAddLimitedProduct,
       handleProductIsLimited,
       handleSubmit,
-      floatToMoney
+      floatToMoney,
+      limitString
     }
   }
 })
