@@ -144,16 +144,16 @@ export default defineComponent({
     const sections = ref([])
     const products = ref([])
     const filteredProducts = ref([])
-    const limitedProducts = ref(store.account.limited_products.filter((value) => value))
+    const limitedProducts = ref([])
     const limitedProductSelected = ref(false)
 
     const handleGetSections = async () => {
       try {
-        const data = await store.axios({
+        const { data } = await store.axios({
           method: 'get',
           url: '/api/v1/sections'
         })
-        sections.value = data.data
+        sections.value = data
       } catch (error) {
         notifyError(error)
       }
@@ -161,11 +161,23 @@ export default defineComponent({
 
     const handleGetProducts = async () => {
       try {
-        const data = await store.axios({
+        const { data } = await store.axios({
           method: 'get',
           url: `/api/v1/accounts/${store.account.id}/products`
         })
-        products.value = filteredProducts.value = data.data
+        products.value = filteredProducts.value = data
+      } catch (error) {
+        notifyError(error)
+      }
+    }
+
+    const handleGetlimitedProducts = async () => {
+      try {
+        const { data } = await store.axios({
+          method: 'get',
+          url: `/api/v1/accounts/${store.account.id}/limited-products`
+        })
+        limitedProducts.value = data
       } catch (error) {
         notifyError(error)
       }
@@ -196,14 +208,12 @@ export default defineComponent({
 
     const handleSubmit = async () => {
       try {
-        const data = await store.axios({
+        const { message } = await store.axios({
           method: 'put',
           url: `/api/v1/accounts/${store.account.id}/limited-products`,
           data: { products: limitedProducts.value.map(value => value.id) }
         })
-        store.setUser(data.data)
-        store.refreshData(route.params.dependent, route.params.account)
-        notifySuccess(data.message)
+        notifySuccess(message)
       } catch (error) {
         notifyError(error)
       }
@@ -211,6 +221,7 @@ export default defineComponent({
 
     handleGetSections()
     handleGetProducts()
+    handleGetlimitedProducts()
 
     return {
       store,

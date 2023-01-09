@@ -5,7 +5,7 @@
       <q-table class="col-md-grow col-xs-12"
         :columns="columns"
         :rows="rows"
-        :separator="[{ label: 'None', value: 'none' }]"
+        separator="none"
         row-key="id"
         flat
         v-model:pagination="pagination"
@@ -100,10 +100,11 @@
 <script>
 import { defineComponent, computed, ref } from 'vue'
 import useStorageStore from 'src/stores/storage'
-import { floatToMoney, brDate } from 'src/utils/helpers'
+import { floatToMoney, brDatetime } from 'src/utils/helpers'
 // eslint-disable-next-line import/namespace
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
 import { Pie } from 'vue-chartjs'
+import notify from 'src/composables/notify'
 
 ChartJS.register(ArcElement, Tooltip, Legend)
 
@@ -113,32 +114,33 @@ export default defineComponent({
     Pie
   },
   setup () {
+    const { notifyError } = notify()
     const store = useStorageStore()
-
+    const rows = ref([])
     const pagination = ref({
       rowsPerPage: 5
     })
 
-    const rows = computed(() => {
-      const arr = []
-      store.account.orders.forEach((order) => {
-        if (parseInt(order.status) === 2) {
-          order.order_items.forEach((orderItem) => {
-            const obj = {
-              date: order.date
-            }
-            obj.id = orderItem.id
-            obj.nutritional_classification = orderItem.product.nutritional_classification
-            obj.product = orderItem.product.name
-            obj.um = orderItem.product.um.name
-            obj.quantity = orderItem.quantity
-            obj.total = orderItem.total
-            arr.push(obj)
-          })
-        }
-      })
-      return arr
-    })
+    const handleGetOrderItems = async () => {
+      try {
+        const { data } = await store.axios({ method: 'get', url: `/api/v1/accounts/${store.account.id}/order-items` })
+        rows.value = data.map((orderItem) => {
+          const obj = {}
+          obj.id = orderItem.id
+          obj.date = orderItem.delivery_date ?? orderItem.updated_at
+          obj.nutritional_classification = orderItem.product.nutritional_classification
+          obj.product = orderItem.product.name
+          obj.um = orderItem.product.um.name
+          obj.quantity = orderItem.quantity
+          obj.total = orderItem.total
+          return obj
+        })
+      } catch (error) {
+        notifyError(error)
+      }
+    }
+
+    handleGetOrderItems()
 
     const amount = computed(() => {
       let total = 0
@@ -156,7 +158,7 @@ export default defineComponent({
       return quantity
     })
 
-    const formatToChat = computed(() => {
+    const chartData = computed(() => {
       const data = [0, 0, 0, 0]
       rows.value.forEach((item) => {
         if (parseInt(item.nutritional_classification) === 1) {
@@ -169,7 +171,17 @@ export default defineComponent({
           data[1]++
         }
       })
-      return data
+
+      const chartData = {
+        datasets: [
+          {
+            backgroundColor: ['grey', 'green', 'yellow', 'red'],
+            data
+          }
+        ]
+      }
+
+      return chartData
     })
 
     const badgeColor = (nutritionalClassification) => {
@@ -198,7 +210,7 @@ export default defineComponent({
         label: 'Data consumo/Hora',
         field: 'date',
         sortable: true,
-        format: val => brDate(val)
+        format: val => brDatetime(val)
       },
       {
         name: 'product',
@@ -231,15 +243,6 @@ export default defineComponent({
         format: (val, row) => floatToMoney(val).substring(3)
       }
     ]
-
-    const chartData = {
-      datasets: [
-        {
-          backgroundColor: ['grey', 'green', 'yellow', 'red'],
-          data: formatToChat.value
-        }
-      ]
-    }
 
     return {
       store,

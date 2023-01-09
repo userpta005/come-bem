@@ -3,7 +3,7 @@
     text-color="white"
     no-caps
     align="left"
-    :disable="store.disableButtons"
+    :disable="store.disabledUser"
     @click="prompt = true">
     <q-img src="~assets/recarregar.png"
       height="20px"
@@ -12,7 +12,8 @@
     Recarregar créditos
   </q-btn>
 
-  <q-dialog @hide="clearInputs"
+  <q-dialog @show="handlePaymentMethod"
+    @hide="clearInputs"
     v-model="prompt"
     persistent>
 
@@ -117,7 +118,6 @@ export default defineComponent({
         notifyError(error)
       }
     }
-    handlePaymentMethod()
 
     const handleSubmit = async () => {
       store.reloadCredits = form
@@ -140,7 +140,8 @@ export default defineComponent({
       form,
       paymentMethods,
       handleSubmit,
-      clearInputs
+      clearInputs,
+      handlePaymentMethod
     }
   }
 })

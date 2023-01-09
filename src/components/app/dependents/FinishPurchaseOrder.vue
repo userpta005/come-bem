@@ -85,7 +85,7 @@
           disable
           :rules="[val => (!!val) || 'Data é obrigatória']" />
 
-        <q-select v-model="turn"
+        <q-select v-model="store.turn"
           outlined
           label="Turno"
           option-value="id"
@@ -130,15 +130,12 @@ import { defineComponent, computed, ref } from 'vue'
 import useStorageStore from 'src/stores/storage'
 import { floatToMoney } from 'src/utils/helpers'
 import notify from 'src/composables/notify'
-import { useRoute } from 'vue-router'
 
 export default defineComponent({
   name: 'FinishPurchaseOrder',
   setup () {
     const { notifyWarning, notifyError, notifySuccess } = notify()
-    const route = useRoute()
     const store = useStorageStore()
-    const turn = ref(store.turn)
 
     const total = computed(() => {
       let total = 0
@@ -196,12 +193,12 @@ export default defineComponent({
           data: {
             products: store.cart,
             date: store.purchaseDate,
-            turn: turn.value
+            turn: store.turn
           }
         })
 
-        store.setUser(data.data)
-        store.refreshData(route.params.dependent, route.params.account)
+        store.setAccount(data.data)
+        store.mainContent = 'QCalendar'
         notifySuccess(data.message)
       } catch (error) {
         notifyError(error)
@@ -210,7 +207,6 @@ export default defineComponent({
 
     return {
       store,
-      turn,
       turns,
       handleMinus,
       handlePlus,

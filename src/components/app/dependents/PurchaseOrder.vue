@@ -125,11 +125,11 @@ export default defineComponent({
 
     const handleGetSections = async () => {
       try {
-        const data = await store.axios({
+        const { data } = await store.axios({
           method: 'get',
           url: '/api/v1/sections'
         })
-        sections.value = data.data
+        sections.value = data
       } catch (error) {
         notifyError(error)
       }
@@ -137,11 +137,11 @@ export default defineComponent({
 
     const handleGetProducts = async () => {
       try {
-        const data = await store.axios({
+        const { data } = await store.axios({
           method: 'get',
           url: `/api/v1/accounts/${store.account.id}/products`
         })
-        products.value = filteredProducts.value = data.data.filter((product) => {
+        products.value = filteredProducts.value = data.filter((product) => {
           const productCart = store.cart.find(value => parseInt(value.id) === parseInt(product.id))
           if (productCart) {
             product.quantity = parseInt(productCart.quantity)

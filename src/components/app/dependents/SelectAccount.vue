@@ -25,23 +25,27 @@
 import { defineComponent } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import useStorageStore from 'src/stores/storage'
+import notify from 'src/composables/notify'
 
 export default defineComponent({
   name: 'SelectAccount',
   setup () {
+    const { notifyError } = notify()
     const router = useRouter()
     const route = useRoute()
     const store = useStorageStore()
 
-    const onItemClick = (item, index) => {
-      store.account = item
-      store.hasUser = !!store.dependent.people.user
-      store.disableButtons = parseInt(store.account.status) === 2
-      store.dependentIndexes[`index${store.getDependenIndexById(store.dependent.id)}`].accountIndex = index
+    const onItemClick = async (item, index) => {
+      try {
+        const { data } = await store.axios({ method: 'get', url: `/api/v1/dependents/${store.dependent.id}` })
+        store.dependent = data
+      } catch (error) {
+        notifyError(error)
+      }
+      const dependentIndex = store.getDependenIndexById(store.dependent.id)
+      store.dependentIndexes[`index${dependentIndex}`].accountIndex = index
+      store.setDependent(null, dependentIndex)
       store.mainContent = 'QCalendar'
-      store.purchaseDate = null
-      store.cart = []
-      store.app_token = store.account.store.app_token
       router.replace({ name: route.name, params: { account: item.id } })
     }
 

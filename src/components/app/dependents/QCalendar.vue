@@ -137,13 +137,14 @@ export default defineComponent({
   methods: {
     onClickDay (data) {
       this.store.purchaseDate = data.scope.timestamp.date
+      this.store.turn = null
+      this.store.order_id = null
+      this.store.cart = []
       this.orders = this.store.account.orders.filter(value => value.date === data.scope.timestamp.date)
       if (this.orders.length && !data.scope.timestamp.disabled && !data.scope.outside) {
         this.showOrders = true
       } else if (!data.scope.timestamp.disabled && !data.scope.outside) {
         this.store.mainContent = 'PurchaseOrder'
-        this.store.turn = null
-        this.store.order_id = null
       }
     },
 

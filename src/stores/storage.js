@@ -5,12 +5,11 @@ const useStorageStore = defineStore('storage', {
   state: () => ({
     userClient: null,
     userDependent: null,
+    dependents: [],
     dependent: null,
     account: null,
-    hasUser: false,
-    disableButtons: false,
+    disabledUser: false,
     dependentIndexes: {},
-    mainContent: 'QCalendar',
     order_id: null,
     purchaseDate: null,
     turn: null,
@@ -19,6 +18,7 @@ const useStorageStore = defineStore('storage', {
       amount: 0,
       payment_method_id: null
     },
+    mainContent: 'QCalendar',
     app_token: null,
     token: null
   }),
@@ -58,7 +58,7 @@ const useStorageStore = defineStore('storage', {
     },
 
     getDependentById (dependentId) {
-      return this.userClient.dependents.find((value) => parseInt(value.id) === parseInt(dependentId))
+      return this.dependents.find((value) => parseInt(value.id) === parseInt(dependentId))
     },
 
     getAccountById (accountId) {
@@ -66,14 +66,13 @@ const useStorageStore = defineStore('storage', {
     },
 
     getDependenIndexById (dependentId) {
-      return this.userClient.dependents.findIndex((value) => parseInt(value.id) === parseInt(dependentId))
+      return this.dependents.findIndex((value) => parseInt(value.id) === parseInt(dependentId))
     },
 
-    setUser (user) {
-      this.userClient = user.people.client
-      this.userDependent = user.people.dependent
+    setDependents (dependents) {
+      this.dependents = dependents
       if (this.isResponsible || this.isResponsibleDependent) {
-        this.userClient.dependents.forEach((dependent, index) => {
+        this.dependents.forEach((dependent, index) => {
           if (!(`index${index}` in this.dependentIndexes)) {
             this.dependentIndexes[`index${index}`] = { accountIndex: 0 }
           }
@@ -81,20 +80,20 @@ const useStorageStore = defineStore('storage', {
       }
     },
 
-    refreshData (dependentId, accountId) {
-      this.dependent = this.getDependentById(dependentId)
-      this.account = this.getAccountById(accountId)
-      this.hasUser = !!this.dependent.people.user
-      this.disableButtons = parseInt(this.account.status) === 2
-      this.mainContent = 'QCalendar'
-      this.purchaseDate = null
-      this.cart = []
+    setDependent (dependent = null, index = null) {
+      if (dependent) {
+        this.dependent = dependent
+      }
+      this.account = index === null ? this.getAccountById(this.account.id)
+        : this.dependent.accounts[this.dependentIndexes[`index${index}`].accountIndex]
+      this.disabledUser = parseInt(this.account.status) === 2
       this.app_token = this.account.store.app_token
     },
 
-    async requestUser () {
-      const { data } = await this.axios({ method: 'get', url: '/api/v1/auth/users' })
-      this.setUser(data)
+    setAccount (account) {
+      this.account = account
+      this.disabledUser = parseInt(this.account.status) === 2
+      this.app_token = this.account.store.app_token
     },
 
     async register (form) {
@@ -104,7 +103,8 @@ const useStorageStore = defineStore('storage', {
 
     async login (form) {
       const data = await this.axios({ method: 'post', url: '/api/v1/auth/login', data: form })
-      this.setUser(data.data.user)
+      this.userClient = data.data.user.people.client
+      this.userDependent = data.data.user.people.dependent
       this.token = data.data.token
       return data.message
     },

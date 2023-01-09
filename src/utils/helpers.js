@@ -10,6 +10,11 @@ const brDate = (timestamp) => {
   return format(date, 'dd/MM/yyyy')
 }
 
+const brDatetime = (timestamp) => {
+  const date = parseISO(timestamp)
+  return format(date, 'dd/MM/yyyy HH:mm')
+}
+
 function getRandomColor () {
   const color = Math.floor(Math.random() * 0x1000000).toString(16)
   return '#' + ('000000' + color).slice(-6)
@@ -32,6 +37,7 @@ function limitString (str, num) {
 export {
   floatToMoney,
   brDate,
+  brDatetime,
   getRandomColor,
   getRandomDarkColor,
   limitString

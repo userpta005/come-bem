@@ -1,11 +1,11 @@
 <template>
   <div class="row"
     :class="$q.screen.lt.md ? 'flex flex-center' : ''">
-    <row class="col-12">
+    <div class="col-12">
       <q-table title="Histórico financeiro: Últimos 30 dias"
         :columns="columns"
-        :rows="store.account.account_entries"
-        :separator="[{ label: 'None', value: 'none' }]"
+        :rows="rows"
+        separator="none"
         row-key="name"
         flat
         v-model:pagination="pagination"
@@ -34,7 +34,7 @@
           </q-tr>
         </template>
       </q-table>
-    </row>
+    </div>
     <q-btn label="Sair"
       class="rounded-borders col-12 q-ma-md"
       text-color="grey-8"
@@ -59,23 +59,35 @@
 import { defineComponent, ref, computed } from 'vue'
 import useStorageStore from 'src/stores/storage'
 import { floatToMoney, brDate } from 'src/utils/helpers'
+import notify from 'src/composables/notify'
 
 export default defineComponent({
   name: 'FinancialHistory',
   setup () {
+    const { notifyError } = notify()
     const store = useStorageStore()
-    const rows = ref()
+    const rows = ref([])
     const totalCredits = computed(() => total(1))
     const totalDebts = computed(() => total(2))
-
     const pagination = ref({
       rowsPerPage: 5
     })
 
+    const handleGetCreditPurchases = async () => {
+      try {
+        const { data } = await store.axios({ method: 'get', url: `/api/v1/accounts/${store.account.id}/credit-purchases` })
+        rows.value = data
+      } catch (error) {
+        notifyError(error)
+      }
+    }
+
+    handleGetCreditPurchases()
+
     const total = (type) => {
       let credits = 0
       let debts = 0
-      store.account.account_entries.forEach((item) => {
+      rows.value.forEach((item) => {
         if (parseInt(item.type) === 1) {
           credits += parseInt(item.amount)
         } else if (parseInt(item.type) === 2) {

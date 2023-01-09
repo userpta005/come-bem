@@ -35,7 +35,7 @@
           no-caps
           align="left"
           @click="store.mainContent = 'LimitProduts'"
-          :disable="store.disableButtons"
+          :disable="store.disabledUser"
           v-if="['responsible-dependent', 'dependent'].includes($route.name)">
           <q-img src="~assets/cardapio.png"
             height="20px"
@@ -44,8 +44,6 @@
           Cardápio
         </q-btn>
 
-        <BtnEnablePhone v-if="['responsible-dependent'].includes($route.name)" />
-
         <BtnDisableDevice v-if="['responsible-dependent'].includes($route.name)" />
 
         <q-btn class="text-weight-regular bg-main-quaternary q-mb-sm"
@@ -53,7 +51,7 @@
           no-caps
           align="left"
           @click="store.mainContent = 'FinancialHistory'"
-          :disable="store.disableButtons"
+          :disable="store.disabledUser"
           v-if="['responsible-dependent', 'dependent'].includes($route.name)">
           <q-img src="~assets/saco-de-dinheiro-em-dolares-na-mao.png"
             height="20px"
@@ -67,7 +65,7 @@
           no-caps
           align="left"
           @click="store.mainContent = 'ConsumptionHistory'"
-          :disable="store.disableButtons"
+          :disable="store.disabledUser"
           v-if="['responsible-dependent', 'dependent'].includes($route.name)">
           <q-img src="~assets/historico.png"
             height="20px"
@@ -105,7 +103,6 @@ import useStorageStore from 'src/stores/storage'
 import { defineComponent } from 'vue'
 import BtnReloadCredits from 'src/components/app/common/BtnReloadCredits.vue'
 import BtnDisableDevice from 'src/components/app/common/BtnDisableDevice.vue'
-import BtnEnablePhone from 'src/components/app/common/BtnEnablePhone.vue'
 import BtnDailyLimit from 'src/components/app/common/BtnDailyLimit.vue'
 
 export default defineComponent({
@@ -113,7 +110,6 @@ export default defineComponent({
   components: {
     BtnReloadCredits,
     BtnDisableDevice,
-    BtnEnablePhone,
     BtnDailyLimit
   },
   setup () {

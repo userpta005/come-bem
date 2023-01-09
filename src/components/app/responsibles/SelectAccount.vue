@@ -24,6 +24,7 @@
 <script>
 import { defineComponent, toRef } from 'vue'
 import useStorageStore from 'src/stores/storage'
+import notify from 'src/composables/notify'
 
 export default defineComponent({
   name: 'SelectAccount',
@@ -42,10 +43,17 @@ export default defineComponent({
     }
   },
   setup (props) {
+    const { notifyError } = notify()
     const store = useStorageStore()
     const dependentIndex = toRef(props, 'dependentIndex')
 
-    const onItemClick = (item, index) => {
+    const onItemClick = async (item, index) => {
+      try {
+        const { data } = await store.axios({ method: 'get', url: `/api/v1/dependents/${props.dependent.id}` })
+        store.dependents[props.dependentIndex] = data
+      } catch (error) {
+        notifyError(error)
+      }
       store.dependentIndexes[`index${dependentIndex.value}`].accountIndex = index
     }
 

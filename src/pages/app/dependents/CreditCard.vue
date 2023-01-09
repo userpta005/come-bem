@@ -78,7 +78,7 @@
 <script>
 import { defineComponent, reactive } from 'vue'
 import notify from 'src/composables/notify'
-import { useRoute, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import useStorageStore from 'src/stores/storage'
 import CustomTitle from 'src/components/app/common/CustomTitle.vue'
 
@@ -90,7 +90,6 @@ export default defineComponent({
   setup () {
     const { notifySuccess, notifyError } = notify()
     const store = useStorageStore()
-    const route = useRoute()
     const router = useRouter()
     const form = reactive({
       amount: store.reloadCredits.amount,
@@ -108,8 +107,6 @@ export default defineComponent({
           url: `/api/v1/accounts/${store.account.id}/credit-purchases`,
           data: form
         })
-        store.setUser(data.data)
-        store.refreshData(route.params.dependent, route.params.account)
         router.back()
         notifySuccess(data.message)
       } catch (error) {

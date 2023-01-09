@@ -3,7 +3,7 @@
     :class="{ 'flex-center': $q.screen.lt.sm }">
 
     <div v-show="dependent.accounts.length"
-      v-for="(dependent, index) in store.userClient.dependents"
+      v-for="(dependent, index) in store.dependents"
       :key="index">
 
       <div class="column flex-center rounded-borders"
@@ -33,11 +33,11 @@
         </span>
 
         <span class="text-weight-medium text-grey-9 text-caption self-start q-ml-lg q-mb-xs">
-          Nascimento: {{ brDate(dependent.birthdate) }}
+          Nascimento: {{ brDate(dependent.people.birthdate) }}
         </span>
 
         <span class="text-weight-medium text-grey-9 text-caption self-start q-ml-lg q-mb-md">
-          Sexo: {{ gender(dependent.gender) }}
+          Sexo: {{ gender(dependent.people.gender) }}
         </span>
 
         <q-btn label="Ver detalhes"
@@ -60,6 +60,7 @@ import { floatToMoney, brDate } from 'src/utils/helpers'
 import useStorageStore from 'src/stores/storage'
 import SelectAccount from 'components/app/responsibles/SelectAccount.vue'
 import { useRouter } from 'vue-router'
+import notify from 'src/composables/notify'
 
 export default defineComponent({
   name: 'ResponsibleDependents',
@@ -67,26 +68,30 @@ export default defineComponent({
     SelectAccount
   },
   setup () {
+    const { notifyError } = notify()
     const store = useStorageStore()
     const router = useRouter()
-    store.requestUser()
 
     const status = (status) => {
       return parseInt(status) === 1 ? 'Ativo' : 'Inativo'
     }
+
     const gender = (gender) => {
       return gender === 'M' ? 'Masculino' : 'Feminino'
     }
 
+    const handleGetDependents = async () => {
+      try {
+        const { data } = await store.axios({ method: 'get', url: `/api/v1/clients/${store.userClient.id}/dependents` })
+        store.setDependents(data)
+      } catch (error) {
+        notifyError(error)
+      }
+    }
+
     const toGoDependent = (dependent, index) => {
-      store.dependent = dependent
-      store.account = store.dependent.accounts[store.dependentIndexes[`index${index}`].accountIndex]
-      store.hasUser = !!store.dependent.people.user
-      store.disableButtons = parseInt(store.account.status) === 2
+      store.setDependent(dependent, index)
       store.mainContent = 'QCalendar'
-      store.purchaseDate = null
-      store.cart = []
-      store.app_token = store.account.store.app_token
       router.push({
         name: 'responsible-dependent',
         params: {
@@ -95,6 +100,8 @@ export default defineComponent({
         }
       })
     }
+
+    handleGetDependents()
 
     return {
       floatToMoney,

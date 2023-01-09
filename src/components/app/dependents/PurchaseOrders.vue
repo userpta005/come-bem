@@ -1,6 +1,6 @@
 <template>
   <q-dialog persistent
-    @show="handleOpen">
+    @show="handleShow">
 
     <q-card class="q-py-lg column justify-between"
       style="max-width: 800px; min-height: 500px;"
@@ -95,7 +95,6 @@ import { defineComponent, ref } from 'vue'
 import useStorageStore from 'src/stores/storage'
 import { brDate } from 'src/utils/helpers'
 import notify from 'src/composables/notify'
-import { useRoute } from 'vue-router'
 import { parseISO, format } from 'date-fns'
 import pt from 'date-fns/locale/pt-BR'
 
@@ -104,50 +103,54 @@ export default defineComponent({
   props: ['orders'],
   emits: ['closeModal'],
   setup (props, { emit }) {
-    const { notifyError, notifySuccess } = notify()
-    const route = useRoute()
+    const { notifyError, notifySuccess, notifyWarning } = notify()
     const store = useStorageStore()
     const title = ref(null)
 
-    const handleOpen = () => {
+    const handleShow = () => {
       title.value = format(parseISO(store.purchaseDate), 'dd MMM yyyy', { locale: pt })
     }
 
     const handleRemoveOrder = async (order) => {
-      try {
-        const data = await store.axios({
-          method: 'delete',
-          url: `/api/v1/orders/${order.id}`
-        })
-        store.setUser(data.data)
-        store.refreshData(route.params.dependent, route.params.account)
-        emit('closeModal')
-        notifySuccess(data.message)
-      } catch (error) {
-        notifyError(error)
+      if (parseInt(order.status) === 1) {
+        try {
+          const data = await store.axios({
+            method: 'delete',
+            url: `/api/v1/orders/${order.id}`
+          })
+          store.setAccount(data.data)
+          emit('closeModal')
+          notifySuccess(data.message)
+        } catch (error) {
+          notifyError(error)
+        }
+      } else {
+        notifyWarning('Não é possível remover o pedido, pois o mesmo já foi consumido !')
       }
     }
 
     const handleEditOrder = async (order) => {
-      store.cart = order.order_items.map(item => {
-        return {
-          id: item.product_id,
-          name: item.product.name,
-          image_url: item.product.image_url,
-          price: item.price,
-          quantity: parseInt(item.quantity),
-          stock: item.product.stock
-        }
-      })
-      store.order_id = order.id
-      store.turn = order.turn
-      store.mainContent = 'FinishPurchaseOrder'
+      if (parseInt(order.status) === 1) {
+        store.cart = order.order_items.map(item => {
+          return {
+            id: item.product_id,
+            name: item.product.name,
+            image_url: item.product.image_url,
+            price: item.price,
+            quantity: parseInt(item.quantity),
+            stock: item.product.stock
+          }
+        })
+        store.order_id = order.id
+        store.turn = order.turn
+        store.mainContent = 'FinishPurchaseOrder'
+      } else {
+        notifyWarning('Não é possível editar o pedido, pois o mesmo já foi consumido !')
+      }
     }
 
     const handleNewOrder = () => {
       store.mainContent = 'PurchaseOrder'
-      store.turn = null
-      store.order_id = null
     }
 
     const badgeColor = (nutritionalClassification) => {
@@ -170,7 +173,7 @@ export default defineComponent({
       brDate,
       badgeColor,
       handleNewOrder,
-      handleOpen
+      handleShow
     }
   }
 })

@@ -79,7 +79,6 @@ import { floatToMoney, brDate } from 'src/utils/helpers'
 import SelectAccount from 'src/components/app/dependents/SelectAccount.vue'
 import notify from 'src/composables/notify'
 import useStorageStore from 'src/stores/storage'
-import { useRoute } from 'vue-router'
 
 export default defineComponent({
   name: 'DependentViewPage',
@@ -88,7 +87,6 @@ export default defineComponent({
   },
   setup () {
     const { notifySuccess, notifyError } = notify()
-    const route = useRoute()
     const store = useStorageStore()
     const statusDependent = computed(() => store.account.status)
 
@@ -98,14 +96,14 @@ export default defineComponent({
 
     const handleBlockAccount = async (value) => {
       try {
-        const data = await store.axios({
+        const { message } = await store.axios({
           method: 'put',
           url: `api/v1/accounts/${store.account.id}/block`,
           data: { activate: parseInt(value) === 1 }
         })
-        store.setUser(data.data)
-        store.refreshData(route.params.dependent, route.params.account)
-        notifySuccess(data.message)
+        store.account.status = value
+        store.disabledUser = parseInt(store.account.status) === 2
+        notifySuccess(message)
       } catch (error) {
         notifyError(error)
       }

@@ -3,8 +3,8 @@
     text-color="white"
     no-caps
     align="left"
-    :disable="store.disableButtons"
-    @click="handleOpen">
+    @click="prompt = true"
+    :disable="store.disabledUser">
     <q-img src="~assets/sinal-de-proibido.png"
       height="20px"
       width="20px"
@@ -12,7 +12,8 @@
     Bloquear dispositivos
   </q-btn>
 
-  <q-dialog v-model="prompt"
+  <q-dialog @show="handleShow"
+    v-model="prompt"
     persistent>
 
     <q-card class="q-py-lg column justify-between"
@@ -84,41 +85,33 @@
 import { defineComponent, ref } from 'vue'
 import useStorageStore from 'src/stores/storage'
 import notify from 'src/composables/notify'
-import { useRoute } from 'vue-router'
 
 export default defineComponent({
   name: 'BtnDisableDevice',
   setup () {
     const { notifySuccess, notifyError } = notify()
-    const route = useRoute()
     const store = useStorageStore()
     const cards = ref([])
     const prompt = ref(false)
 
-    const handleOpen = () => {
-      cards.value = store.account.cards.map((value) => {
-        const obj = {}
-        obj.id = value.id
-        obj.uuid = value.uuid
-        obj.status = value.status
-        obj.account = {}
-        obj.account.store_id = value.account.store_id
-        return obj
-      })
-      prompt.value = true
+    const handleShow = async () => {
+      try {
+        const { data } = await store.axios({ method: 'get', url: `/api/v1/accounts/${store.account.id}/cards` })
+        cards.value = data
+      } catch (error) {
+        notifyError(error)
+      }
     }
 
     const handleSubmit = async () => {
       try {
-        const data = await store.axios({
+        const { message } = await store.axios({
           method: 'put',
           url: '/api/v1/cards/block',
           data: { cards: cards.value }
         })
         prompt.value = false
-        store.setUser(data.data)
-        store.refreshData(route.params.dependent, route.params.account)
-        notifySuccess(data.message)
+        notifySuccess(message)
       } catch (error) {
         notifyError(error)
       }
@@ -129,7 +122,7 @@ export default defineComponent({
       cards,
       prompt,
       handleSubmit,
-      handleOpen
+      handleShow
     }
   }
 })
