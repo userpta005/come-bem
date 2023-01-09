@@ -1,48 +1,38 @@
 <template>
   <q-page>
 
-    <CustomTitle title="Editar perfil" />
+    <CustomTitle title="Pix" />
 
     <q-form @submit.prevent="handleSubmit"
-      class="column q-col-gutter-sm"
+      class="column items-center"
       :style="$q.screen.gt.sm ? 'max-width: 700px' : ''">
 
-      <q-input label="Nome completo"
-        class="col-12"
-        outlined
-        clearable
-        lazy-rules="ondemand"
-        v-model="form.name"
-        :rules="[
-          val => (!!val && val.length > 0) || 'Nome completo é obrigatório',
-          val => (val.length <= 100) || 'Máximo 100 caracteres !',
-        ]" />
+      <p class="q-mb-xl">
+        Abra o aplicativo que você tenha o PIX habilitado e utilize o QR Code abaixo para realizar o
+        pagamento.
+      </p>
 
-      <q-input label="Email"
-        outlined
-        clearable
-        type="email"
-        lazy-rules="ondemand"
-        v-model="form.email"
-        :rules="[
-          val => (val && val.length > 0) || 'Email é obrigatório',
-          val => (val.length <= 100) || 'Máximo 100 caracteres !',
-        ]" />
+      <q-img src="~assets/qrcode.png"
+        height="200px"
+        width="200px"
+        class="q-mb-xl" />
+
+      <p class="q-mb-xl">
+        Abra o aplicativo que você tenha o PIX habilitado e utilize o QR Code abaixo para realizar o
+        pagamento.
+      </p>
 
       <div class="col-12 flex items-center justify-end"
-        :class="$q.screen.lt.md ? 'column' : 'row'">
-        <q-btn label="Voltar"
-          class="q-ma-sm"
-          :class="{ 'order-last': $q.screen.lt.md }"
+        :class="$q.screen.lt.sm ? 'column' : 'row'">
+        <q-btn label="Sair"
+          :class="$q.screen.gt.xs ? 'q-mr-lg' : 'order-last q-mt-sm'"
           text-color="grey-8"
           outline
           style="width: 150px;"
           no-caps
           @click="$router.back()" />
 
-        <q-btn type="submit"
-          label="Salvar"
-          class="q-ma-sm"
+        <q-btn label="Copiar código"
           color="main-primary"
           style="width: 150px;"
           no-caps />
@@ -54,37 +44,41 @@
 <script>
 import { defineComponent, reactive } from 'vue'
 import notify from 'src/composables/notify'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import useStorageStore from 'src/stores/storage'
 import CustomTitle from 'src/components/app/common/CustomTitle.vue'
 
 export default defineComponent({
-  name: 'ProfilePage',
+  name: 'PixPage',
   components: {
     CustomTitle
   },
   setup () {
     const { notifySuccess, notifyError } = notify()
     const store = useStorageStore()
+    const route = useRoute()
     const router = useRouter()
     const form = reactive({
-      name: null,
-      email: null
+      amount: store.reloadCredits.amount,
+      payment_method_id: store.reloadCredits.payment_method_id
     })
 
     const handleSubmit = async () => {
       try {
         const data = await store.axios({
-          method: 'put',
-          url: '/api/v1/auth/profile',
+          method: 'post',
+          url: `/api/v1/accounts/${store.account.id}/credit-purchases`,
           data: form
         })
+        store.setUser(data.data)
+        store.refreshData(route.params.dependent, route.params.account)
+        router.back()
         notifySuccess(data.message)
-        router.push({ name: 'dashboard' })
       } catch (error) {
         notifyError(error)
       }
     }
+
     return {
       form,
       handleSubmit

@@ -44,7 +44,7 @@
             </span>
 
             <span class="text-body2 text-weight-regular q-mb-sm">
-              Saldo do dia: {{ floatToMoney(0) }}
+              Saldo do dia: {{ floatToMoney(store.account.day_balance) }}
             </span>
 
             <q-toggle label="Desativar consumidor"

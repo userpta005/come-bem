@@ -80,18 +80,18 @@
         :rules="[val => (!!val) || 'Turno é obrigatória']" />
 
       <div class="col-12 flex flex-center">
-        <q-btn type="submit"
-          label="Confirmar"
-          class="q-ma-xs"
-          color="main-primary"
-          style="width: 150px;"
-          no-caps />
         <q-btn label="Cancelar"
           class="q-ma-xs"
           text-color="grey-8"
           outline
           style="width: 150px;"
-          :to="{ name: 'responsible' }"
+          @click="$router.back()"
+          no-caps />
+        <q-btn type="submit"
+          label="Confirmar"
+          class="q-ma-xs"
+          color="main-primary"
+          style="width: 150px;"
           no-caps />
       </div>
     </q-form>

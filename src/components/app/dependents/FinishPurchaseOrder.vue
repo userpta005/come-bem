@@ -37,7 +37,7 @@
                   size="md"
                   @click="handleMinus(product)" />
 
-                <h6 class="no-margin q-px-xs">{{ product.quantity }}</h6>
+                <h6 class="no-margin q-px-xs">{{ parseInt(product.quantity) }}</h6>
 
                 <q-icon class="cursor-pointer"
                   name="mdi-plus-circle-outline"
@@ -138,7 +138,7 @@ export default defineComponent({
     const { notifyWarning, notifyError, notifySuccess } = notify()
     const route = useRoute()
     const store = useStorageStore()
-    const turn = ref(1)
+    const turn = ref(store.turn)
 
     const total = computed(() => {
       let total = 0
@@ -149,6 +149,7 @@ export default defineComponent({
     })
 
     const turns = ref([
+      { label: 'Selecione...', id: null },
       { label: 'Matutino', id: 1 },
       { label: 'Vespertino', id: 2 },
       { label: 'Noturno', id: 3 }
@@ -178,15 +179,27 @@ export default defineComponent({
         return
       }
       try {
+        let method = null
+        let url = null
+
+        if (!store.order_id) {
+          method = 'post'
+          url = `/api/v1/accounts/${store.account.id}/orders`
+        } else {
+          method = 'put'
+          url = `/api/v1/orders/${store.order_id}`
+        }
+
         const data = await store.axios({
-          method: 'post',
-          url: `/api/v1/accounts/${store.account.id}/orders`,
+          method,
+          url,
           data: {
             products: store.cart,
             date: store.purchaseDate,
             turn: turn.value
           }
         })
+
         store.setUser(data.data)
         store.refreshData(route.params.dependent, route.params.account)
         notifySuccess(data.message)

@@ -21,7 +21,7 @@
         </div>
       </div>
 
-      <q-separator class="q-mt-sm"/>
+      <q-separator class="q-mt-sm" />
 
       <div class="row flex-center q-my-xl q-py-sm"
         style="max-height: 600px; overflow: auto;">
@@ -51,7 +51,7 @@
                 size="md"
                 @click="handleMinus(product)" />
 
-              <h6 class="no-margin q-px-xs">{{ product.quantity ?? 1 }}</h6>
+              <h6 class="no-margin q-px-xs">{{ product.quantity ? parseInt(product.quantity) : 1 }}</h6>
 
               <q-icon class="cursor-pointer"
                 name="mdi-plus-circle-outline"
@@ -141,7 +141,16 @@ export default defineComponent({
           method: 'get',
           url: `/api/v1/accounts/${store.account.id}/products`
         })
-        products.value = filteredProducts.value = data.data.filter((product) => (product.stock && parseInt(product.stock.quantity) > 0) && !product.limited_products.length)
+        products.value = filteredProducts.value = data.data.filter((product) => {
+          const productCart = store.cart.find(value => parseInt(value.id) === parseInt(product.id))
+          if (productCart) {
+            product.quantity = parseInt(productCart.quantity)
+          }
+          if ((product.stock && parseInt(product.stock.quantity) > 0) && !product.limited_products.length) {
+            return true
+          }
+          return false
+        })
       } catch (error) {
         notifyError(error)
       }

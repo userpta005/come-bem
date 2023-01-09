@@ -7,9 +7,9 @@
         :rows="rows"
         :separator="[{ label: 'None', value: 'none' }]"
         row-key="id"
-        flat>
-        <template v-slot:pagination>
-        </template>
+        flat
+        v-model:pagination="pagination"
+        :rows-per-page-options="[0]">
         <template v-slot:top>
           <div class="full-width">
             <h6 class="no-margin text-weight-regular q-pb-sm"
@@ -98,7 +98,7 @@
 </style>
 
 <script>
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed, ref } from 'vue'
 import useStorageStore from 'src/stores/storage'
 import { floatToMoney, brDate } from 'src/utils/helpers'
 // eslint-disable-next-line import/namespace
@@ -114,6 +114,10 @@ export default defineComponent({
   },
   setup () {
     const store = useStorageStore()
+
+    const pagination = ref({
+      rowsPerPage: 5
+    })
 
     const rows = computed(() => {
       const arr = []
@@ -239,6 +243,7 @@ export default defineComponent({
 
     return {
       store,
+      pagination,
       columns,
       rows,
       amount,

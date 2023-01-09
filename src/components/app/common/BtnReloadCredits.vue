@@ -86,12 +86,13 @@
 import { defineComponent, ref, reactive } from 'vue'
 import notify from 'src/composables/notify'
 import useStorageStore from 'src/stores/storage'
-import { useRoute } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 
 export default defineComponent({
   name: 'BtnReloadCredits',
   setup () {
-    const { notifySuccess, notifyError } = notify()
+    const { notifyError } = notify()
+    const router = useRouter()
     const route = useRoute()
     const store = useStorageStore()
     const prompt = ref(false)
@@ -119,19 +120,18 @@ export default defineComponent({
     handlePaymentMethod()
 
     const handleSubmit = async () => {
-      try {
-        const data = await store.axios({
-          method: 'post',
-          url: `/api/v1/accounts/${store.account.id}/credit-purchases`,
-          data: form
-        })
-        prompt.value = false
-        store.setUser(data.data)
-        store.refreshData(route.params.dependent, route.params.account)
-        notifySuccess(data.message)
-      } catch (error) {
-        notifyError(error)
+      store.reloadCredits = form
+      let name = null
+      let params = null
+
+      if (parseInt(form.payment_method_id) === 3) {
+        name = route.name === 'responsible-dependent' ? 'responsible-credit-card' : 'dependent-credit-card'
+        params = { responsible: route.params.responsible, dependent: route.params.dependent, account: route.params.account }
+      } else if (parseInt(form.payment_method_id) === 4) {
+        name = route.name === 'responsible-dependent' ? 'responsible-pix' : 'dependent-pix'
+        params = { dependent: route.params.dependent, account: route.params.account }
       }
+      router.push({ name, params })
     }
 
     return {

@@ -39,11 +39,19 @@
               </span>
             </div>
 
-            <q-icon class="cursor-pointer q-pl-md"
-              name="mdi-delete-circle"
-              color="grey"
-              size="md"
-              @click="handleRemoveOrder(order)" />
+            <div class="row no-wrap flex-center">
+              <q-icon class="cursor-pointer q-pl-md"
+                name="mdi-pencil-circle"
+                color="grey"
+                size="md"
+                @click="handleEditOrder(order)" />
+
+              <q-icon class="cursor-pointer q-pl-sm"
+                name="mdi-delete-circle"
+                color="grey"
+                size="md"
+                @click="handleRemoveOrder(order)" />
+            </div>
 
           </div>
 
@@ -120,8 +128,26 @@ export default defineComponent({
       }
     }
 
+    const handleEditOrder = async (order) => {
+      store.cart = order.order_items.map(item => {
+        return {
+          id: item.product_id,
+          name: item.product.name,
+          image_url: item.product.image_url,
+          price: item.price,
+          quantity: parseInt(item.quantity),
+          stock: item.product.stock
+        }
+      })
+      store.order_id = order.id
+      store.turn = order.turn
+      store.mainContent = 'FinishPurchaseOrder'
+    }
+
     const handleNewOrder = () => {
       store.mainContent = 'PurchaseOrder'
+      store.turn = null
+      store.order_id = null
     }
 
     const badgeColor = (nutritionalClassification) => {
@@ -140,6 +166,7 @@ export default defineComponent({
       store,
       title,
       handleRemoveOrder,
+      handleEditOrder,
       brDate,
       badgeColor,
       handleNewOrder,

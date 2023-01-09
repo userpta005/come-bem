@@ -2,7 +2,8 @@
   <div class="subcontent">
     <h6 class="no-margin">Pedir Lanche</h6>
     <div class="row items-center justify-between q-pb-sm">
-      <span class="text-weight-light" style="text-indent: 15px;">Selecione uma data para agendamento de lanches:</span>
+      <span class="text-weight-light"
+        style="text-indent: 15px;">Selecione uma data para agendamento de lanches:</span>
       <div class="flex items-center"
         :class="$q.screen.lt.md ? 'col-12 justify-end' : ''">
         <q-btn flat
@@ -141,6 +142,8 @@ export default defineComponent({
         this.showOrders = true
       } else if (!data.scope.timestamp.disabled && !data.scope.outside) {
         this.store.mainContent = 'PurchaseOrder'
+        this.store.turn = null
+        this.store.order_id = null
       }
     },
 

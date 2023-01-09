@@ -5,7 +5,7 @@
     no-caps
     align="left"
     class="text-weight-light no-padding"
-    style="font-size: 17px;">>
+    style="font-size: 17px;">
     <q-list dense>
       <q-item clickable
         v-close-popup

@@ -11,8 +11,14 @@ const useStorageStore = defineStore('storage', {
     disableButtons: false,
     dependentIndexes: {},
     mainContent: 'QCalendar',
+    order_id: null,
     purchaseDate: null,
+    turn: null,
     cart: [],
+    reloadCredits: {
+      amount: 0,
+      payment_method_id: null
+    },
     app_token: null,
     token: null
   }),

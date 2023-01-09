@@ -7,9 +7,9 @@
         :rows="store.account.account_entries"
         :separator="[{ label: 'None', value: 'none' }]"
         row-key="name"
-        flat>
-        <template v-slot:pagination>
-        </template>
+        flat
+        v-model:pagination="pagination"
+        :rows-per-page-options="[0]">
         <template v-slot:top>
           <h6 class="no-margin text-weight-regular"
             :class="$q.screen.lt.sm ? 'column' : ''">
@@ -67,6 +67,10 @@ export default defineComponent({
     const rows = ref()
     const totalCredits = computed(() => total(1))
     const totalDebts = computed(() => total(2))
+
+    const pagination = ref({
+      rowsPerPage: 5
+    })
 
     const total = (type) => {
       let credits = 0
@@ -130,6 +134,7 @@ export default defineComponent({
     ]
     return {
       store,
+      pagination,
       columns,
       rows,
       totalCredits,

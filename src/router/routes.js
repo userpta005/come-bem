@@ -27,11 +27,35 @@ const routes = [
         component: () => import('src/pages/app/dependents/View.vue')
       },
       {
+        path: 'responsible/:responsible/dependent/:dependent/account/:account/credit-card',
+        name: 'responsible-credit-card',
+        component: () => import('src/pages/app/dependents/CreditCard.vue')
+      },
+      {
+        path: 'responsible/:responsible/dependent/:dependent/account/:account/pix',
+        name: 'responsible-pix',
+        component: () => import('src/pages/app/dependents/Pix.vue')
+      },
+      {
         path: 'responsible/:responsible/dependent/create',
         name: 'responsible-dependent-create',
         component: () => import('src/pages/app/dependents/Create.vue')
       },
-      { path: 'dependent/:dependent/account/:account', name: 'dependent', component: () => import('src/pages/app/dependents/View.vue') }
+      {
+        path: 'dependent/:dependent/account/:account',
+        name: 'dependent',
+        component: () => import('src/pages/app/dependents/View.vue')
+      },
+      {
+        path: 'dependent/:dependent/account/:account/credit-card',
+        name: 'dependent-credit-card',
+        component: () => import('src/pages/app/dependents/CreditCard.vue')
+      },
+      {
+        path: 'dependent/:dependent/account/:account/pix',
+        name: 'dependent-pix',
+        component: () => import('src/pages/app/dependents/Pix.vue')
+      }
     ],
     meta: {
       requiresAuth: true

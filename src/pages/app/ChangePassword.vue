@@ -50,7 +50,7 @@
           outline
           style="width: 150px;"
           no-caps
-          :to="{ name: 'dashboard' }" />
+          @click="$router.back()" />
 
         <q-btn type="submit"
           label="Salvar"
