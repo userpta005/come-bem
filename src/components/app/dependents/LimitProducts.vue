@@ -16,7 +16,7 @@
             width="50px"
             class="rounded-borders q-mb-xs" />
 
-          <span class="flex flex-center">{{ section.name }}</span>
+          <span class="flex flex-center text-body2">{{ section.name }}</span>
 
         </div>
       </div>
@@ -32,24 +32,24 @@
         class="row flex-center q-py-sm"
         style="max-height: 428px; overflow: auto;">
 
-        <q-card class="column items-center cursor-pointer q-mr-md q-mb-md"
-          style="width: 200px; height: 190px;"
+        <q-card class="column flex-center cursor-pointer q-mr-sm q-mb-md"
+          style="width: 150px;"
           :class="{ 'limitedProduct': handleProductIsLimited(product) }"
           @click="handleAddLimitedProduct(product)"
           v-for="(product, index) in filteredProducts"
           :key="index">
 
-          <q-card-section class="flex justify-center">
+          <q-card-section class="flex flex-center q-pa-sm">
             <q-img :src="product.image_url"
-              height="70px"
-              width="70px"
+              height="60px"
+              width="60px"
               class="rounded-borders"
               :class="{ 'imageLimitedProduct': handleProductIsLimited(product) }" />
           </q-card-section>
 
-          <q-card-section class="col column items-center justify-evenly q-pt-none">
-            <span class="text-center">{{ limitString(product.name, 39) }}</span>
-            <span class="text-center text-weight-medium">{{ floatToMoney(product.price) }}</span>
+          <q-card-section class="col column items-center justify-evenly q-pa-sm">
+            <span class="text-center text-body2">{{ limitString(product.name, 16) }}</span>
+            <span class="text-center text-weight-medium text-body2">{{ floatToMoney(product.price) }}</span>
           </q-card-section>
 
           <span class="textLimitedProduct"
@@ -124,7 +124,6 @@
   text-align: center;
   color: white;
   font-size: 20px;
-  top: 80px;
 }
 </style>
 

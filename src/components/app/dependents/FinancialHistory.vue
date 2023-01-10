@@ -1,8 +1,11 @@
 <template>
   <div class="row"
-    :class="$q.screen.lt.md ? 'flex flex-center' : ''">
-    <div class="col-12">
+    :class="$q.screen.lt.sm ? 'justify-center' : ''">
+
+    <div class="col-12" >
+
       <q-table title="Histórico financeiro: Últimos 30 dias"
+        style="max-width: 800px;"
         :columns="columns"
         :rows="rows"
         separator="none"
@@ -10,6 +13,7 @@
         flat
         v-model:pagination="pagination"
         :rows-per-page-options="[0]">
+
         <template v-slot:top>
           <h6 class="no-margin text-weight-regular"
             :class="$q.screen.lt.sm ? 'column' : ''">
@@ -20,6 +24,7 @@
             </span>
           </h6>
         </template>
+
         <template v-slot:bottom-row>
           <q-tr>
             <q-td colspan="2">
@@ -33,10 +38,13 @@
             </q-td>
           </q-tr>
         </template>
+
       </q-table>
+
     </div>
+
     <q-btn label="Sair"
-      class="rounded-borders col-12 q-ma-md"
+      class="rounded-borders q-ma-md"
       text-color="grey-8"
       outline
       no-caps
@@ -127,7 +135,7 @@ export default defineComponent({
           if (parseInt(row.type) === 1) {
             return floatToMoney(val).substring(3)
           }
-          return '0,00'
+          return null
         }
       },
       {
@@ -140,7 +148,7 @@ export default defineComponent({
           if (parseInt(row.type) === 2) {
             return floatToMoney(val).substring(3)
           }
-          return '0,00'
+          return null
         }
       }
     ]

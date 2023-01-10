@@ -17,7 +17,6 @@
             class="q-py-md"
             outlined
             clearable
-            type="email"
             lazy-rules="ondemand"
             v-model="form.email"
             :rules="[

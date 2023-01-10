@@ -17,18 +17,23 @@
             :class="{ 'col-12 flex-center': $q.screen.lt.sm }">
 
             <h5 class="no-margin text-weight-medium">
-              {{ store.dependent.people.name }}
+              {{ store.dependent.people.full_name ?? store.dependent.people.name }}
             </h5>
 
-            <SelectAccount class="q-mb-xs" />
+            <SelectAccount />
 
             <span class="text-body2 text-weight-medium text-grey-8 q-mb-sm">
               Nascimento: {{ brDate(store.dependent.people.birthdate) }}
             </span>
 
-            <span class="text-body2 text-weight-medium text-grey-8">
+            <span class="text-body2 text-weight-medium text-grey-8 q-mb-sm">
               Sexo: {{ gender(store.dependent.people.gender) }}
             </span>
+
+            <div class="text-body2 text-weight-medium text-grey-8">
+              <span class="q-mr-md">Usuário: {{ store.dependent.user }}</span>
+              <span>Senha: {{ store.dependent.password }}</span>
+            </div>
 
           </div>
 
@@ -47,12 +52,12 @@
               Saldo do dia: {{ floatToMoney(store.account.day_balance) }}
             </span>
 
-            <q-toggle label="Desativar consumidor"
+            <q-toggle :label="parseInt(statusDependent) === 1 ? 'Desativar consumidor' : 'Ativar consumidor'"
               v-model="statusDependent"
               :true-value="1"
               :false-value="2"
               style="border: 1px solid grey"
-              class="q-py-xs q-px-md rounded-borders"
+              class="q-py-sm q-px-md rounded-borders"
               :class="{ 'self-start': $q.screen.gt.xs }"
               :color="parseInt(statusDependent) === 1 ? 'green' : 'red'"
               keep-color

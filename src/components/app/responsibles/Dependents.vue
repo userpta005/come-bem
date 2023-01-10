@@ -16,7 +16,7 @@
           class="q-mb-xs" />
 
         <h6 class="no-margin text-weight-medium">
-          {{ dependent.people.name }}
+          {{ dependent.people.full_name ?? dependent.people.name }}
         </h6>
 
         <SelectAccount :dependent="dependent"

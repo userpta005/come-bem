@@ -16,7 +16,7 @@
             width="50px"
             class="rounded-borders q-mb-xs" />
 
-          <span class="flex flex-center">{{ section.name }}</span>
+          <span class="flex flex-center text-body2">{{ section.name }}</span>
 
         </div>
       </div>
@@ -26,42 +26,42 @@
       <div class="row flex-center q-my-xl q-py-sm"
         style="max-height: 600px; overflow: auto;">
 
-        <q-card class="column justify-evenly q-mr-md q-mb-md"
-          style="width: 200px; height: 275px;"
+        <q-card class="column q-mr-sm q-mb-md"
+          style="width: 150px;"
           v-for="(product, index) in filteredProducts"
           :key="index">
 
-          <q-card-section class="flex justify-center q-pb-sm">
+          <q-card-section class="flex flex-center q-pa-sm">
             <q-img :src="product.image_url"
-              height="70px"
-              width="70px"
+              height="60px"
+              width="60px"
               class="rounded-borders" />
           </q-card-section>
 
-          <q-card-section class="col column justify-between items-center q-pt-none q-pb-none">
+          <q-card-section class="col column justify-between items-center q-px-sm q-pt-none q-pb-none">
 
             <div class="col column items-center justify-evenly">
-              <span class="text-center">{{ limitString(product.name, 39) }}</span>
-              <span class="text-center text-weight-medium">{{ floatToMoney(product.price) }}</span>
+              <span class="text-center text-body2">{{ limitString(product.name, 16) }}</span>
+              <span class="text-center text-weight-medium text-body2">{{ floatToMoney(product.price) }}</span>
             </div>
 
-            <div class="row no-wrap justify-center items-end full-width q-py-xs">
+            <div class="row no-wrap flex-center full-width q-py-xs">
               <q-icon class="cursor-pointer"
                 name="mdi-minus-circle-outline"
-                size="md"
+                style="font-size: 1.5rem;"
                 @click="handleMinus(product)" />
 
               <h6 class="no-margin q-px-xs">{{ product.quantity ? parseInt(product.quantity) : 1 }}</h6>
 
               <q-icon class="cursor-pointer"
                 name="mdi-plus-circle-outline"
-                size="md"
+                style="font-size: 1.5rem;"
                 @click="handlePlus(product)" />
             </div>
 
           </q-card-section>
 
-          <q-card-actions class="flex flex-center q-px-md q-pb-md q-pt-sm">
+          <q-card-actions class="flex flex-center q-pa-sm">
             <q-btn no-caps
               color="green-9"
               class="full-width"

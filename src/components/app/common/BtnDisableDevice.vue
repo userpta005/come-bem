@@ -43,7 +43,7 @@
               :true-value="1"
               :false-value="2"
               style="border: 1px solid grey"
-              class="q-pa-xs q-mb-sm rounded-borders fit"
+              class="row justify-evenly q-pa-xs q-mb-sm rounded-borders fit"
               :label="card.uuid"
               :color="parseInt(card.status) === 1 ? 'green' : 'red'"
               keep-color

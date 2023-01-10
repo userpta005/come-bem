@@ -13,9 +13,20 @@
         lazy-rules="ondemand"
         v-model="form.name"
         :rules="[
-  val => (!!val && val.length > 0) || 'Nome completo é obrigatório',
-  val => (val.length <= 100) || 'Máximo 100 caracteres !',
-]" />
+          val => (!!val && val.length > 0) || 'Nome completo é obrigatório',
+          val => (val.length <= 100) || 'Máximo 100 caracteres !',
+        ]" />
+
+        <q-input label="Nome social"
+        class="col-12"
+        outlined
+        clearable
+        lazy-rules="ondemand"
+        v-model="form.full_name"
+        :rules="[
+          val => (!!val && val.length > 0) || 'Nome social é obrigatório',
+          val => (val.length <= 30) || 'Máximo 30 caracteres !',
+        ]" />
 
       <q-select v-model="form.gender"
         outlined
@@ -52,9 +63,9 @@
         lazy-rules="ondemand"
         v-model="form.school_year"
         :rules="[
-  val => (!!val && val.length > 0) || 'Série é obrigatório',
-  val => (val.length <= 10) || 'Máximo 10 caracteres !',
-]" />
+          val => (!!val && val.length > 0) || 'Série é obrigatório',
+          val => (val.length <= 10) || 'Máximo 10 caracteres !',
+        ]" />
 
       <q-input label="Turma"
         class="col-md-3 col-sm-6 col-xs-12"
@@ -63,9 +74,9 @@
         lazy-rules="ondemand"
         v-model="form.class"
         :rules="[
-  val => (!!val && val.length > 0) || 'Turma é obrigatório',
-  val => (val.length <= 10) || 'Máximo 10 caracteres !',
-]" />
+          val => (!!val && val.length > 0) || 'Turma é obrigatório',
+          val => (val.length <= 10) || 'Máximo 10 caracteres !',
+        ]" />
 
       <q-select v-model="form.turn"
         outlined
@@ -121,6 +132,7 @@ export default defineComponent({
     const router = useRouter()
     const form = reactive({
       name: null,
+      full_name: null,
       gender: null,
       birthdate: null,
       city_id: null,

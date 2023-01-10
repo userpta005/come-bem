@@ -23,25 +23,25 @@
             <div class="container"
               :class="$q.screen.lt.sm ? 'column justify-center' : 'row items-center'">
               <span class="q-pr-sm q-pb-sm">Legenda:</span>
-              <div class="flex items-center q-pr-sm q-pb-sm">
+              <div class="flex items-center q-pr-md q-pb-sm">
                 <q-badge color="grey"
                   rounded
                   style="height:15px; width: 15px;" />
                 <span class="q-pl-sm">Em Análise</span>
               </div>
-              <div class="flex items-center q-pr-sm q-pb-sm">
+              <div class="flex items-center q-pr-md q-pb-sm">
                 <q-badge color="green"
                   rounded
                   style="height:15px; width: 15px;" />
                 <span class="q-pl-sm">Muito nutritivo</span>
               </div>
-              <div class="flex items-center q-pr-sm q-pb-sm">
+              <div class="flex items-center q-pr-md q-pb-sm">
                 <q-badge color="yellow"
                   rounded
                   style="height:15px; width: 15px;" />
                 <span class="q-pl-sm">Moderado</span>
               </div>
-              <div class="flex items-center q-pr-sm q-pb-sm">
+              <div class="flex items-center q-pr-md q-pb-sm">
                 <q-badge color="red"
                   rounded
                   style="height:15px; width: 15px;" />
@@ -206,7 +206,7 @@ export default defineComponent({
       },
       {
         name: 'date',
-        align: 'center',
+        align: 'left',
         label: 'Data consumo/Hora',
         field: 'date',
         sortable: true,
