@@ -3,8 +3,7 @@
 
     <CustomTitle title="Pix" />
 
-    <q-form @submit.prevent="handleSubmit"
-      class="column items-center"
+    <div class="column items-center"
       :style="$q.screen.gt.sm ? 'max-width: 700px' : ''">
 
       <p class="q-mb-xl">
@@ -18,8 +17,7 @@
         class="q-mb-xl" />
 
       <p class="q-mb-xl">
-        Abra o aplicativo que você tenha o PIX habilitado e utilize o QR Code abaixo para realizar o
-        pagamento.
+        Se preferir, copie o código abaixo e utilize o PIX Copia e cola no seu aplicativo.
       </p>
 
       <div class="col-12 flex items-center justify-end"
@@ -35,16 +33,16 @@
         <q-btn label="Copiar código"
           color="main-primary"
           style="width: 150px;"
-          no-caps />
+          no-caps
+          @click="copyCode" />
       </div>
-    </q-form>
+    </div>
   </q-page>
 </template>
 
 <script>
-import { defineComponent, reactive } from 'vue'
+import { defineComponent } from 'vue'
 import notify from 'src/composables/notify'
-import { useRouter } from 'vue-router'
 import useStorageStore from 'src/stores/storage'
 import CustomTitle from 'src/components/app/common/CustomTitle.vue'
 
@@ -54,31 +52,16 @@ export default defineComponent({
     CustomTitle
   },
   setup () {
-    const { notifySuccess, notifyError } = notify()
+    const { notifySuccess } = notify()
     const store = useStorageStore()
-    const router = useRouter()
-    const form = reactive({
-      amount: store.reloadCredits.amount,
-      payment_method_id: store.reloadCredits.payment_method_id
-    })
 
-    const handleSubmit = async () => {
-      try {
-        const data = await store.axios({
-          method: 'post',
-          url: `/api/v1/accounts/${store.account.id}/credit-purchases`,
-          data: form
-        })
-        router.back()
-        notifySuccess(data.message)
-      } catch (error) {
-        notifyError(error)
-      }
+    const copyCode = async () => {
+      notifySuccess('Código copiado com sucesso !')
     }
 
     return {
-      form,
-      handleSubmit
+      store,
+      copyCode
     }
   }
 })

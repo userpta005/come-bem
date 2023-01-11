@@ -30,9 +30,9 @@
               Sexo: {{ gender(store.dependent.people.gender) }}
             </span>
 
-            <div class="text-body2 text-weight-medium text-grey-8">
-              <span class="q-mr-md">Usuário: {{ store.dependent.user }}</span>
-              <span>Senha: {{ store.dependent.password }}</span>
+            <div class="text-body2 text-weight-medium text-grey-8"
+              v-if="showAccessKey">
+              Chave de acesso: {{ store.dependent.access_key }}
             </div>
 
           </div>
@@ -95,6 +95,10 @@ export default defineComponent({
     const store = useStorageStore()
     const statusDependent = computed(() => store.account.status)
 
+    const showAccessKey = computed(() => {
+      return (store.isDependent || parseInt(store.userDependent.id) !== parseInt(store.dependent.id))
+    })
+
     const gender = (gender) => {
       return gender === 'M' ? 'Masculino' : 'Feminino'
     }
@@ -120,7 +124,8 @@ export default defineComponent({
       floatToMoney,
       brDate,
       handleBlockAccount,
-      gender
+      gender,
+      showAccessKey
     }
   }
 })

@@ -18,6 +18,7 @@ const useStorageStore = defineStore('storage', {
       amount: 0,
       payment_method_id: null
     },
+    checkout: [],
     mainContent: 'QCalendar',
     app_token: null,
     token: null

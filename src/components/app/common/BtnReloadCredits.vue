@@ -128,8 +128,18 @@ export default defineComponent({
         name = route.name === 'responsible-dependent' ? 'responsible-credit-card' : 'dependent-credit-card'
         params = { responsible: route.params.responsible, dependent: route.params.dependent, account: route.params.account }
       } else if (parseInt(form.payment_method_id) === 4) {
-        name = route.name === 'responsible-dependent' ? 'responsible-pix' : 'dependent-pix'
-        params = { dependent: route.params.dependent, account: route.params.account }
+        try {
+          const { data } = await store.axios({
+            method: 'post',
+            url: `/api/v1/accounts/${store.account.id}/credit-purchases`,
+            data: form
+          })
+          store.checkout = data
+          name = route.name === 'responsible-dependent' ? 'responsible-pix' : 'dependent-pix'
+          params = { dependent: route.params.dependent, account: route.params.account }
+        } catch (error) {
+          notifyError(error)
+        }
       }
       router.push({ name, params })
     }
