@@ -45,7 +45,6 @@
     </div>
   </div>
   <PurchaseOrders v-model="showOrders"
-    :orders="orders"
     @close-modal="showOrders = false" />
 </template>
 

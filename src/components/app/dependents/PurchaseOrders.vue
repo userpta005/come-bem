@@ -100,15 +100,25 @@ import pt from 'date-fns/locale/pt-BR'
 
 export default defineComponent({
   name: 'PurchaseOrders',
-  props: ['orders'],
   emits: ['closeModal'],
   setup (props, { emit }) {
     const { notifyError, notifySuccess, notifyWarning } = notify()
     const store = useStorageStore()
     const title = ref(null)
+    const orders = ref([])
 
-    const handleShow = () => {
+    const handleShow = async () => {
       title.value = format(parseISO(store.purchaseDate), 'dd MMM yyyy', { locale: pt })
+      try {
+        const { data } = await store.axios({
+          method: 'get',
+          url: `/api/v1/accounts/${store.account.id}/orders`
+        })
+        store.account.orders = data
+        orders.value = store.account.orders.filter(value => value.date === store.purchaseDate)
+      } catch (error) {
+        notifyError(error)
+      }
     }
 
     const handleRemoveOrder = async (order) => {
@@ -168,6 +178,7 @@ export default defineComponent({
     return {
       store,
       title,
+      orders,
       handleRemoveOrder,
       handleEditOrder,
       brDate,

@@ -11,7 +11,7 @@
         pagamento.
       </p>
 
-      <q-img src="~assets/qrcode.png"
+      <q-img :src="store.checkout.payment_response[0].links[0].href"
         height="200px"
         width="200px"
         class="q-mb-xl" />
@@ -52,11 +52,16 @@ export default defineComponent({
     CustomTitle
   },
   setup () {
-    const { notifySuccess } = notify()
+    const { notifySuccess, notifyError } = notify()
     const store = useStorageStore()
 
     const copyCode = async () => {
-      notifySuccess('Código copiado com sucesso !')
+      try {
+        await navigator.clipboard.writeText(store.checkout.payment_response[0].text)
+        notifySuccess('Código copiado com sucesso !')
+      } catch (error) {
+        notifyError('Ocorreu algum erro ao copiar o código !')
+      }
     }
 
     return {
