@@ -1,5 +1,5 @@
 <template>
-  <q-btn-dropdown :label="account.store.people.name"
+  <q-btn-dropdown :label="limitString(account.store.people.name, 20)"
     flat
     dense
     no-caps
@@ -25,6 +25,7 @@
 import { defineComponent, toRef } from 'vue'
 import useStorageStore from 'src/stores/storage'
 import notify from 'src/composables/notify'
+import { limitString } from 'src/utils/helpers'
 
 export default defineComponent({
   name: 'SelectAccount',
@@ -58,7 +59,8 @@ export default defineComponent({
     }
 
     return {
-      onItemClick
+      onItemClick,
+      limitString
     }
   }
 })
