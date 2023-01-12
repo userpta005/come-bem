@@ -96,7 +96,10 @@ export default defineComponent({
     const statusDependent = computed(() => store.account.status)
 
     const showAccessKey = computed(() => {
-      return (store.isDependent || parseInt(store.userDependent.id) !== parseInt(store.dependent.id))
+      if (store.isDependent || store.isResponsibleDependent) {
+        return (store.isDependent || parseInt(store.userDependent.id) !== parseInt(store.dependent.id))
+      }
+      return true
     })
 
     const gender = (gender) => {
