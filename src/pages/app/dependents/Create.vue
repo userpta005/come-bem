@@ -17,7 +17,7 @@
           val => (val.length <= 100) || 'Máximo 100 caracteres !',
         ]" />
 
-        <q-input label="Nome social"
+      <q-input label="Nome social"
         class="col-12"
         outlined
         clearable
@@ -118,6 +118,8 @@ import SelectCity from 'src/components/common/SelectCity.vue'
 import SelectStore from 'src/components/common/SelectStore.vue'
 import useStorageStore from 'src/stores/storage'
 import CustomTitle from 'src/components/app/common/CustomTitle.vue'
+import { useQuasar } from 'quasar'
+import CustomDialog from 'src/components/common/CustomDialog.vue'
 
 export default defineComponent({
   name: 'DependentCreatePage',
@@ -127,7 +129,8 @@ export default defineComponent({
     SelectStore
   },
   setup () {
-    const { notifySuccess, notifyError } = notify()
+    const { notifyError } = notify()
+    const $q = useQuasar()
     const store = useStorageStore()
     const router = useRouter()
     const form = reactive({
@@ -153,13 +156,26 @@ export default defineComponent({
     ])
     const handleSubmit = async () => {
       try {
-        const data = await store.axios({
+        const { data } = await store.axios({
           method: 'post',
           url: `/api/v1/clients/${store.userClient.id}/dependents`,
           data: form
         })
-        notifySuccess(data.message)
-        router.push({ name: 'responsible' })
+        $q.dialog({
+          component: CustomDialog,
+          componentProps: {
+            title: 'Parabéns, consumidor adicionado!',
+            message: `Esta é a chave de acesso: ${data.access_key}. Ela ficará disponível em Ver detalhes do consumidor.`,
+            cancel: false,
+            confirm: false,
+            warning: false,
+            checked: true
+          }
+        }).onOk(() => {
+          router.push({ name: 'responsible' })
+        }).onCancel(() => {
+          router.push({ name: 'responsible' })
+        })
       } catch (error) {
         notifyError(error)
       }

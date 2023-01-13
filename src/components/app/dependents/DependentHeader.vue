@@ -30,8 +30,7 @@
               Sexo: {{ gender(store.dependent.people.gender) }}
             </span>
 
-            <div class="text-body2 text-weight-medium text-grey-8"
-              v-if="showAccessKey">
+            <div v-if="showAccessKey">
               Chave de acesso: {{ store.dependent.access_key }}
             </div>
 
