@@ -7,7 +7,10 @@
   "private": true,
   "scripts": {
     "lint": "eslint --ext .js,.vue ./",
-    "test": "echo \"No test specified\" && exit 0"
+    "test": "echo \"No test specified\" && exit 0",
+    "rm": "rm -r dist",
+    "zip": "cp .htaccess dist/spa && zip -r dist/spa dist/spa/",
+    "push": "scp -P 65002 dist/spa.zip u485517245@185.214.126.4:/home/u485517245/public_html"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
