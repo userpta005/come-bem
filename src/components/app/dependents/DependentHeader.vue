@@ -30,8 +30,9 @@
               Sexo: {{ gender(store.dependent.people.gender) }}
             </span>
 
-            <div v-if="showAccessKey">
-              Chave de acesso: {{ store.dependent.access_key }}
+            <div v-if="showAccessKey && accessKey">
+              Usuário: {{ accessKey[0] }}
+              Senha: {{ accessKey[1] }}
             </div>
 
           </div>
@@ -78,7 +79,7 @@
 </template>
 
 <script>
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed, ref } from 'vue'
 import { floatToMoney, brDate } from 'src/utils/helpers'
 import SelectAccount from 'src/components/app/dependents/SelectAccount.vue'
 import notify from 'src/composables/notify'
@@ -93,6 +94,12 @@ export default defineComponent({
     const { notifySuccess, notifyError } = notify()
     const store = useStorageStore()
     const statusDependent = computed(() => store.account.status)
+    const accessKey = computed(() => {
+      if (store.dependent.access_key) {
+        return [store.dependent.access_key.slice(0, 3), store.dependent.access_key.slice(3)]
+      }
+      return null
+    })
 
     const showAccessKey = computed(() => {
       if (store.isDependent || store.isResponsibleDependent) {
@@ -127,7 +134,8 @@ export default defineComponent({
       brDate,
       handleBlockAccount,
       gender,
-      showAccessKey
+      showAccessKey,
+      accessKey
     }
   }
 })
