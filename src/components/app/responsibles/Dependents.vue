@@ -6,10 +6,16 @@
       v-for="(dependent, index) in store.dependents"
       :key="index">
 
-      <div class="column flex-center rounded-borders"
+      <div class="card-dependent column flex-center rounded-borders"
         style="border: 3px solid var(--orange); min-width: 250px; min-height: 350px;"
         :style="$q.screen.lt.sm ? 'min-width: 300px;' : ''"
         v-if="dependent.accounts.length">
+
+        <q-icon class="edit-dependent cursor-pointer"
+          name="mdi-plus-circle"
+          color="grey"
+          size="lg"
+          @click="handleGoDependentEdit(dependent, index)" />
 
         <q-img src="~assets/child.png"
           style="height: 90px; width: 70px;"
@@ -54,6 +60,18 @@
   </div>
 </template>
 
+<style scoped>
+.card-dependent {
+  position: relative;
+}
+
+.edit-dependent {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+</style>
+
 <script>
 import { defineComponent } from 'vue'
 import { floatToMoney, brDate } from 'src/utils/helpers'
@@ -84,9 +102,20 @@ export default defineComponent({
       try {
         const { data } = await store.axios({ method: 'get', url: `/api/v1/clients/${store.userClient.id}/dependents` })
         store.setDependents(data)
+        if (!store.dependents.length) {
+          router.push({ name: 'responsible-dependent-create' })
+        }
       } catch (error) {
         notifyError(error)
       }
+    }
+
+    const handleGoDependentEdit = (dependent, index) => {
+      store.setDependent(dependent, index)
+      router.push({
+        name: 'responsible-dependent-edit',
+        params: { dependent: dependent.id }
+      })
     }
 
     const toGoDependent = (dependent, index) => {
@@ -109,7 +138,8 @@ export default defineComponent({
       store,
       status,
       gender,
-      toGoDependent
+      toGoDependent,
+      handleGoDependentEdit
     }
   }
 })

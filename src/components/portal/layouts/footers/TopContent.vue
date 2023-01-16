@@ -21,10 +21,14 @@
         <div class="column"
           :class="$q.screen.lt.md ? 'flex-center' : 'q-pl-xl q-pt-md'">
           <span class="text-h6 text-weight-bold">Mapa do site</span>
-          <span>Home</span>
-          <span>Para pais</span>
-          <span>Para empreendedores</span>
-          <span>Contatos</span>
+          <a class="cursor-pointer"
+            @click="$router.push('home')">Home</a>
+          <a class="cursor-pointer"
+            @click="$router.push('to-parents')">Para pais</a>
+          <a class="cursor-pointer"
+            @click="$router.push('to-entrepreneurs')">Para empreendedores</a>
+          <a class="cursor-pointer"
+            @click="$router.push('contacts')">Contatos</a>
         </div>
       </div>
       <div class="col-md-4 col-xs-12">
@@ -32,7 +36,8 @@
           :class="$q.screen.lt.md ? 'flex-center' : 'q-pl-xl q-pt-md'">
           <span class="text-h6 text-weight-bold">Acesso interno</span>
           <span>Webmail</span>
-          <span>Painel administrativo</span>
+          <a class="text-white"
+            href="https://local360.com.br/lanche-bem/public/login">Painel administrativo</a>
         </div>
       </div>
       <div class="col-md-4 col-xs-12">
@@ -60,12 +65,23 @@
           <q-btn flat
             dense
             color="white"
-            icon="mdi-instagram" />
+            icon="mdi-instagram"
+            href="https://www.instagram.com/tiodacantina_/" />
         </div>
       </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+a:link {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+</style>
 
 <script>
 import { defineComponent } from 'vue'

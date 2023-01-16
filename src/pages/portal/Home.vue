@@ -63,7 +63,7 @@ export default defineComponent({
           iconName: 'mdi-reload',
           iconSize: '4rem',
           title: 'Recarga',
-          text: 'Recaregando pelo site do app é cobrado uma taxa de serviço de 4,99% por recarga, o que é facilmente revertido com as vantagens apresentadas. Recarregando na cantina ou via transferência bancária não será cobrado uma taxa de serviço.',
+          text: 'Recaregando pelo site do app é cobrado uma taxa de serviço de 3,99% por recarga, o que é facilmente revertido com as vantagens apresentadas. Recarregando na cantina ou via transferência bancária não será cobrado uma taxa de serviço.',
           separator: false
         },
         {

@@ -2,7 +2,7 @@
   <q-page style="min-height: auto; height:auto;"
     :class="{ 'column items-center': $q.screen.lt.sm }">
 
-    <CustomTitle title="Seja bem-vindo" />
+    <CustomTitle title="Consumidores/Dependentes" />
 
     <div class="row q-col-gutter-md"
       :class="$q.screen.gt.xs ? 'no-wrap justify-between' : 'flex flex-center'">

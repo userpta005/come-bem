@@ -1,7 +1,7 @@
 <template>
   <q-select v-model="storeId"
     outlined
-    label="Qual escola/entidade"
+    label="Escola/Entidade*"
     option-value="id"
     option-label="name"
     use-input
@@ -11,7 +11,8 @@
     map-options
     emit-value
     lazy-rules="ondemand"
-    :rules="[val => !!val || 'Escola é obrigatória']">
+    :readonly="readonly"
+    :rules="[val => !!val || !!readonly || 'Escola é obrigatória']">
     <template v-slot:no-option>
       <q-item>
         <q-item-section class="text-grey">
@@ -29,20 +30,27 @@ import useStorageStore from 'src/stores/storage'
 
 export default defineComponent({
   name: 'SelectStore',
-  props: ['modelValue', 'update:modelValue'],
+  props: ['modelValue', 'accounts', 'city_id', 'optionsStores', 'readonly'],
   setup (props, { emit }) {
     const { notifyError } = notify()
     const store = useStorageStore()
     const stores = ref()
-    const options = ref()
+    const options = ref(props.optionsStores)
     const storeId = computed({
       get () {
         return props.modelValue
       },
       set (value) {
+        const account = props.accounts.find(account => parseInt(account.store_id) === parseInt(value))
+        if (account) {
+          notifyError('Escola já adicionada!')
+          storeId.value = null
+          return
+        }
         emit('update:modelValue', value)
       }
     })
+
     const filterStore = async (val, update, abort) => {
       if (val.length < 3) {
         abort()
@@ -50,7 +58,7 @@ export default defineComponent({
       }
 
       try {
-        const { data } = await store.axios({ method: 'get', url: '/api/v1/stores', params: { search: val } })
+        const { data } = await store.axios({ method: 'get', url: '/api/v1/stores', params: { search: val, city_id: props.city_id } })
         stores.value = data
       } catch (error) {
         notifyError(error)

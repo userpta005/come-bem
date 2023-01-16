@@ -23,7 +23,8 @@
 
       <q-separator class="q-mt-sm" />
 
-      <span class="text-caption text-weight-medium text-red q-my-md">
+      <span class="text-body2 text-weight-medium text-red q-my-md"
+      v-if="$route.name === 'responsible-dependent'">
         Para restringir o consumo do produto do cardápio, clique na
         imagem abaixo.
       </span>

@@ -17,7 +17,7 @@
         </p>
         <q-form @submit.prevent="handleSubmit"
           class="row">
-          <q-input label="Nome completo"
+          <q-input label="Nome completo*"
             class="col-12 q-pa-md"
             outlined
             clearable
@@ -28,7 +28,16 @@
               val => (val.length <= 100) || 'Máximo 100 caracteres !',
             ]" />
 
-          <q-input label="Email"
+          <div class="col-12 flex flex-center">
+            <div class="q-pa-md">Você é:</div>
+            <q-option-group type="radio"
+              dense
+              inline
+              :options="[{ label: 'Pai/Tutor', value: 1, }, { label: 'Consumidor/Filho', value: 2 }]"
+              v-model="form.type" />
+          </div>
+
+          <q-input label="Email*"
             class="col-12 q-pa-md"
             outlined
             clearable
@@ -40,7 +49,7 @@
               val => (val.length <= 100) || 'Máximo 100 caracteres !',
             ]" />
 
-          <q-input label="Telefone"
+          <q-input label="Telefone*"
             class="col-md-6 col-xs-12 q-pa-md"
             outlined
             clearable
@@ -50,7 +59,7 @@
             v-model="form.phone"
             :rules="[val => (!!val && val.length > 0) || 'Telefone é obrigatório']" />
 
-          <q-input label="Dt. de nascimento"
+          <q-input label="Dt. de nascimento*"
             class="col-md-6 col-xs-12 q-pa-md"
             stack-label
             type="date"
@@ -64,11 +73,12 @@
             v-model="form.city_id" />
 
           <SelectStore class="col-md-6 col-xs-12 q-pa-md"
+            :readonly="form.type === 1"
             v-model="form.store_id" />
 
-          <q-input type="password"
+          <q-input :type="isPwd ? 'password' : 'text'"
             class="col-md-6 col-xs-12 q-pa-md"
-            label="Senha"
+            label="Senha*"
             outlined
             clearable
             lazy-rules="ondemand"
@@ -76,11 +86,17 @@
             :rules="[
               val => (val && val.length > 0) || 'Senha é obrigatório',
               val => (val.length >= 8) || 'Minímo 8 caracteres !',
-            ]" />
+            ]">
+            <template v-slot:append>
+              <q-icon :name="isPwd ? 'visibility_off' : 'visibility'"
+                class="cursor-pointer"
+                @click="isPwd = !isPwd" />
+            </template>
+          </q-input>
 
-          <q-input type="password"
+          <q-input :type="isPwdConfirm ? 'password' : 'text'"
             class="col-md-6 col-xs-12 q-pa-md"
-            label="Confirmar senha"
+            label="Confirmar senha*"
             outlined
             clearable
             lazy-rules="ondemand"
@@ -89,15 +105,13 @@
               val => (val && val.length > 0) || 'Senha é obrigatório',
               val => (val.length >= 8) || 'Minímo 8 caracteres !',
               val => (val === form.password) || 'A senha não corresponde !',
-            ]" />
-
-          <div class="col-12 flex flex-center">
-            <div class="q-pa-md">Você é:</div>
-            <q-option-group type="radio"
-              dense
-              :options="[{ label: 'Pai/Tutor', value: 1, }, { label: 'Consumidor/Filho', value: 2 }]"
-              v-model="form.type" />
-          </div>
+            ]">
+            <template v-slot:append>
+              <q-icon :name="isPwdConfirm ? 'visibility_off' : 'visibility'"
+                class="cursor-pointer"
+                @click="isPwdConfirm = !isPwdConfirm" />
+            </template>
+          </q-input>
 
           <q-field :value="form.terms"
             class="col-12 q-pa-md"
@@ -136,7 +150,7 @@
 </template>
 
 <script>
-import { defineComponent, reactive } from 'vue'
+import { defineComponent, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
 import notify from 'src/composables/notify'
@@ -152,10 +166,12 @@ export default defineComponent({
     SelectStore
   },
   setup () {
+    const { notifyError } = notify()
     const $q = useQuasar()
     const router = useRouter()
     const store = useStorageStore()
-    const { notifyError } = notify()
+    const isPwd = ref(true)
+    const isPwdConfirm = ref(true)
 
     const form = reactive({
       name: null,
@@ -183,7 +199,8 @@ export default defineComponent({
             title: 'Parabéns, cadastro concluído!',
             message: 'Agora, basta escolher o modelo de cartão na cantina e estará habilitado para o uso.',
             cancel: false,
-            confirm: false,
+            confirm: true,
+            confirmText: 'Acessar minha conta',
             warning: false,
             checked: true
           }
@@ -198,7 +215,9 @@ export default defineComponent({
     }
     return {
       form,
-      handleSubmit
+      handleSubmit,
+      isPwd,
+      isPwdConfirm
     }
   }
 })

@@ -41,7 +41,7 @@
             height="20px"
             width="20px"
             style="margin-right: 12px;" />
-          Cardápio
+          {{ $route.name === 'responsible-dependent' ? 'Restrição de cardápio' : 'Cardápio' }}
         </q-btn>
 
         <BtnDisableDevice v-if="['responsible-dependent'].includes($route.name)" />

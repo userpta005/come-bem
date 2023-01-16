@@ -20,24 +20,24 @@
       </q-card-section>
 
       <q-card-section v-if="message"
-        class="text-center q-pt-none">
-        {{ message }}
+        class="text-center q-pt-none"
+        v-html="message">
       </q-card-section>
 
       <q-card-actions :class="$q.screen.gt.xs ? 'row flex-center' : 'column flex-center'">
 
-        <q-btn label="Fechar"
+        <q-btn :label="cancelText"
           text-color="grey-8"
-          style="width: 120px;"
+          style="min-width: 120px;"
           :class="$q.screen.gt.xs ? 'q-mr-md' : 'order-last q-mt-sm'"
           outline
           no-caps
           @click="onCancelClick"
           v-if="cancel" />
 
-        <q-btn label="Confirmar"
+        <q-btn :label="confirmText"
           color="main-primary"
-          style="width: 120px;"
+          style="min-width: 120px;"
           class="no-margin"
           no-caps
           @click="onOKClick"
@@ -71,9 +71,17 @@ export default {
       type: Boolean,
       default: true
     },
+    cancelText: {
+      type: String,
+      default: 'Fechar'
+    },
     confirm: {
       type: Boolean,
       default: true
+    },
+    confirmText: {
+      type: String,
+      default: 'Confirmar'
     }
   },
   emits: [

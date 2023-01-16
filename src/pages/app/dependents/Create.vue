@@ -4,10 +4,10 @@
 
     <q-form @submit.prevent="handleSubmit"
       class="row q-col-gutter-sm"
-      :style="$q.screen.gt.sm ? 'max-width: 700px;' : ''">
+      :style="$q.screen.gt.sm ? 'max-width: 900px;' : ''">
 
-      <q-input label="Nome completo"
-        class="col-12"
+      <q-input label="Nome completo*"
+        class="col-sm-8 col-xs-12"
         outlined
         clearable
         lazy-rules="ondemand"
@@ -17,8 +17,18 @@
           val => (val.length <= 100) || 'Máximo 100 caracteres !',
         ]" />
 
-      <q-input label="Nome social"
-        class="col-12"
+      <q-input label="Dt. de nascimento*"
+        stack-label
+        v-model="form.birthdate"
+        type="date"
+        class="col-sm-4 col-xs-12"
+        outlined
+        clearable
+        lazy-rules="ondemand"
+        :rules="[val => (!!val && val.length > 0) || 'Dt. de nascimento é obrigatória']" />
+
+      <q-input label="Nome social*"
+        class="col-sm-8 col-xs-12"
         outlined
         clearable
         lazy-rules="ondemand"
@@ -30,8 +40,8 @@
 
       <q-select v-model="form.gender"
         outlined
-        class="col-md-6 col-xs-12"
-        label="Sexo"
+        class="col-sm-4 col-xs-12"
+        label="Sexo*"
         option-value="id"
         option-label="label"
         :options="optionsGender"
@@ -40,57 +50,90 @@
         lazy-rules="ondemand"
         :rules="[val => (!!val) || 'Sexo é obrigatória']" />
 
-      <q-input label="Dt. de nascimento"
-        stack-label
-        v-model="form.birthdate"
-        type="date"
-        class="col-md-6 col-xs-12"
-        outlined
-        clearable
-        lazy-rules="ondemand"
-        :rules="[val => (!!val && val.length > 0) || 'Dt. de nascimento é obrigatória']" />
-
-      <SelectCity class="col-md-6 col-xs-12"
+      <SelectCity class="col-sm-4 col-xs-12"
+        :optionsCities="optionsCities"
         v-model="form.city_id" />
 
-      <SelectStore class="col-md-6 col-xs-12"
-        v-model="form.store_id" />
-
-      <q-input label="Série"
-        class="col-md-3 col-sm-6 col-xs-12 "
+      <q-input label="Limite diário"
+        class="col-sm-4 col-xs-12"
         outlined
         clearable
+        prefix="R$"
+        mask="#,##"
+        fill-mask="0"
+        reverse-fill-mask
         lazy-rules="ondemand"
-        v-model="form.school_year"
-        :rules="[
-          val => (!!val && val.length > 0) || 'Série é obrigatório',
-          val => (val.length <= 10) || 'Máximo 10 caracteres !',
-        ]" />
+        v-model="form.daily_limit" />
 
-      <q-input label="Turma"
-        class="col-md-3 col-sm-6 col-xs-12"
-        outlined
-        clearable
-        lazy-rules="ondemand"
-        v-model="form.class"
-        :rules="[
-          val => (!!val && val.length > 0) || 'Turma é obrigatório',
-          val => (val.length <= 10) || 'Máximo 10 caracteres !',
-        ]" />
+      <CustomTitle title="Escolas"
+        class="col-12" />
 
-      <q-select v-model="form.turn"
-        outlined
-        class="col-md-6 col-xs-12"
-        label="Turno"
-        option-value="id"
-        option-label="label"
-        :options="optionsTurn"
-        map-options
-        emit-value
-        lazy-rules="ondemand"
-        :rules="[val => (!!val) || 'Turno é obrigatória']" />
+      <div class="col-12 row q-col-gutter-sm"
+        v-for="(item, index) in form.accounts"
+        :key="index">
 
-      <div class="col-12 flex flex-center">
+        <SelectStore class="col-sm-6 col-xs-12"
+          :accounts="form.accounts"
+          :city_id="form.city_id"
+          :readonly="!!item.store"
+          :optionsStores="item.store ? [{ id: item.store.id, name: item.store.people.name }] : []"
+          v-model="item.store_id" />
+
+        <q-input label="Série*"
+          class="col-md-2 col-sm-6 col-xs-12"
+          outlined
+          clearable
+          lazy-rules="ondemand"
+          v-model="item.school_year"
+          :rules="[
+            val => (!!val && val.length > 0) || 'Série é obrigatório',
+            val => (val.length <= 10) || 'Máximo 10 caracteres !',
+          ]" />
+
+        <q-input label="Turma*"
+          class="col-md-2 col-sm-6 col-xs-12"
+          outlined
+          clearable
+          lazy-rules="ondemand"
+          v-model="item.class"
+          :rules="[
+            val => (!!val && val.length > 0) || 'Turma é obrigatório',
+            val => (val.length <= 10) || 'Máximo 10 caracteres !',
+          ]" />
+
+        <q-select v-model="item.turn"
+          outlined
+          class="col-md-2 col-sm-6  col-xs-12"
+          label="Turno*"
+          option-value="id"
+          option-label="label"
+          :options="optionsTurn"
+          map-options
+          emit-value
+          lazy-rules="ondemand"
+          :rules="[val => (!!val) || 'Turno é obrigatória']" />
+
+      </div>
+
+      <div class="col-12 row">
+        <q-btn label="Adicionar nova escola"
+          class="bg-grey-8"
+          :class="$q.screen.gt.xs ? 'q-mr-sm' : 'q-mb-sm'"
+          color="main-primary"
+          no-caps
+          style="width: 200px;"
+          @click="handleAddNewSchool" />
+
+        <q-btn label="Remover última escola"
+          class="bg-red"
+          color="main-primary"
+          no-caps
+          style="width: 200px;"
+          @click="handleRemoveLastSchool"
+          v-if="form.accounts.length > accountsLength" />
+      </div>
+
+      <div class="col-12 flex flex-center q-mt-xl">
         <q-btn label="Cancelar"
           class="q-ma-xs"
           text-color="grey-8"
@@ -111,9 +154,9 @@
 </template>
 
 <script>
-import { defineComponent, reactive } from 'vue'
+import { defineComponent, reactive, ref } from 'vue'
 import notify from 'src/composables/notify'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import SelectCity from 'src/components/common/SelectCity.vue'
 import SelectStore from 'src/components/common/SelectStore.vue'
 import useStorageStore from 'src/stores/storage'
@@ -129,62 +172,137 @@ export default defineComponent({
     SelectStore
   },
   setup () {
-    const { notifyError } = notify()
+    const { notifyError, notifySuccess } = notify()
     const $q = useQuasar()
     const store = useStorageStore()
     const router = useRouter()
+    const route = useRoute()
     const form = reactive({
       name: null,
       full_name: null,
       gender: null,
       birthdate: null,
       city_id: null,
-      store_id: null,
       type: 1,
-      school_year: null,
-      class: null,
-      turn: null
+      daily_limit: 0,
+      accounts: [
+        {
+          store_id: null,
+          school_year: null,
+          class: null,
+          turn: null
+        }
+      ]
     })
+    const optionsCities = ref([])
+
+    const accountsLength = ref(form.accounts.length)
+
+    if (route.name === 'responsible-dependent-edit') {
+      form.name = store.dependent.people.name
+      form.full_name = store.dependent.people.full_name
+      form.gender = store.dependent.people.gender
+      form.birthdate = store.dependent.people.birthdate
+      form.city_id = store.dependent.people.city_id
+      form.type = store.dependent.type
+      form.daily_limit = 0
+      form.accounts = store.dependent.accounts
+      accountsLength.value = store.dependent.accounts.length
+      optionsCities.value = [{ id: store.dependent.people.city_id, info: store.dependent.people.city.info }]
+    }
+
     const optionsGender = reactive([
       { label: 'Masculino', id: 'M' },
       { label: 'Feminino', id: 'F' }
     ])
+
     const optionsTurn = reactive([
       { label: 'Matutino', id: 1 },
       { label: 'Vespertino', id: 2 },
       { label: 'Noturno', id: 3 }
     ])
+
     const handleSubmit = async () => {
       try {
-        const { data } = await store.axios({
-          method: 'post',
-          url: `/api/v1/clients/${store.userClient.id}/dependents`,
+        let method = null
+        let url = null
+
+        if (route.name === 'responsible-dependent-edit') {
+          method = 'put'
+          url = `/api/v1/dependents/${store.dependent.id}`
+        } else {
+          method = 'post'
+          url = `/api/v1/clients/${store.userClient.id}/dependents`
+        }
+
+        const data = await store.axios({
+          method,
+          url,
           data: form
         })
-        $q.dialog({
-          component: CustomDialog,
-          componentProps: {
-            title: 'Parabéns, consumidor adicionado!',
-            message: `Esta é a chave de acesso: ${data.access_key}. Ela ficará disponível em Ver detalhes do consumidor.`,
-            cancel: false,
-            confirm: false,
-            warning: false,
-            checked: true
-          }
-        }).onOk(() => {
+
+        if (route.name === 'responsible-dependent-edit') {
+          notifySuccess(data.message)
           router.push({ name: 'responsible' })
-        }).onCancel(() => {
-          router.push({ name: 'responsible' })
-        })
+        } else {
+          let accessKey = [data.data.access_key.slice(0, 3), data.data.access_key.slice(3)];
+          $q.dialog({
+            component: CustomDialog,
+            componentProps: {
+              title: 'Parabéns, consumidor adicionado!',
+              message: `Esta é a chave de acesso: <b>usuário: ${accessKey[0]}</b> e <b>senha: ${accessKey[1]}</b>. Ela ficará disponível em Ver detalhes do consumidor.`,
+              cancel: false,
+              confirm: false,
+              warning: false,
+              checked: true
+            }
+          }).onOk(() => {
+            router.push({ name: 'responsible' })
+          }).onCancel(() => {
+            router.push({ name: 'responsible' })
+          })
+        }
       } catch (error) {
         notifyError(error)
       }
     }
+
+    const handleAddNewSchool = () => {
+      const lastElement = form.accounts[form.accounts.length - 1]
+      let isEmpty = false
+
+      Object.entries(lastElement).forEach(item => {
+        if (['store_id', 'school_year', 'class', 'turn'].includes(item[0]) && !item[1]) {
+          isEmpty = true
+        }
+      })
+
+      if (isEmpty) {
+        notifyError('Preencha todos os campos obrigatórios da última escola !')
+        return
+      }
+
+      form.accounts.push({
+        store_id: null,
+        school_year: null,
+        class: null,
+        turn: null
+      })
+    }
+
+    const handleRemoveLastSchool = () => {
+      form.accounts.pop()
+    }
+
     return {
       form,
       optionsGender,
       optionsTurn,
-      handleSubmit
+      handleSubmit,
+      handleAddNewSchool,
+      handleRemoveLastSchool,
+      accountsLength,
+      optionsCities
     }
   }
 })

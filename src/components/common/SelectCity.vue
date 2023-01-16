@@ -1,7 +1,7 @@
 <template>
   <q-select v-model="cityId"
     outlined
-    label="Cidades"
+    label="Cidade*"
     option-value="id"
     option-label="info"
     use-input
@@ -29,12 +29,12 @@ import useStorageStore from 'src/stores/storage'
 
 export default defineComponent({
   name: 'SelectCity',
-  props: ['modelValue', 'update:modelValue'],
+  props: ['modelValue', 'optionsCities'],
   setup (props, { emit }) {
     const { notifyError } = notify()
     const store = useStorageStore()
     const cities = ref()
-    const options = ref()
+    const options = ref(props.optionsCities)
     const cityId = computed({
       get () {
         return props.modelValue
