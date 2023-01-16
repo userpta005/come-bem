@@ -41,11 +41,13 @@ export default defineComponent({
         return props.modelValue
       },
       set (value) {
-        const account = props.accounts.find(account => parseInt(account.store_id) === parseInt(value))
-        if (account) {
-          notifyError('Escola já adicionada!')
-          storeId.value = null
-          return
+        if (props.accounts) {
+          const account = props.accounts.find(account => parseInt(account.store_id) === parseInt(value))
+          if (account) {
+            notifyError('Escola já adicionada!')
+            storeId.value = null
+            return
+          }
         }
         emit('update:modelValue', value)
       }

@@ -74,6 +74,7 @@
 
           <SelectStore class="col-md-6 col-xs-12 q-pa-md"
             :readonly="form.type === 1"
+            :city_id="form.city_id"
             v-model="form.store_id" />
 
           <q-input :type="isPwd ? 'password' : 'text'"
