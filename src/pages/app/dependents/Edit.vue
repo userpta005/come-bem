@@ -113,8 +113,8 @@
         <SelectStore class="col-sm-6 col-xs-12"
           :accounts="form.accounts"
           :city_id="form.city_id"
-          :disable="true"
-          :optionsStores="[{ id: item.store.id, name: item.store.people.name }]"
+          :disable="!!item.store"
+          :optionsStores="item.store ? [{ id: item.store.id, name: item.store.people.name }] : []"
           v-model="item.store_id" />
 
         <q-input label="Série*"
