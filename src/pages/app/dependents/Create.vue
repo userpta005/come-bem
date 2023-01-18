@@ -241,9 +241,10 @@ export default defineComponent({
           store.disabledUser = parseInt(store.account.status) === 2
           store.app_token = store.account.store.app_token
           store.openReloadCredits = true
+          store.mainContent = 'QCalendar'
           router.push({
-            name: 'dependent',
-            params: { dependent: store.dependent.id, account: store.account.id }
+            name: 'responsible-dependent',
+            params: { client: store.userClient.id, dependent: store.dependent.id, account: store.account.id }
           })
         })
       } catch (error) {

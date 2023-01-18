@@ -108,7 +108,7 @@ export default defineComponent({
   computed: {
     eventsMap () {
       const map = {}
-      if (this.store.account.orders.length > 0) {
+      if ((this.store.account.orders ? this.store.account.orders.length > 0 : false)) {
         this.store.account.orders.forEach(event => {
           (map[event.date] = (map[event.date] || [])).push(event)
           if (event.days !== undefined) {
