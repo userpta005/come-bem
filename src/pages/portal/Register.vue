@@ -69,11 +69,12 @@
             v-model="form.birthdate"
             :rules="[val => (!!val && val.length > 0) || 'Dt. de nascimento é obrigatória']" />
 
-          <SelectCity class="col-md-6 col-xs-12 q-pa-md"
+          <SelectCity class="col-xs-12 q-pa-md"
+            :class="form.type !== 1 ? 'col-md-6' : ''"
             v-model="form.city_id" />
 
           <SelectStore class="col-md-6 col-xs-12 q-pa-md"
-            :readonly="form.type === 1"
+            v-if="form.type !== 1"
             :city_id="form.city_id"
             v-model="form.store_id" />
 

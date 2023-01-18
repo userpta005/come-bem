@@ -20,6 +20,7 @@ const useStorageStore = defineStore('storage', {
     },
     checkout: [],
     mainContent: 'QCalendar',
+    openReloadCredits: false,
     app_token: null,
     token: null
   }),

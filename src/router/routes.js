@@ -44,7 +44,7 @@ const routes = [
       {
         path: 'responsible/:responsible/dependent/:dependent/edit',
         name: 'responsible-dependent-edit',
-        component: () => import('src/pages/app/dependents/Create.vue')
+        component: () => import('src/pages/app/dependents/Edit.vue')
       },
       {
         path: 'dependent/:dependent/account/:account',

@@ -57,7 +57,7 @@
             height="20px"
             width="20px"
             style="margin-right: 12px;" />
-          Conta correnta
+          Conta corrente
         </q-btn>
 
         <q-btn class="text-weight-regular bg-main-quaternary q-mb-sm"

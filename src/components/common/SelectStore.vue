@@ -11,8 +11,8 @@
     map-options
     emit-value
     lazy-rules="ondemand"
-    :readonly="readonly"
-    :rules="[val => !!val || !!readonly || 'Escola é obrigatória']">
+    :disable="disable"
+    :rules="[val => !!val || !!disable || 'Escola é obrigatória']">
     <template v-slot:no-option>
       <q-item>
         <q-item-section class="text-grey">
@@ -30,7 +30,8 @@ import useStorageStore from 'src/stores/storage'
 
 export default defineComponent({
   name: 'SelectStore',
-  props: ['modelValue', 'accounts', 'city_id', 'optionsStores', 'readonly'],
+  props: ['modelValue', 'accounts', 'city_id', 'optionsStores', 'disable'],
+  emits: ['update:modelValue'],
   setup (props, { emit }) {
     const { notifyError } = notify()
     const store = useStorageStore()

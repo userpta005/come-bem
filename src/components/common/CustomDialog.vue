@@ -1,5 +1,6 @@
 <template>
   <q-dialog ref="dialogRef"
+    :persistent="persistent"
     @hide="onDialogHide">
     <q-card class="q-dialog-plugin">
 
@@ -19,12 +20,12 @@
         <h6 class="no-margin text-center">{{ title }}</h6>
       </q-card-section>
 
-      <q-card-section v-if="message"
-        class="text-center q-pt-none"
+      <q-card-section class="text-center q-pt-none"
         v-html="message">
       </q-card-section>
 
-      <q-card-actions :class="$q.screen.gt.xs ? 'row flex-center' : 'column flex-center'">
+      <q-card-actions class="q-pa-md"
+        :class="$q.screen.gt.xs ? 'row flex-center' : 'column flex-center'">
 
         <q-btn :label="cancelText"
           text-color="grey-8"
@@ -82,6 +83,10 @@ export default {
     confirmText: {
       type: String,
       default: 'Confirmar'
+    },
+    persistent: {
+      type: Boolean,
+      default: true
     }
   },
   emits: [

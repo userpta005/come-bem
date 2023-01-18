@@ -30,6 +30,7 @@ import useStorageStore from 'src/stores/storage'
 export default defineComponent({
   name: 'SelectCity',
   props: ['modelValue', 'optionsCities'],
+  emits: ['update:modelValue'],
   setup (props, { emit }) {
     const { notifyError } = notify()
     const store = useStorageStore()

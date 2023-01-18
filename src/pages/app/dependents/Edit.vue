@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <CustomTitle title="Cadastro de consumidor" />
+    <CustomTitle title="Edição de consumidor" />
 
     <q-form @submit.prevent="handleSubmit"
       class="row q-col-gutter-sm"
@@ -25,7 +25,7 @@
         outlined
         clearable
         lazy-rules="ondemand"
-        :rules="[val => !!val || 'Dt. de nascimento é obrigatória !']" />
+        :rules="[val => !!val || 'Dt. de nascimento é obrigatório !']" />
 
       <q-input label="Nome social*"
         class="col-sm-8 col-xs-12"
@@ -51,19 +51,57 @@
         :rules="[val => !!val || 'Sexo é obrigatório !']" />
 
       <SelectCity class="col-sm-4 col-xs-12"
+        :optionsCities="optionsCities"
         v-model="form.city_id" />
 
-      <q-input label="Limite diário"
-        class="col-sm-4 col-xs-12"
-        outlined
-        clearable
-        prefix="R$"
-        mask="#,##"
-        fill-mask="0"
-        reverse-fill-mask
-        lazy-rules="ondemand"
-        v-model="form.daily_limit"
-        :rules="[val => true]" />
+      <div class="col-12 row q-pb-md q-col-gutter-sm"
+        v-if="store.dependent.access_key">
+
+        <q-input label="Usuário*"
+          class="col-md-2 col-sm-4 col-xs-12"
+          outlined
+          disable
+          v-model="form.access_key.email"
+          :rules="[val => true]" />
+
+        <q-input :type="isPwd ? 'password' : 'text'"
+          class="col-md-3 col-sm-4 col-xs-12"
+          label="Senha*"
+          outlined
+          clearable
+          lazy-rules="ondemand"
+          v-model="form.access_key.password"
+          :rules="[
+            val => !!val || 'Senha é obrigatória !',
+            val => val.length >= 4 || 'Minímo 4 caracteres !',
+          ]">
+          <template v-slot:append>
+            <q-icon :name="isPwd ? 'visibility_off' : 'visibility'"
+              class="cursor-pointer"
+              @click="isPwd = !isPwd" />
+          </template>
+        </q-input>
+
+        <q-input :type="isPwdConfirm ? 'password' : 'text'"
+          class="col-md-3 col-sm-4 col-xs-12"
+          label="Confirmar senha*"
+          outlined
+          clearable
+          lazy-rules="ondemand"
+          v-model="form.access_key.password_confirmation"
+          :rules="[
+            val => !!val || 'Confirmação da senha é obrigatória !',
+            val => val.length >= 4 || 'Minímo 4 caracteres !',
+            val => val === form.access_key.password || 'A senha não corresponde !',
+          ]">
+          <template v-slot:append>
+            <q-icon :name="isPwdConfirm ? 'visibility_off' : 'visibility'"
+              class="cursor-pointer"
+              @click="isPwdConfirm = !isPwdConfirm" />
+          </template>
+        </q-input>
+
+      </div>
 
       <CustomTitle title="Escolas"
         class="col-12" />
@@ -75,6 +113,8 @@
         <SelectStore class="col-sm-6 col-xs-12"
           :accounts="form.accounts"
           :city_id="form.city_id"
+          :disable="true"
+          :optionsStores="[{ id: item.store.id, name: item.store.people.name }]"
           v-model="item.store_id" />
 
         <q-input label="Série*"
@@ -101,7 +141,7 @@
 
         <q-select v-model="item.turn"
           outlined
-          class="col-md-2 col-sm-6 col-xs-12"
+          class="col-md-2 col-sm-6  col-xs-12"
           label="Turno*"
           option-value="id"
           option-label="label"
@@ -159,8 +199,6 @@ import SelectCity from 'src/components/common/SelectCity.vue'
 import SelectStore from 'src/components/common/SelectStore.vue'
 import useStorageStore from 'src/stores/storage'
 import CustomTitle from 'src/components/app/common/CustomTitle.vue'
-import { useQuasar } from 'quasar'
-import CustomDialog from 'src/components/common/CustomDialog.vue'
 
 export default defineComponent({
   name: 'DependentCreatePage',
@@ -170,27 +208,30 @@ export default defineComponent({
     SelectStore
   },
   setup () {
-    const { notifyError } = notify()
-    const $q = useQuasar()
+    const { notifyError, notifySuccess } = notify()
     const store = useStorageStore()
     const router = useRouter()
     const form = reactive({
-      name: null,
-      full_name: null,
-      gender: null,
-      birthdate: null,
-      city_id: null,
-      type: 1,
-      daily_limit: 0,
-      accounts: [
-        {
-          store_id: null,
-          school_year: null,
-          class: null,
-          turn: null
-        }
-      ]
+      name: store.dependent.people.name,
+      full_name: store.dependent.people.full_name,
+      gender: store.dependent.people.gender,
+      birthdate: store.dependent.people.birthdate,
+      city_id: store.dependent.people.city_id,
+      type: store.dependent.type,
+      access_key: null,
+      accounts: store.dependent.accounts
     })
+
+    if (store.dependent.access_key) {
+      const accessKey = [store.dependent.access_key.slice(0, 3), store.dependent.access_key.slice(3)]
+      form.access_key = {
+        email: accessKey[0],
+        password: accessKey[1],
+        password_confirmation: accessKey[1]
+      }
+    }
+
+    const optionsCities = ref([{ id: store.dependent.people.city_id, info: store.dependent.people.city.info }])
     const isPwd = ref(true)
     const isPwdConfirm = ref(true)
     const accountsLength = ref(form.accounts.length)
@@ -209,43 +250,13 @@ export default defineComponent({
     const handleSubmit = async () => {
       try {
         const data = await store.axios({
-          method: 'post',
-          url: `/api/v1/clients/${store.userClient.id}/dependents`,
+          method: 'put',
+          url: `/api/v1/dependents/${store.dependent.id}`,
           data: form
         })
 
-        const accessKey = [data.data.access_key.slice(0, 3), data.data.access_key.slice(3)]
-
-        $q.dialog({
-          component: CustomDialog,
-          componentProps: {
-            title: 'Parabéns, consumidor adicionado!',
-            message: `
-            <h6 class="no-margin q-pb-sm">Código de acesso !</h6>
-            <b>${data.data.people.name}</b> use o código para acessar.
-            <p class="no-margin">Usuário: <b class="text-h6">${accessKey[0]}</b></p>
-            <p class="no-margin">Senha: <b class="text-h6">${accessKey[1]}</b></p>
-            <p class="no-margin q-pb-lg">Com este acesso, o consumidor/filho poderá pedir e consumir de forma fácil.</p>
-            <h6 class="no-margin">Créditos</h6>
-            Aproveite e insira crédito para evitar filas.
-            `,
-            cancel: false,
-            confirm: true,
-            confirmText: 'Comprar créditos',
-            warning: false,
-            checked: true
-          }
-        }).onOk(() => {
-          store.dependent = data.data
-          store.account = store.dependent.accounts[0]
-          store.disabledUser = parseInt(store.account.status) === 2
-          store.app_token = store.account.store.app_token
-          store.openReloadCredits = true
-          router.push({
-            name: 'dependent',
-            params: { dependent: store.dependent.id, account: store.account.id }
-          })
-        })
+        notifySuccess(data.message)
+        router.push({ name: 'responsible' })
       } catch (error) {
         notifyError(error)
       }
@@ -287,6 +298,7 @@ export default defineComponent({
       handleAddNewSchool,
       handleRemoveLastSchool,
       accountsLength,
+      optionsCities,
       isPwd,
       isPwdConfirm
     }

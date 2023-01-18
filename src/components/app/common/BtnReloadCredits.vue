@@ -96,7 +96,7 @@ export default defineComponent({
     const router = useRouter()
     const route = useRoute()
     const store = useStorageStore()
-    const prompt = ref(false)
+    const prompt = ref(store.openReloadCredits)
     const paymentMethods = ref([])
     const form = reactive(
       {
@@ -107,6 +107,7 @@ export default defineComponent({
     const clearInputs = () => {
       form.amount = 0
       form.payment_method_id = paymentMethods.value[0].id
+      store.openReloadCredits = false
     }
 
     const handlePaymentMethod = async () => {

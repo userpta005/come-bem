@@ -68,7 +68,7 @@ module.exports = configure(function (ctx) {
       publicPath: ctx.dev ? '' : 'lanche-bem-portal/',
       // analyze: true,
       env: {
-        api: /* ctx.dev ? 'http://localhost:8000' : */ 'https://local360.com.br/lanche-bem/public'
+        api: ctx.dev ? 'http://localhost:8000' : 'https://local360.com.br/lanche-bem/public'
       }
       // rawDefine: {}
       // ignorePublicFolder: true,
