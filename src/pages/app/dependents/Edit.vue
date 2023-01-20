@@ -2,6 +2,10 @@
   <q-page>
     <CustomTitle title="Edição de consumidor" />
 
+    <CustomTitle title="Dados gerais"
+      class="col-12"
+      size="text-h6" />
+
     <q-form @submit.prevent="handleSubmit"
       class="row q-col-gutter-sm"
       :style="$q.screen.gt.sm ? 'max-width: 900px;' : ''">
@@ -11,6 +15,7 @@
         outlined
         clearable
         lazy-rules="ondemand"
+        maxlength="100"
         v-model="form.name"
         :rules="[
           val => !!val || 'Nome completo é obrigatório !',
@@ -32,6 +37,7 @@
         outlined
         clearable
         lazy-rules="ondemand"
+        maxlength="30"
         v-model="form.full_name"
         :rules="[
           val => !!val || 'Nome social é obrigatório !',
@@ -50,7 +56,8 @@
         lazy-rules="ondemand"
         :rules="[val => !!val || 'Sexo é obrigatório !']" />
 
-      <SelectCity class="col-sm-4 col-xs-12"
+      <SelectCity ref="cityRef"
+        class="col-sm-4 col-xs-12"
         :optionsCities="optionsCities"
         v-model="form.city_id" />
 
@@ -103,25 +110,39 @@
 
       </div>
 
-      <CustomTitle title="Escolas"
-        class="col-12" />
+      <CustomTitle title="Escola"
+        class="col-12"
+        size="text-h6" />
 
       <div class="col-12 row q-col-gutter-sm"
         v-for="(item, index) in form.accounts"
         :key="index">
 
-        <SelectStore class="col-sm-6 col-xs-12"
-          :accounts="form.accounts"
-          :city_id="form.city_id"
-          :disable="!!item.store"
-          :optionsStores="item.store ? [{ id: item.store.id, name: item.store.people.name }] : []"
-          v-model="item.store_id" />
+        <div class="row no-wrap col-md-6 col-sm-8 col-xs-12">
+          <q-btn @click="handleRemoveStore(index)"
+            :disable="index === 0 || !!item.store"
+            class="col-auto no-padding"
+            style="height: 56px; width: 56px;"
+            icon="delete"
+            :color="index === 0 || !!item.store ? 'grey' : 'red'"
+            size="xl"
+            flat
+            dense />
+
+          <SelectStore class="col"
+            :accounts="form.accounts"
+            :city_id="form.city_id"
+            :disable="!!item.store"
+            :optionsStores="item.store ? [{ id: item.store.id, name: item.store.people.name }] : optionsStores"
+            v-model="item.store_id" />
+        </div>
 
         <q-input label="Série*"
-          class="col-md-2 col-sm-6 col-xs-12"
+          class="col-md-2 col-sm-4 col-xs-12"
           outlined
           clearable
           lazy-rules="ondemand"
+          maxlength="10"
           v-model="item.school_year"
           :rules="[
             val => !!val || 'Série é obrigatória !',
@@ -133,6 +154,7 @@
           outlined
           clearable
           lazy-rules="ondemand"
+          maxlength="10"
           v-model="item.class"
           :rules="[
             val => !!val || 'Turma é obrigatória !',
@@ -155,20 +177,11 @@
 
       <div class="col-12 row">
         <q-btn label="Adicionar nova escola"
-          class="bg-grey-8"
           :class="$q.screen.gt.xs ? 'q-mr-sm' : 'q-mb-sm'"
           color="main-primary"
           no-caps
-          style="width: 200px;"
-          @click="handleAddNewSchool" />
-
-        <q-btn label="Remover última escola"
-          class="bg-red"
-          color="main-primary"
-          no-caps
-          style="width: 200px;"
-          @click="handleRemoveLastSchool"
-          v-if="form.accounts.length > accountsLength" />
+          style="width: 200px; background: #00a443;"
+          @click="handleAddNewStore" />
       </div>
 
       <div class="col-12 flex flex-center q-mt-xl">
@@ -192,7 +205,7 @@
 </template>
 
 <script>
-import { defineComponent, reactive, ref } from 'vue'
+import { defineComponent, reactive, ref, watch } from 'vue'
 import notify from 'src/composables/notify'
 import { useRouter } from 'vue-router'
 import SelectCity from 'src/components/common/SelectCity.vue'
@@ -235,6 +248,24 @@ export default defineComponent({
     const isPwd = ref(true)
     const isPwdConfirm = ref(true)
     const accountsLength = ref(form.accounts.length)
+    const optionsStores = ref([])
+
+    const handleGetStores = async () => {
+      try {
+        const { data } = await store.axios({ method: 'get', url: '/api/v1/stores', params: { city_id: form.city_id } })
+        optionsStores.value = data
+      } catch (error) {
+        notifyError(error)
+      }
+    }
+
+    handleGetStores()
+
+    watch(() => form.city_id, (newValue, oldValue) => {
+      if (!!newValue) {
+        handleGetStores()
+      }
+    })
 
     const optionsGender = reactive([
       { label: 'Masculino', id: 'M' },
@@ -262,7 +293,7 @@ export default defineComponent({
       }
     }
 
-    const handleAddNewSchool = () => {
+    const handleAddNewStore = () => {
       const lastElement = form.accounts[form.accounts.length - 1]
       let isEmpty = false
 
@@ -285,8 +316,8 @@ export default defineComponent({
       })
     }
 
-    const handleRemoveLastSchool = () => {
-      form.accounts.pop()
+    const handleRemoveStore = (index) => {
+      form.accounts = form.accounts.filter((val, key) => key !== index)
     }
 
     return {
@@ -295,12 +326,13 @@ export default defineComponent({
       optionsGender,
       optionsTurn,
       handleSubmit,
-      handleAddNewSchool,
-      handleRemoveLastSchool,
+      handleAddNewStore,
+      handleRemoveStore,
       accountsLength,
       optionsCities,
       isPwd,
-      isPwdConfirm
+      isPwdConfirm,
+      optionsStores
     }
   }
 })

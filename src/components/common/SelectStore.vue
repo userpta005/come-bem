@@ -16,7 +16,7 @@
     <template v-slot:no-option>
       <q-item>
         <q-item-section class="text-grey">
-          Nenhum resultado
+          Digite no minímo 3 caracteres
         </q-item-section>
       </q-item>
     </template>
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed } from 'vue'
+import { defineComponent, computed, ref } from 'vue'
 import notify from 'src/composables/notify'
 import useStorageStore from 'src/stores/storage'
 
@@ -35,8 +35,9 @@ export default defineComponent({
   setup (props, { emit }) {
     const { notifyError } = notify()
     const store = useStorageStore()
-    const stores = ref()
-    const options = ref(props.optionsStores)
+    const propOptionsStores = computed(() => props.optionsStores)
+    const stores = ref([])
+    const options = ref(propOptionsStores.value)
     const storeId = computed({
       get () {
         return props.modelValue
@@ -54,9 +55,11 @@ export default defineComponent({
       }
     })
 
-    const filterStore = async (val, update, abort) => {
+    const filterStore = async (val, update) => {
       if (val.length < 3) {
-        abort()
+        update(() => {
+          options.value = propOptionsStores.value
+        })
         return
       }
 
@@ -65,7 +68,7 @@ export default defineComponent({
         stores.value = data
       } catch (error) {
         notifyError(error)
-        abort()
+        return
       }
 
       update(() => {

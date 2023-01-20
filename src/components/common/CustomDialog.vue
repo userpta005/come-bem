@@ -2,47 +2,53 @@
   <q-dialog ref="dialogRef"
     :persistent="persistent"
     @hide="onDialogHide">
-    <q-card class="q-dialog-plugin">
+    <q-card class="q-dialog-plugin column justify-between q-py-lg"
+      style="max-width: 800px; min-height: 500px;"
+      :style="$q.screen.gt.xs ? 'min-width: 600px; padding-left: 80px; padding-right: 80px;' : 'min-width: 300px;'">
 
-      <q-card-section class="flex flex-center"
-        v-if="warning">
-        <img src="~assets/warning.png"
-          style="height: 100px; width: 100px;">
-      </q-card-section>
+      <div class="container">
+        <q-card-section class="flex flex-center"
+          v-if="warning">
+          <img src="~assets/warning.png"
+            style="height: 100px; width: 100px;">
+        </q-card-section>
 
-      <q-card-section class="flex flex-center"
-        v-if="checked">
-        <img src="~assets/verificado.png"
-          style="height: 100px; width: 100px;">
-      </q-card-section>
+        <q-card-section class="flex flex-center"
+          v-if="checked">
+          <img src="~assets/verificado.png"
+            style="height: 100px; width: 100px;">
+        </q-card-section>
 
-      <q-card-section v-if="title">
-        <h6 class="no-margin text-center">{{ title }}</h6>
-      </q-card-section>
+        <q-card-section v-if="title">
+          <h6 class="no-margin text-center">{{ title }}</h6>
+        </q-card-section>
 
-      <q-card-section class="text-center q-pt-none"
-        v-html="message">
-      </q-card-section>
+        <q-card-section class="text-center q-pt-none"
+          v-html="message">
+        </q-card-section>
+      </div>
 
-      <q-card-actions class="q-pa-md"
-        :class="$q.screen.gt.xs ? 'row flex-center' : 'column flex-center'">
+      <q-card-actions align="center"
+        class="text-primary q-pa-md"
+        :class="$q.screen.gt.xs ? 'row' : 'column'">
 
-        <q-btn :label="cancelText"
-          text-color="grey-8"
-          style="min-width: 120px;"
-          :class="$q.screen.gt.xs ? 'q-mr-md' : 'order-last q-mt-sm'"
-          outline
-          no-caps
+        <q-btn v-if="cancel"
           @click="onCancelClick"
-          v-if="cancel" />
-
-        <q-btn :label="confirmText"
-          color="main-primary"
+          :label="cancelText"
+          :class="$q.screen.gt.xs ? 'q-mr-lg' : 'q-mt-md'"
           style="min-width: 120px;"
-          class="no-margin"
-          no-caps
+          text-color="grey-8"
+          outline
+          no-caps />
+
+        <q-btn v-if="confirm"
           @click="onOKClick"
-          v-if="confirm" />
+          :label="confirmText"
+          :class="$q.screen.gt.xs ? '' : 'order-first'"
+          style="min-width: 120px;"
+          color="main-primary"
+          class="no-margin"
+          no-caps />
 
       </q-card-actions>
     </q-card>

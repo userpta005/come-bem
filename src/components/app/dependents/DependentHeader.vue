@@ -1,7 +1,7 @@
 <template>
   <div class="row full-width q-mb-md">
     <div class="row"
-      style="width: 650px;">
+      style="width: 800px;">
 
       <div class="flex items-center col-grow"
         :class="{ 'col-12 justify-center': $q.screen.lt.sm }">
@@ -11,7 +11,8 @@
       </div>
 
       <div class="col-grow">
-        <div class="row justify-between">
+        <div class="row justify-between"
+          :class="$q.screen.gt.md ? 'no-wrap' : ''">
 
           <div class="column q-mb-sm"
             :class="{ 'col-12 flex-center': $q.screen.lt.sm }">
@@ -30,9 +31,14 @@
               Sexo: {{ gender(store.dependent.people.gender) }}
             </span>
 
-            <div v-if="showAccessKey && accessKey">
+            <div v-if="showAccessKey && accessKey"
+              :class="$q.screen.lt.sm ? 'text-center' : ''">
               Usuário: {{ accessKey[0] }}
               Senha: {{ accessKey[1] }}
+
+              <span class="text-body2 text-weight-medium text-red block">
+                Esqueceu o cartão? Use o usuário e a senha para comprar !
+              </span>
             </div>
 
           </div>

@@ -1,9 +1,10 @@
 <template>
   <div class="flex">
-    <h5 class="no-margin q-pb-lg text-weight-regular">
+    <span class="q-pb-lg text-weight-regular"
+      :class="size ?? 'text-h5'">
       {{ title }}
       <q-separator color="main-primary q-mt-sm" />
-    </h5>
+    </span>
   </div>
 </template>
 
@@ -12,6 +13,6 @@ import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'CustomTitle',
-  props: ['title']
+  props: ['title', 'size']
 })
 </script>
