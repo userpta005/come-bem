@@ -37,7 +37,7 @@
               Senha: {{ accessKey[1] }}
 
               <span class="text-body2 text-weight-medium text-red block">
-                Esqueceu o cartão? Use o usuário e a senha para comprar !
+                Esqueceu o cartão? Use o usuário e a senha para comprar!
               </span>
             </div>
 

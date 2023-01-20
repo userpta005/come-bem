@@ -47,7 +47,6 @@ export default defineComponent({
           const account = props.accounts.find(account => parseInt(account.store_id) === parseInt(value))
           if (account) {
             notifyError('Escola já adicionada!')
-            storeId.value = null
             return
           }
         }
@@ -55,7 +54,12 @@ export default defineComponent({
       }
     })
 
-    const filterStore = async (val, update) => {
+    const filterStore = async (val, update, abort) => {
+      if (!props.city_id) {
+        notifyError('Selecione primeiro a cidade!')
+        abort()
+        return
+      }
       if (val.length < 3) {
         update(() => {
           options.value = propOptionsStores.value
@@ -68,6 +72,7 @@ export default defineComponent({
         stores.value = data
       } catch (error) {
         notifyError(error)
+        abort()
         return
       }
 

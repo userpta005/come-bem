@@ -15,11 +15,11 @@
         outlined
         clearable
         lazy-rules="ondemand"
-        maxlength="100"
+        maxlength="50"
         v-model="form.name"
         :rules="[
           val => !!val || 'Nome completo é obrigatório !',
-          val => val.length <= 100 || 'Máximo 100 caracteres !',
+          val => val.length <= 50 || 'Máximo 50 caracteres !',
         ]" />
 
       <q-input label="Dt. de nascimento*"
@@ -251,7 +251,7 @@ export default defineComponent({
             title: 'Parabéns, consumidor adicionado!',
             message: `
             <h6 class="no-margin q-pb-sm">Código de acesso !</h6>
-            <b>${data.data.people.name}</b> use o código para acessar.
+            <b>${data.data.people.full_name}</b> use o código para acessar.
             <p class="no-margin">Usuário: <b class="text-h6">${accessKey[0]}</b></p>
             <p class="no-margin">Senha: <b class="text-h6">${accessKey[1]}</b></p>
             <p class="no-margin text-body2 q-pb-lg">Use o usuário e senha para fazer o pedido e consumir de forma fácil.</p>

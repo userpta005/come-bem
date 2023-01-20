@@ -3,8 +3,8 @@
     :persistent="persistent"
     @hide="onDialogHide">
     <q-card class="q-dialog-plugin column justify-between q-py-lg"
-      style="max-width: 800px; min-height: 500px;"
-      :style="$q.screen.gt.xs ? 'min-width: 600px; padding-left: 80px; padding-right: 80px;' : 'min-width: 300px;'">
+      style="max-width: 800px; min-height: 300px;"
+      :style="$q.screen.gt.xs ? 'min-width: 450px; padding-left: 40px; padding-right: 40px;' : 'min-width: 300px;'">
 
       <div class="container">
         <q-card-section class="flex flex-center"

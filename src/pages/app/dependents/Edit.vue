@@ -15,11 +15,11 @@
         outlined
         clearable
         lazy-rules="ondemand"
-        maxlength="100"
+        maxlength="50"
         v-model="form.name"
         :rules="[
           val => !!val || 'Nome completo é obrigatório !',
-          val => val.length <= 100 || 'Máximo 100 caracteres !',
+          val => val.length <= 50 || 'Máximo 50 caracteres !',
         ]" />
 
       <q-input label="Dt. de nascimento*"
