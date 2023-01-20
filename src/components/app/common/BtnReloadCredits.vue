@@ -43,7 +43,8 @@
             lazy-rules="ondemand"
             v-model="form.amount"
             :rules="[
-              val => (!!val && val.length > 0) || 'Valor da recarga é obrigatório'
+              val => !!val || 'Valor da recarga é obrigatório !',
+              val => parseFloat(val.replace(',', '.')) >= 1 || 'Valor da recarga miníno é R$1,00 !'
             ]" />
 
           <div class="no-margin">Formas de pagamento:</div>
@@ -100,12 +101,12 @@ export default defineComponent({
     const paymentMethods = ref([])
     const form = reactive(
       {
-        amount: 0,
+        amount: '1,00' ,
         payment_method_id: null
       })
 
     const clearInputs = () => {
-      form.amount = 0
+      form.amount = '1,00'
       form.payment_method_id = paymentMethods.value[0].id
       store.openReloadCredits = false
     }

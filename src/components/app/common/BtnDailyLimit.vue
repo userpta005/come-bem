@@ -48,7 +48,7 @@
               lazy-rules="ondemand"
               v-model="form.daily_limit"
               :rules="[
-                val => (!!val && val.length > 0) || 'Limite diário é obrigatório'
+                val => !!val || 'Limite diário é obrigatório'
               ]" />
 
           </q-card-section>
