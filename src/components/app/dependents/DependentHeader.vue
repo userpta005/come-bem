@@ -3,8 +3,8 @@
     <div class="row"
       style="width: 800px;">
 
-      <div class="flex items-center col-grow"
-        :class="{ 'col-12 justify-center': $q.screen.lt.sm }">
+      <div class="flex items-center col-auto"
+        :class="$q.screen.lt.sm ? 'col-12 justify-center' : 'q-mr-xl'">
         <q-img src="~assets/child.png"
           height="130px"
           width="110px" />

@@ -1,7 +1,7 @@
 <template>
   <div class="row full-width">
     <div class="column"
-      style="width: 650px;">
+      style="width: 800px;">
 
       <h6 class="no-margin text-weight-regular q-pb-sm">Pedir lanche</h6>
 

@@ -12,7 +12,7 @@
         outlined
         clearable
         lazy-rules="ondemand"
-        v-model="form.name"
+        v-model="form.card.holder"
         :rules="[
           val => !!val || 'Titular é obrigatório !',
           val => val.length <= 100 || 'Máximo 100 caracteres !',
@@ -24,10 +24,11 @@
         clearable
         lazy-rules="ondemand"
         mask="#### #### #### ####"
-        v-model="form.card_number"
+        unmasked-value
+        v-model="form.card.number"
         :rules="[
           val => !!val || 'Número do cartão é obrigatório !',
-          val => val.length === 19 || 'Número do cartão incompleto !'
+          val => val.length >= 16 || 'Número do cartão incompleto !'
         ]" />
 
       <q-input label="CVV"
@@ -36,23 +37,34 @@
         clearable
         lazy-rules="ondemand"
         mask="###"
-        v-model="form.cvv"
+        v-model="form.card.security_code"
         :rules="[
           val => !!val || 'CVV é obrigatório !',
           val => val.length === 3 || 'CVV incompleto !!'
         ]" />
 
-      <q-input label="Mês/Ano"
+      <q-input label="Mês"
         class="col-3"
         outlined
         clearable
         lazy-rules="ondemand"
-        mask="##/####"
-        v-model="form.expiration_date"
+        mask="##"
+        v-model="form.card.exp_month"
         :rules="[
-          val => !!val || 'Mês/Ano é obrigatório !',
-          val => (parseInt(val.substring(0, 2)) >= 1 && parseInt(val.substring(0, 2)) <= 12) || 'Mês inválido !',
-          val => (parseInt(val.substring(3, 7)) >= 2000 && parseInt(val.substring(3, 7)) <= 2100) || 'Ano inválido !',
+          val => !!val || 'Mês é obrigatório !',
+          val => val >= 1 && val <= 12 || 'Mês inválido !'
+        ]" />
+
+      <q-input label="Ano"
+        class="col-3"
+        outlined
+        clearable
+        lazy-rules="ondemand"
+        mask="####"
+        v-model="form.card.exp_year"
+        :rules="[
+          val => !!val || 'Ano é obrigatório !',
+          val => val >= 2000 && val <= 2100 || 'Ano inválido !',
         ]" />
 
       <div class="col-12 flex flex-center"
@@ -94,10 +106,14 @@ export default defineComponent({
     const form = reactive({
       amount: store.reloadCredits.amount,
       payment_method_id: store.reloadCredits.payment_method_id,
-      name: null,
-      card_number: null,
-      cvv: null,
-      expiration_date: null
+      card: {
+        installments: 1,
+        number: null,
+        exp_month: null,
+        exp_year: null,
+        security_code: null,
+        holder: null
+      }
     })
 
     const handleSubmit = async () => {

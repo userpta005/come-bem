@@ -127,9 +127,8 @@ export default defineComponent({
       let params = null
 
       if (parseInt(form.payment_method_id) === 3) {
-        notifyError('Função ainda não implementada!')
-        /* name = route.name === 'responsible-dependent' ? 'responsible-credit-card' : 'dependent-credit-card'
-        params = { responsible: route.params.responsible, dependent: route.params.dependent, account: route.params.account } */
+        name = route.name === 'responsible-dependent' ? 'responsible-credit-card' : 'dependent-credit-card'
+        params = { responsible: route.params.responsible, dependent: route.params.dependent, account: route.params.account }
       } else if (parseInt(form.payment_method_id) === 4) {
         try {
           const { data } = await store.axios({
