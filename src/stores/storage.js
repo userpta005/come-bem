@@ -22,7 +22,8 @@ const useStorageStore = defineStore('storage', {
     mainContent: 'QCalendar',
     openReloadCredits: false,
     app_token: null,
-    token: null
+    token: null,
+    setting: null,
   }),
   getters: {
     isLogged: (state) => {

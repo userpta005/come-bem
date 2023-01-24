@@ -18,6 +18,9 @@ import ArticleContent from 'src/components/portal/common/ArticleContent.vue'
 import MainContent from 'src/components/portal/common/MainContent.vue'
 import SectionContent from 'src/components/portal/common/SectionContent.vue'
 import NewsLetter from 'components/portal/common/NewsLetter.vue'
+import notify from 'src/composables/notify'
+import useStorageStore from 'src/stores/storage'
+import { api } from 'src/boot/axios'
 
 export default defineComponent({
   name: 'HomePage',
@@ -28,6 +31,9 @@ export default defineComponent({
     NewsLetter
   },
   setup () {
+    const { notifyError } = notify()
+    const store = useStorageStore()
+
     const article = ref([
       {
         iconName: 'mdi-cart-check',
@@ -191,6 +197,34 @@ export default defineComponent({
         ]
       ]
     })
+
+    const handleGetLastPosts = async () => {
+      try {
+        const { data } = await api.get(
+          'https://graph.instagram.com/me/media',
+          {
+            params: {
+              fields: 'id,caption,media_url',
+              access_token: store.setting.instagram_password
+            }
+          }
+        )
+        bottomSectionContent.value.items.forEach((item1, index1) => {
+          item1.forEach((item2, index2) => {
+            if (index1 === 0) {
+              item2.img_url = data.data[index2].media_url
+            } else if (index1 === 1) {
+              item2.img_url = data.data[(4 + index2)].media_url
+            }
+          })
+        })
+      } catch (error) {
+        notifyError(error)
+      }
+    }
+
+    handleGetLastPosts()
+
     return {
       main,
       article,
