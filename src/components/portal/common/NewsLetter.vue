@@ -62,17 +62,31 @@
 <script>
 import { defineComponent, ref } from 'vue'
 import notify from 'src/composables/notify'
+import useStorageStore from 'src/stores/storage'
 
 export default defineComponent({
   name: 'NewsLetter',
   setup () {
-    const { notifySuccess } = notify()
+    const { notifySuccess, notifyError } = notify()
+    const store = useStorageStore()
+
     const formNewsLetter = ref({
       name: null,
       email: null
     })
     const handleSubmit = async () => {
-      notifySuccess()
+
+      try {
+        const data = await store.axios({
+          method: 'post',
+          url: '/api/v1/leads',
+          data: formNewsLetter.value
+        })
+        notifySuccess(data.message)
+      } catch (error) {
+        notifyError(error)
+      }
+
     }
     return {
       formNewsLetter,
