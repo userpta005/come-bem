@@ -3,6 +3,20 @@
 
     <CustomTitle title="Informe os dados do cartão" />
 
+    <div class="column q-mb-xl">
+      <span>Valor da recarga (R$): {{ form.amount }}*</span>
+      <span class="text-red q-my-sm">
+        Nessa recarga será cobrada uma taxa de serviço de {{
+          floatToMoney(store.account.store.card_rate).slice(3)
+        }}.
+      </span>
+      <span>
+        Valor a ser creditado na conta:
+        {{ floatToMoney(((moneyToFloat(form.amount) - (moneyToFloat(form.amount) *
+        parseFloat(store.account.store.card_rate)) / 100))) }}
+      </span>
+    </div>
+
     <q-form @submit.prevent="handleSubmit"
       class="row q-col-gutter-sm"
       :style="$q.screen.gt.sm ? 'max-width: 700px' : ''">
@@ -93,6 +107,7 @@ import notify from 'src/composables/notify'
 import { useRouter } from 'vue-router'
 import useStorageStore from 'src/stores/storage'
 import CustomTitle from 'src/components/app/common/CustomTitle.vue'
+import { floatToMoney, moneyToFloat } from 'src/utils/helpers'
 
 export default defineComponent({
   name: 'CreditCardPage',
@@ -131,8 +146,11 @@ export default defineComponent({
     }
 
     return {
+      store,
       form,
-      handleSubmit
+      handleSubmit,
+      floatToMoney,
+      moneyToFloat
     }
   }
 })

@@ -5,6 +5,10 @@ const floatToMoney = (currency) => {
   return formatted
 }
 
+const moneyToFloat = (str) => {
+  return parseFloat(str.replace('.', '').replace(',', '.'))
+}
+
 const brDate = (timestamp) => {
   const date = parseISO(timestamp)
   return format(date, 'dd/MM/yyyy')
@@ -36,6 +40,7 @@ function limitString (str, num) {
 
 export {
   floatToMoney,
+  moneyToFloat,
   brDate,
   brDatetime,
   getRandomColor,

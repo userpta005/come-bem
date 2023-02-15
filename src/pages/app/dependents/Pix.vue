@@ -3,6 +3,20 @@
 
     <CustomTitle title="Pix" />
 
+    <div class="column q-mb-xl">
+      <span>Valor da recarga (R$): {{ store.reloadCredits.amount }}*</span>
+      <span class="text-red q-my-sm">
+        Nessa recarga será cobrada uma taxa de serviço de {{
+          floatToMoney(store.account.store.pix_rate).slice(3)
+        }}.
+      </span>
+      <span>
+        Valor a ser creditado na conta:
+        {{ floatToMoney(((moneyToFloat(store.reloadCredits.amount) - (moneyToFloat(store.reloadCredits.amount) *
+        parseFloat(store.account.store.pix_rate)) / 100))) }}
+      </span>
+    </div>
+
     <div class="column items-center"
       :style="$q.screen.gt.sm ? 'max-width: 700px' : ''">
 
@@ -45,6 +59,7 @@ import { defineComponent } from 'vue'
 import notify from 'src/composables/notify'
 import useStorageStore from 'src/stores/storage'
 import CustomTitle from 'src/components/app/common/CustomTitle.vue'
+import { floatToMoney, moneyToFloat } from 'src/utils/helpers'
 
 export default defineComponent({
   name: 'PixPage',
@@ -66,7 +81,9 @@ export default defineComponent({
 
     return {
       store,
-      copyCode
+      copyCode,
+      floatToMoney,
+      moneyToFloat
     }
   }
 })

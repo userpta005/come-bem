@@ -12,8 +12,7 @@
     Recarregar créditos
   </q-btn>
 
-  <q-dialog @show="handlePaymentMethod"
-    @hide="clearInputs"
+  <q-dialog @hide="clearInputs"
     v-model="prompt"
     persistent>
 
@@ -98,33 +97,31 @@ export default defineComponent({
     const route = useRoute()
     const store = useStorageStore()
     const prompt = ref(store.openReloadCredits)
-    const paymentMethods = ref([])
+    const paymentMethods = ref([
+      { id: 3, name: 'Cartão de Crédito' },
+      { id: 4, name: 'PIX' }
+    ])
     const form = reactive(
       {
-        amount: '1,00' ,
+        amount: '1,00',
         payment_method_id: null
       })
 
     const clearInputs = () => {
       form.amount = '1,00'
-      form.payment_method_id = paymentMethods.value[0].id
+      form.payment_method_id = null
       store.openReloadCredits = false
-    }
-
-    const handlePaymentMethod = async () => {
-      try {
-        const { data } = await store.axios({ method: 'get', url: '/api/v1/payment-methods' })
-        paymentMethods.value = data
-        form.payment_method_id = paymentMethods.value[0].id
-      } catch (error) {
-        notifyError(error)
-      }
     }
 
     const handleSubmit = async () => {
       store.reloadCredits = form
       let name = null
       let params = null
+
+      if (!form.payment_method_id) {
+        notifyError('Selecione uma forma de pagamento!')
+        return
+      }
 
       if (parseInt(form.payment_method_id) === 3) {
         name = route.name === 'responsible-dependent' ? 'responsible-credit-card' : 'dependent-credit-card'
@@ -152,8 +149,7 @@ export default defineComponent({
       form,
       paymentMethods,
       handleSubmit,
-      clearInputs,
-      handlePaymentMethod
+      clearInputs
     }
   }
 })
