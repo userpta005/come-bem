@@ -65,9 +65,8 @@
         </q-form>
       </div>
     </div>
-    <img src="imgs/28920.jpg"
+    <img src="imgs/tela-de-login.jpg"
       class="col-6"
-      style="height: 80vh;"
       v-if="$q.screen.gt.sm" />
   </q-page>
 </template>

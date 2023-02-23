@@ -3,33 +3,27 @@
 
     <CustomTitle title="Escolha seu perfil" />
 
-    <q-btn flat
-      no-caps
-      class="text-weight-regular"
-      style="height: 150px; width: 150px;"
+    <q-btn class="text-weight-regular"
+      style="height: 250px; width: 250px;"
+      flat
+      dense
       :class="$q.screen.gt.sm ? 'q-mr-md' : 'q-mb-md'"
       :disable="store.isDependent && !store.isResponsibleDependent"
       :to="responsibleRoute">
-      <div class="column flex-center">
-        <q-img src="~assets/familia.png"
-          height="100px"
-          width="100px" />
-        Pais/Tutor
-      </div>
+      <q-img src="~assets/pais-tutores.png"
+        height="250px"
+        width="250px" />
     </q-btn>
 
-    <q-btn flat
-      no-caps
-      class="text-weight-regular"
-      style="height: 150px; width: 150px;"
+    <q-btn class="text-weight-regular"
+      style="height: 250px; width: 250px;"
+      flat
+      dense
       :disable="store.isResponsible && !store.isResponsibleDependent"
       :to="dependentRoute">
-      <div class="column flex-center">
-        <q-img src="~assets/aluna.png"
-          height="100px"
-          width="100px" />
-        Consumidor/Filho
-      </div>
+      <q-img src="~assets/filho-consumidor.png"
+        height="250px"
+        width="250px" />
     </q-btn>
 
   </q-page>
