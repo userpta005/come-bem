@@ -223,7 +223,7 @@ export default defineComponent({
       }
     }
 
-    handleGetLastPosts()
+    // handleGetLastPosts()
 
     return {
       main,
