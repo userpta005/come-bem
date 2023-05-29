@@ -9,7 +9,7 @@
         </h5>
         <p class="q-mt-md q-mx-md"
           align="justify">
-          A equipe do Lanche Bem está pronta para atender e ajudar no uso dos nossos serviços.
+          A equipe do Come Bem está pronta para atender e ajudar no uso dos nossos serviços.
         </p>
         <p class="q-mx-md"
           align="justify">

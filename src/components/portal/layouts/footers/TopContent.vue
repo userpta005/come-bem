@@ -5,7 +5,7 @@
       <img src="imgs/logo-vertical.png"
         style="max-height: 200px" />
       <span class="text-center q-pa-md">
-        O Lanche Bem foi criado par ajudar você no controle da alimentação do seu filho,
+        O Come Bem foi criado par ajudar você no controle da alimentação do seu filho,
         e com isso, incentivá-lo desde muito cedo aos princípios da educação financeira.
       </span>
     </div>
@@ -37,7 +37,7 @@
           <span class="text-h6 text-weight-bold">Acesso interno</span>
           <span>Webmail</span>
           <a class="text-white"
-            href="https://local360.com.br/lanche-bem/public/login">Painel administrativo</a>
+            href="">Painel administrativo</a>
         </div>
       </div>
       <div class="col-md-4 col-xs-12">

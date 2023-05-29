@@ -76,7 +76,7 @@ export default defineComponent({
           iconName: 'mdi-credit-card-multiple-outline',
           iconSize: '4rem',
           title: 'Cartão',
-          text: 'Todo aluno receberá um Cartão NFC do Lanche Bem personalizado e gratuito. Nessa etapa, cuidaremos para que seu filho receba todas as informações necessárias (cartilha) para que não tenha dificuldades de utilização do Token de Auto Atendimento.',
+          text: 'Todo aluno receberá um Cartão NFC do Come Bem personalizado e gratuito. Nessa etapa, cuidaremos para que seu filho receba todas as informações necessárias (cartilha) para que não tenha dificuldades de utilização do Token de Auto Atendimento.',
           separator: false
         },
         {
@@ -113,7 +113,7 @@ export default defineComponent({
           },
           {
             img_url: 'https://cdn.quasar.dev/img/parallax1.jpg',
-            title: '"Não preciso mais me preocupar com a alimentação dos meus filhos, graças ao lanche bem"',
+            title: '"Não preciso mais me preocupar com a alimentação dos meus filhos, graças ao Come Bem"',
             description: 'Geovana Silva - Mãe, 38 anos.',
             border: true
           },
@@ -139,7 +139,7 @@ export default defineComponent({
           },
           {
             img_url: 'https://cdn.quasar.dev/img/linux-avatar.png',
-            title: '"Não preciso mais me preocupar com a alimentação dos meus filhos, graças ao lanche bem"',
+            title: '"Não preciso mais me preocupar com a alimentação dos meus filhos, graças ao Come Bem"',
             description: 'Geovana Silva - Mãe, 38 anos.',
             border: true
           },

@@ -65,10 +65,10 @@ module.exports = configure(function (ctx) {
 
       // rebuildCache: true, // rebuilds Vite/linter/etc cache on startup
 
-      publicPath: ctx.dev ? '' : 'lanche-bem-portal/',
+      publicPath: ctx.dev ? '' : '',
       // analyze: true,
       env: {
-        api: /* ctx.dev ? 'http://localhost:8000' : */ 'https://local360.com.br/lanche-bem/public'
+        api: /* ctx.dev ? 'http://localhost:8000' : */ ''
       }
       // rawDefine: {}
       // ignorePublicFolder: true,
@@ -200,7 +200,7 @@ module.exports = configure(function (ctx) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'lanche-bem-app-web'
+        appId: 'come-bem-app-web'
       }
     },
 

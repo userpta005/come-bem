@@ -1,8 +1,8 @@
 {
-  "name": "lanche-bem",
+  "name": "come-bem",
   "version": "0.0.1",
-  "description": "Lanche Bem",
-  "productName": "Lanche Bem",
+  "description": "come-bem",
+  "productName": "come-bem",
   "author": "Rafael Arend <rafinhaarend123@hotmail.com>",
   "private": true,
   "scripts": {

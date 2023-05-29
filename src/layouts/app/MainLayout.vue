@@ -11,7 +11,7 @@
           @click="toggleLeftDrawer" />
 
         <q-toolbar-title>
-          Lanche Bem
+          Come Bem
         </q-toolbar-title>
 
         <q-btn-dropdown flat

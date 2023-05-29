@@ -50,7 +50,7 @@ export default defineComponent({
           iconName: 'mdi-cash-register',
           iconSize: '4rem',
           title: 'Menor movimentação em dinheiro',
-          text: 'Grande parte dos gestores de Cantinas relatam insegurança com relação a funcionários e fluxo de caixa. Com o Lanche Bem sua segurança vai aumentar e te deixar muito mais tranquilo.',
+          text: 'Grande parte dos gestores de Cantinas relatam insegurança com relação a funcionários e fluxo de caixa. Com o Come Bem sua segurança vai aumentar e te deixar muito mais tranquilo.',
           separator: true
         },
         {
