@@ -9,7 +9,7 @@
     "lint": "eslint --ext .js,.vue ./",
     "test": "echo \"No test specified\" && exit 0",
     "build": "rm -r dist && quasar build && cp .htaccess dist/spa && cd dist && zip -r spa spa/",
-    "push": "scp -P 65002 dist/spa.zip u485517245@185.214.126.4:/home/u485517245/public_html"
+    "push": "scp -P 65002 dist/spa.zip u773326111@89.117.7.238:/home/u773326111/domains/alta-tecnologia-digital.shop/public_html"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
